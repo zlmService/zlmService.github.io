@@ -84,19 +84,28 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="创建Handler的时候就会 在里面 得到当前线程的保存的Looper实例，
+而Looper里面又有一个MessageQueue对象，每一个线程只能有一个Looper实例 
+每一个Looper里面也只有一个MessageQueue实例
+获取到以后，handler就和MessageQueue关联上了， 然后当它执行 sendMessage的时候
+就会把消息传送到MessageQueue里面去  Lo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://zhaoliming.com/2016/05/07/hello-world/index.html">
+<meta property="og:title" content="Handler">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/07/Handler/index.html">
 <meta property="og:site_name" content="赵黎明的博客">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-05-07T13:37:37.163Z">
+<meta property="og:description" content="创建Handler的时候就会 在里面 得到当前线程的保存的Looper实例，
+而Looper里面又有一个MessageQueue对象，每一个线程只能有一个Looper实例 
+每一个Looper里面也只有一个MessageQueue实例
+获取到以后，handler就和MessageQueue关联上了， 然后当它执行 sendMessage的时候
+就会把消息传送到MessageQueue里面去  Lo">
+<meta property="og:updated_time" content="2016-05-07T15:08:38.407Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Handler">
+<meta name="twitter:description" content="创建Handler的时候就会 在里面 得到当前线程的保存的Looper实例，
+而Looper里面又有一个MessageQueue对象，每一个线程只能有一个Looper实例 
+每一个Looper里面也只有一个MessageQueue实例
+获取到以后，handler就和MessageQueue关联上了， 然后当它执行 sendMessage的时候
+就会把消息传送到MessageQueue里面去  Lo">
 
 
 
@@ -114,7 +123,7 @@ Quick">
   };
 </script>
 
-  <title> Hello World | 赵黎明的博客 </title>
+  <title> Handler | 赵黎明的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -234,7 +243,7 @@ Quick">
             
             
               
-                Hello World
+                Handler
               
             
           </h1>
@@ -246,7 +255,7 @@ Quick">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-07T21:37:37+08:00" content="2016-05-07">
+            <time itemprop="dateCreated" datetime="2016-05-07T23:05:11+08:00" content="2016-05-07">
               2016-05-07
             </time>
           </span>
@@ -274,15 +283,52 @@ Quick">
       
 
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <pre><code>创建Handler的时候就会 在里面 得到当前线程的保存的Looper实例，
+而Looper里面又有一个MessageQueue对象，每一个线程只能有一个Looper实例 
+每一个Looper里面也只有一个MessageQueue实例
+获取到以后，handler就和MessageQueue关联上了， 然后当它执行 sendMessage的时候
+就会把消息传送到MessageQueue里面去  Looper 通过loop方法负责从MessageQueue里面去取Message   
+把取出来的Message 在传递个Handler ，Handler接收并且负责处理
+</code></pre><h4 id="Looper-：主要是-prepare和loop方法"><a href="#Looper-：主要是-prepare和loop方法" class="headerlink" title="Looper ：主要是 prepare和loop方法"></a>Looper ：主要是 prepare和loop方法</h4><pre><code>prepare（）方法
+    主要是 在当前线程中保存一个Looper实例，然后在该实例中保存一个MessageQueue实例， 
+    这个方法只会调用一次 所有Looper 在一个线程中只会存在一个
+loop()方法
+    会让当前线程进入一个无限循环，从MessageQueue实例中不断读取消息，然后把消息传递给Handler
+</code></pre><h4 id="Handler：主要负责发送消息到MessageQueue中，-然后接收从Looper传递过来的信息"><a href="#Handler：主要负责发送消息到MessageQueue中，-然后接收从Looper传递过来的信息" class="headerlink" title="Handler：主要负责发送消息到MessageQueue中， 然后接收从Looper传递过来的信息"></a>Handler：主要负责发送消息到MessageQueue中， 然后接收从Looper传递过来的信息</h4><pre><code>handler的构造函数会获取当前线程 保存的Looper对象，
+从而根据这个looper对象获取他里面保存的MessageQueue实例，
+这样就保证了handler和MessageQueue关联上了
+</code></pre><h4 id="MessageQueue：负责存储Handler发送过来的信息-底部采用队列-先进先出"><a href="#MessageQueue：负责存储Handler发送过来的信息-底部采用队列-先进先出" class="headerlink" title="MessageQueue：负责存储Handler发送过来的信息 底部采用队列 先进先出"></a>MessageQueue：负责存储Handler发送过来的信息 底部采用队列 先进先出</h4><hr>
+<h5 id="Message-obtain"><a href="#Message-obtain" class="headerlink" title="Message.obtain()"></a>Message.obtain()</h5><pre><code>获取Message的实例时候 推荐使用 Message.obtain()
+因为Message内部会有一个Message池 用于Message的复用，避免了new Message的时候重新分配内存。
+</code></pre><h5 id="handler用法："><a href="#handler用法：" class="headerlink" title="handler用法："></a>handler用法：</h5><pre><code>handler不光可以用来更新UI  还可以在子线程中创建一个Handler实例，
+然后使用这个handler实例去任何其他线程中发送消息，
+最终处理的代码都会在你创建的这个Handler实例都线程中运行
+</code></pre><h5 id="Handler的post方法创建的线程和UI线程有什么关系"><a href="#Handler的post方法创建的线程和UI线程有什么关系" class="headerlink" title="Handler的post方法创建的线程和UI线程有什么关系"></a>Handler的post方法创建的线程和UI线程有什么关系</h5><pre><code>其实这个Runnable并没有创建一个线程，而是发送了一条消息，只不过是把这个Runable对象当成callback（回调）属性，赋值给了Message  然后还是 把消息添加到MessageQueue中去，和上面的一样。
+</code></pre><hr>
+<h3 id="内存泄漏问题"><a href="#内存泄漏问题" class="headerlink" title="内存泄漏问题"></a>内存泄漏问题</h3><ul>
+<li><p>原因：因为Handler是一个内部类，它会获得外部类Activity的引用，如果Activity被用户关掉了，但是Handler有一个延时发送的信息 还没有执行，所以表面是关闭了Activity 释放了资源，实际上其实，Handler还在调用着它的引用，这样就导致了内存泄漏，</p>
+</li>
+<li><p>解决：使用静态内部类，然后在该类里使用弱引用来指向所在的Activity。</p>
+</li>
+<li><p>如果Activity关闭的时候，也要remove掉MessageQueue中的Message消息和Runnable</p>
+<pre><code>@Override  
+ public void onDestroy() {  
+ mHandler.removeMessages(MESSAGE_1);  
+ mHandler.removeMessages(MESSAGE_2);  
+
+ mHandler.removeCallbacks(mRunnable);  
+
+ // ... ...  
+ }
+
+或者是
+@Override  
+public void onDestroy() {  
+    //  If null, all callbacks and messages will be removed.  
+    mHandler.removeCallbacksAndMessages(null);  
+}
+</code></pre></li>
+</ul>
 
       
     </div>
@@ -307,12 +353,16 @@ Quick">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/05/07/activity/" rel="next" title="Activity">
+                <i class="fa fa-chevron-left"></i> Activity
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2016/05/07/activity/" rel="prev" title="Activity">
-                Activity <i class="fa fa-chevron-right"></i>
+              <a href="/2016/05/07/Service/" rel="prev" title="Service">
+                Service <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -420,7 +470,7 @@ Quick">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick-Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create-a-new-post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Run-server"><span class="nav-number">1.2.</span> <span class="nav-text">Run server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generate-static-files"><span class="nav-number">1.3.</span> <span class="nav-text">Generate static files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Deploy-to-remote-sites"><span class="nav-number">1.4.</span> <span class="nav-text">Deploy to remote sites</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Looper-：主要是-prepare和loop方法"><span class="nav-number">1.</span> <span class="nav-text">Looper ：主要是 prepare和loop方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Handler：主要负责发送消息到MessageQueue中，-然后接收从Looper传递过来的信息"><span class="nav-number">2.</span> <span class="nav-text">Handler：主要负责发送消息到MessageQueue中， 然后接收从Looper传递过来的信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MessageQueue：负责存储Handler发送过来的信息-底部采用队列-先进先出"><span class="nav-number">3.</span> <span class="nav-text">MessageQueue：负责存储Handler发送过来的信息 底部采用队列 先进先出</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Message-obtain"><span class="nav-number">3.1.</span> <span class="nav-text">Message.obtain()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#handler用法："><span class="nav-number">3.2.</span> <span class="nav-text">handler用法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Handler的post方法创建的线程和UI线程有什么关系"><span class="nav-number">3.3.</span> <span class="nav-text">Handler的post方法创建的线程和UI线程有什么关系</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存泄漏问题"><span class="nav-number"></span> <span class="nav-text">内存泄漏问题</span></a></div>
             
           </div>
         </section>

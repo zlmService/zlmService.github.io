@@ -1,0 +1,699 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Android中跨进程通讯有几种方式1.通过Intent 设置Action匹配规则 比如打开系统通话应用
+IntentcallIntent=newIntent(Intent.ACTION_CALL,Uri.parse(&amp;quot;tel:12345678&amp;quot;);
+startActivity(callIntent);
+2.通过 ContentProvider 访问联系人信息
+3.广播 Bro">
+<meta property="og:type" content="article">
+<meta property="og:title" content="杂项">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/07/杂项/index.html">
+<meta property="og:site_name" content="赵黎明的博客">
+<meta property="og:description" content="Android中跨进程通讯有几种方式1.通过Intent 设置Action匹配规则 比如打开系统通话应用
+IntentcallIntent=newIntent(Intent.ACTION_CALL,Uri.parse(&amp;quot;tel:12345678&amp;quot;);
+startActivity(callIntent);
+2.通过 ContentProvider 访问联系人信息
+3.广播 Bro">
+<meta property="og:updated_time" content="2016-05-07T15:26:50.840Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="杂项">
+<meta name="twitter:description" content="Android中跨进程通讯有几种方式1.通过Intent 设置Action匹配规则 比如打开系统通话应用
+IntentcallIntent=newIntent(Intent.ACTION_CALL,Uri.parse(&amp;quot;tel:12345678&amp;quot;);
+startActivity(callIntent);
+2.通过 ContentProvider 访问联系人信息
+3.广播 Bro">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> 杂项 | 赵黎明的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">赵黎明的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                杂项
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-07T23:21:30+08:00" content="2016-05-07">
+              2016-05-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="Android中跨进程通讯有几种方式"><a href="#Android中跨进程通讯有几种方式" class="headerlink" title="Android中跨进程通讯有几种方式"></a>Android中跨进程通讯有几种方式</h3><p>1.通过Intent 设置Action匹配规则 比如打开系统通话应用</p>
+<pre><code>IntentcallIntent=newIntent(Intent.ACTION_CALL,Uri.parse(&quot;tel:12345678&quot;);
+startActivity(callIntent);
+</code></pre><p>2.通过 ContentProvider 访问联系人信息</p>
+<p>3.广播 Broadcast 获取 手机电量等 信息</p>
+<p>4.AIDL</p>
+<h3 id="强引用，软引用，弱引用"><a href="#强引用，软引用，弱引用" class="headerlink" title="强引用，软引用，弱引用"></a>强引用，软引用，弱引用</h3><ul>
+<li>强引用 如果一个对象具有强引用，那垃圾回收器绝不会回收它   </li>
+<li>软引用 如果一个对象只具有软引用，则内存空间足够，垃圾回收器就不会回收它；如果内存空间不足了，就会回收这些对象的内存  软引用可用来实现内存敏感的高速缓存。   </li>
+<li>弱引用 不管内存是否足够，只要垃圾回收器扫描到它 ，就会把它给回收掉  不过，由于垃圾回收器是一个优先级很低的线程，因此不一定会很快发现那些只具有弱引用的对象。</li>
+</ul>
+<h3 id="Android动画"><a href="#Android动画" class="headerlink" title="Android动画"></a>Android动画</h3><ul>
+<li>帧动画，类似电影播放一样，由一个图片一个图片组成</li>
+<li>补间动画，是对某个View进行一系列的动画的操作，包括淡入淡出（Alpha），缩放（Scale），平移（Translate），旋转（Rotate）四种模式。</li>
+<li>属性动画，不再仅仅是一种视觉效果了，而是一种不断地对值进行操作，并将值赋到指定对象的指定属性上，可以是任意对象的任意属性</li>
+</ul>
+<h3 id="CursorLoader原理"><a href="#CursorLoader原理" class="headerlink" title="CursorLoader原理"></a>CursorLoader原理</h3><p>整个过程其实应用了 观察者模式，通常我们会在ContenProvider的query方法中调用setNotificationUri 这句话的作用其实就是告诉Cursor的观察者 数据发生了变化，</p>
+<ul>
+<li>通过ContentPorvider和ContentResolver使得数据发生了改变</li>
+<li>ContentProvider通知Cursor的观察者数据发生了改变</li>
+<li>Cursor通知CursorLoader的观察者数据发生了改变</li>
+<li>CursorLoader通过ContentProvider加载新的数据</li>
+<li>ContentPovider向DataBase请求新的数据</li>
+<li>CursorLoader调用CursorAdapter#changeCursor,用封装了新数据的Cursor替换旧的Cursor</li>
+<li>CursorAdapter告知AdapterView的观察者有新的数据</li>
+<li>AdapterView重新加载并显示数据</li>
+</ul>
+<h3 id="ListView优化"><a href="#ListView优化" class="headerlink" title="ListView优化"></a>ListView优化</h3><ul>
+<li>尽量宽高设置成固定的（避免内容listview重新渲染 加载）</li>
+<li>使用ViewHolder 避免每次getView的时候 重复调用 findViewById</li>
+<li>convertView </li>
+<li>使用分页加载 </li>
+<li>避免在getView中做耗时操作</li>
+<li>如果item有图片的加载，一定要对图片进行优化压缩缓存，</li>
+</ul>
+<h3 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h3><ul>
+<li>dispatchTouchEvent    用来分派事件 其中调用了onInterceptTouchEvent()和onTouchEvent()，一般不重写该方法</li>
+<li>onInterceptTouchEvent    用来拦截事件 ViewGroup类中的源码实现就是{return false;}表示不拦截该事件，事件将向下传递（传递给其子View）；若手动重写该方法，使其返回true则表示拦截，事件将终止向下传递，事件由当前ViewGroup类来处理，就是调用该类的onTouchEvent()方法</li>
+<li>onTouchEvent    用来处理事件 返回true则表示该View能处理该事件，事件将终止向上传递（传递给其父View）；返回false表示不能处理，则把事件传递给其父View的onTouchEvent()方法来处理</li>
+<li>记忆功能：比如说一个onClick事件，他其实有2个事件，第一个ACTION_DOWN，第二个ACTION_UP，当第一个ACTIONDOWN传递到某View的时候，他是怎么记录该事件是否被下面的View给处理成功了（因为，如果子View没有成功处理该事件的话，这个事件会一次回传上来）通过是否向上传递来记录ACTION_DOWN是否被处理成功了，如果子View处理成功了，ACTION_UP也传递到子View中，如果没有处理成功，ACTION_UP的时候也不会在传递到子View中，他会直接调用自己的onTouchEvent方法来处理。</li>
+<li>关于这“记忆”功能的信息只在一系列事件完成之前有效，也就是从ACTION_DOWN事件开始，直到后续事件ACTION_MOVE，ACTION_UP结束后，“记忆”的信息就会清除。</li>
+</ul>
+<h3 id="设计模式："><a href="#设计模式：" class="headerlink" title="设计模式："></a>设计模式：</h3><ul>
+<li>装饰模式：在不必改变原类文件和使用继承的情况下，动态地扩展一个对象的功能。它是通过创建一个包装对象，也就是装饰来包裹真实的对象。</li>
+<li>工厂模式：就是不需要new了，  它会自动帮你实现实例化。<br>getSystemService（String name）根据传过来的条件，生成对应的对象。</li>
+<li>观察者模式：定义对象间一对多的关系，当一个发生变化的时候，所依赖它的所有对象，都得到通知并自动更新。</li>
+<li>单例模式：确保该类只有一个实例存在。</li>
+</ul>
+<h3 id="AsyncTask内部实现，适用的场景"><a href="#AsyncTask内部实现，适用的场景" class="headerlink" title="AsyncTask内部实现，适用的场景"></a>AsyncTask内部实现，适用的场景</h3><ul>
+<li>AsyncTask内部也是Handler机制来完成的，只不过Android提供了执行框架来提供线程池来执行相应地任务，因为线程池的大小问题，所以AsyncTask只应该用来执行耗时时间较短的任务，比如HTTP请求，大规模的下载和数据库的更改不适用于AsyncTask，因为会导致线程池堵塞，没有线程来执行其他的任务，导致的情形是会发生AsyncTask根本执行不了的问题。</li>
+</ul>
+<h3 id="FragmentPagerAdapter和FragmentStatePagerAdapter"><a href="#FragmentPagerAdapter和FragmentStatePagerAdapter" class="headerlink" title="FragmentPagerAdapter和FragmentStatePagerAdapter"></a>FragmentPagerAdapter和FragmentStatePagerAdapter</h3><ul>
+<li>FragmentPageAdapter该类缓存当前Fragment的左边和右边同时保存到内存之中，适合用于那些相对静态的页，数量也较少的那种。</li>
+<li>FragmentStatePagerAdapter适合数据动态性较大，需要处理很多页的情况，它也继承PagerAdapter，但是它只保留当前页面，当页面离开视线的时候，就会被清除，释放资源。</li>
+</ul>
+<h3 id="自定义View"><a href="#自定义View" class="headerlink" title="自定义View"></a>自定义View</h3><ul>
+<li>自定义View<br>解释什么情况下 引发的 需要去自定义控件<br>如果是自定义一个View  首先我会去分析这个View  需要哪些自定义的属性 然后去编写  在自定义View的构造方法中去获取  获取到以后 我会重写他测量的方法 然后觉得这个View 到底占据多大的空间  测量完成后 我会去复写他的onDraw方法 去绘制我们的View 到底显示什么样的形状   这就是自定义View 的过程</li>
+<li>自定义ViewGroup<br>首先测量决定 ViewGroup的自身大小  还有一个职责就是去测量 它子View 的大小  给子View 一个参考值<br>然后完成测量 他的最主要一个任务就是 onLayout 去布局 去决定他ziView的位置显示的规则  比如是垂直的还是相对的 如果没有手势与用户交互的话  那他主要的也就是测量和一个Layout的过程  如果有和用户交互的话 那么还需要去考虑重写onTouchEvent 决定和用户如何交互  还有onInterceptTOuchEvent（ViewGroup）的情况下 你觉得这个手势是你应当去拦截的（从down到move到up 整个过程）</li>
+<li>getHeight()获取到的时候 在手机上面显示出来的高度</li>
+<li>getMeasuredHeight() 获取到的是 显示的高度+隐藏的高度</li>
+<li>getWidth（）View在設定好佈局後整個View的寬度。</li>
+<li>getMeasuredWidth（）對View上的內容進行測量後得到的View內容佔據的寬度</li>
+</ul>
+<h3 id="Canvas-save-和restore"><a href="#Canvas-save-和restore" class="headerlink" title="Canvas save()和restore()"></a>Canvas save()和restore()</h3><ul>
+<li>save：用来保存Canvas的状态。save之后，可以调用Canvas的平移、放缩、旋转、错切、裁剪等操作。</li>
+<li>restore：用来恢复Canvas之前保存的状态。防止save后对Canvas执行的操作对后续的绘制有影响。</li>
+<li>save和restore要配对使用（restore可以比save少，但不能多），如果restore调用次数比save多，会引发Error。</li>
+</ul>
+<hr>
+<h3 id="LayoutInflate-inflate-int-resource-ViewGroup-root-boolean-attachToRoot-参数"><a href="#LayoutInflate-inflate-int-resource-ViewGroup-root-boolean-attachToRoot-参数" class="headerlink" title="LayoutInflate.inflate(int resource, ViewGroup root, boolean attachToRoot)参数"></a>LayoutInflate.inflate(int resource, ViewGroup root, boolean attachToRoot)参数</h3><ul>
+<li>resource：需要加载布局文件的id，意思是需要将这个布局文件中加载到Activity中来操作。</li>
+<li>root：需要附加到resource资源文件的根控件，什么意思呢，就是inflate()会返回一个View对象，如果第三个参数attachToRoot为true，就将这个root作为根对象返回，否则仅仅将这个root对象的LayoutParams属性附加到resource对象的根布局对象上，也就是布局文件resource的最外层的View上，比如是一个LinearLayout或者其它的Layout对象。</li>
+<li>attachToRoot：是否将root附加到布局文件的根视图上</li>
+</ul>
+<h3 id="DOM、SAX、PULL区别"><a href="#DOM、SAX、PULL区别" class="headerlink" title="DOM、SAX、PULL区别"></a>DOM、SAX、PULL区别</h3><ul>
+<li>DOM：一次性把整个xml都加载进来，当文件比较大的时候速度比较慢。好处是：可以随时访问到某个节点的相邻节点，并且对xml文档的插入也非常的方便。</li>
+<li>SAX：通过事件驱动的方式，它会判断当前读到的字符是否符合xml语法中的某部分，如果符合就触发事件。所谓事件，其实就是一些回调（callback）方法，这些方法(事件)定义在ContentHandler接口。</li>
+<li>PULL：允许你的应用程序代码主动从解析器中获取事件，正因为是主动获取事件，因此可以在满足了需要的条件后不再获取事件，结束解析。</li>
+</ul>
+<h3 id="Volley"><a href="#Volley" class="headerlink" title="Volley"></a>Volley</h3><ul>
+<li>创建一个 RequestQueue queue=Volley.newRequestQueue(context);</li>
+<li>创建一个StringRequest对象 StringRequest s=new StringRequest(URL,响应成功回调，响应失败回调)</li>
+<li>强StringRequest对象添加到RequestQueue里面  </li>
+<li>如果是一个post请求的话 就要在 StringRequest s=new StringRequest（）{ 内部中重写一个onParams方法 在里面的Map集合中 添加post请求的数据 }</li>
+<li>StringRequest   JSONObjectRequest ImageRequest  不同的需求 对应不同的对象</li>
+<li>ImageLoader 使用缓存<br>  ①ImageLoader il=new ImageLoader(RequestQueue,new ImageCache());<br>  ②ImageLoader.ImageListener listener=ImageLoader.getImageListener(ImageView，默认图片，出错图片);<br>  ③il.get(url,listener,winth,height); </li>
+<li>使用 NetWorkImageView 控件   显示图片 并且缓存<br>  ①netWorkImageView.setDefault(默认图片);<br>  ②netWorkImageView.setError(出错图片);<br>  ③netWorkImageView.setImageUrl(url,new ImageLoader(RequestQueue,new ImageCache());</li>
+<li>内部原理：RequestQueue queue=Volley.newRequestQueue(context) 内部会启动五个线程 在等待处理数据<br>  当RequestQueue.add（）方法来添加一条网路请求的时候，这条请求会先加入缓存队列中，如果在缓存中可以找到对应的结果，就直接读取缓存并且解析，然后回调给主线程，如果在缓存中没有找到结果，就将这条请求加入到网络请求队列中，然后处理发送HTTP请求，解析响应结果，写入缓存，并回调给主线程。</li>
+</ul>
+<hr>
+<h3 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h3><ul>
+<li>weight  dp   sp</li>
+<li><p>layout_sw600dp   最小宽度600dp  不区分是否是 横屏还是竖屏<br>在这个文件夹下的布局文件 只要宽度大于600dp 就会使用这里面布局</p>
+</li>
+<li><p>layout-sw600dp-port 是垂直方向所用的布局</p>
+</li>
+<li>layout-sw600dp-land 是水平方向所用的布局</li>
+</ul>
+<hr>
+<h3 id="Retrofit原理"><a href="#Retrofit原理" class="headerlink" title="Retrofit原理"></a>Retrofit原理</h3><p>其实Retrofit无非就是让用户创建接口，使用自己指定的规则进行网络访问，把接口传入Retrofit，接口上附着的规则由Retrofit进行层层解析后，再进行实际的网络调用。</p>
+<p>Retrofit非常巧妙的用注解来描述一个HTTP请求，将一个HTTP请求抽象成一个Java接口，然后用了Java动态代理的方式，动态的将这个接口的注解“翻译”成一个HTTP请求，最后再执行这个HTTP请求</p>
+<hr>
+<h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><h3 id="序列化的原因"><a href="#序列化的原因" class="headerlink" title="序列化的原因"></a>序列化的原因</h3><ul>
+<li>当android传递的参数是Bean对象的时候，需要对Bean对象实现序列化。（2个Activity之间需要传递一个Bean对象）</li>
+<li>永久性保存对象，保存对象的字节序列到本地文件中，</li>
+<li>对象在网络中传递</li>
+<li>对象在IPC间传递</li>
+</ul>
+<h3 id="两种序列化的区别"><a href="#两种序列化的区别" class="headerlink" title="两种序列化的区别"></a>两种序列化的区别</h3><ul>
+<li>Serializable：在序列化的时候会产生大量的临时变量，从而引起频繁的GC，但是当 永久性保存对象，保存对象的字节序列到本地文件中，推荐使用Serializable</li>
+<li>Parcelable 效率高，速度快，适用于在网络中传递对象，或者序列化在进程间传递对象，推荐使用Parcelable</li>
+</ul>
+<hr>
+<h3 id="多进程引发的问题"><a href="#多进程引发的问题" class="headerlink" title="多进程引发的问题"></a>多进程引发的问题</h3><ul>
+<li>静态成员和单例模式失效：不同的虚拟机访问同一个类的对象，会产生多个副本，他们互不干扰。</li>
+<li>线程同步机制失效：因为不是一片内存了，所以进程所的不是同一个对象</li>
+<li>SharedPreferences的可靠性下降：不支持两个进程同时去执行写的操作，否则会有几率导致数据丢失</li>
+<li>Application会多次创建：不同的进程，需要分配不同的虚拟机，也就是启动一个应用，所有就会创建新的Application</li>
+</ul>
+<hr>
+<h3 id="图片圆角的实现"><a href="#图片圆角的实现" class="headerlink" title="图片圆角的实现"></a>图片圆角的实现</h3><ul>
+<li>通过设置图片本身：图片本身其实就是一个矩形，然后获取这个Bitmap的宽高new一个画布出来，然后在canvas有一个方法，绘制圆角矩形的方法，然后把圆角的大小传进进去，先绘制一个圆角矩形，然后在绘制一个Bitmap在这个矩形的上面，最终返回这个圆角bitmap，从而实现了圆角的图片.</li>
+<li>自定义ImageView：</li>
+</ul>
+<hr>
+<h3 id="Android-drawable-放一个drawable资源"><a href="#Android-drawable-放一个drawable资源" class="headerlink" title="Android:drawable 放一个drawable资源"></a>Android:drawable 放一个drawable资源</h3><ul>
+<li>android:state_pressed 是否按下，如一个按钮触摸或者点击。</li>
+<li>android:state_focused 是否取得焦点，比如用户选择了一个文本框。</li>
+<li>android:state_hovered 光标是否悬停，通常与focused state相同，它是4.0的新特性</li>
+<li>android:state_selected 被选中，它与focus state并不完全一样，如一个list view 被选中的时候，它里面的各个子组件可能通过方向键，被选中了。</li>
+<li>android:state_checkable 组件是否能被check。如：RadioButton是可以被check的。</li>
+<li>android:state_checked 被checked了，如：一个RadioButton可以被check了。</li>
+<li>android:state_enabled 能够接受触摸或者点击事件</li>
+<li>android:state_activated 被激活(这个麻烦举个例子，不是特明白)</li>
+<li>android:state_window_focused 应用程序是否在前台，当有通知栏被拉下来或者一个对话框弹出的时候应用程序就不在前台了</li>
+</ul>
+<h2 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h2><h4 id="AS导出jar包"><a href="#AS导出jar包" class="headerlink" title="AS导出jar包"></a><a href="http://yifeiyuan.me/2015/09/17/AndroidStudio%E5%AF%BC%E5%87%BAJar%E5%8C%85/" target="_blank" rel="external">AS导出jar包</a></h4><h4 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a><a href="http://www.jianshu.com/p/60e82aafcfd0" target="_blank" rel="external">混淆</a></h4><h4 id="使用Gradle管理Android"><a href="#使用Gradle管理Android" class="headerlink" title="使用Gradle管理Android"></a><a href="http://www.flysnow.org/2015/03/30/manage-your-android-project-with-gradle.html" target="_blank" rel="external">使用Gradle管理Android</a></h4>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/07/Service/" rel="next" title="Service">
+                <i class="fa fa-chevron-left"></i> Service
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/07/ImageLoader/" rel="prev" title="ImageLoader">
+                ImageLoader <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="赵黎明" />
+          <p class="site-author-name" itemprop="name">赵黎明</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Android中跨进程通讯有几种方式"><span class="nav-number">1.</span> <span class="nav-text">Android中跨进程通讯有几种方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强引用，软引用，弱引用"><span class="nav-number">2.</span> <span class="nav-text">强引用，软引用，弱引用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android动画"><span class="nav-number">3.</span> <span class="nav-text">Android动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CursorLoader原理"><span class="nav-number">4.</span> <span class="nav-text">CursorLoader原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ListView优化"><span class="nav-number">5.</span> <span class="nav-text">ListView优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件传递"><span class="nav-number">6.</span> <span class="nav-text">事件传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设计模式："><span class="nav-number">7.</span> <span class="nav-text">设计模式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AsyncTask内部实现，适用的场景"><span class="nav-number">8.</span> <span class="nav-text">AsyncTask内部实现，适用的场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#FragmentPagerAdapter和FragmentStatePagerAdapter"><span class="nav-number">9.</span> <span class="nav-text">FragmentPagerAdapter和FragmentStatePagerAdapter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义View"><span class="nav-number">10.</span> <span class="nav-text">自定义View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Canvas-save-和restore"><span class="nav-number">11.</span> <span class="nav-text">Canvas save()和restore()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LayoutInflate-inflate-int-resource-ViewGroup-root-boolean-attachToRoot-参数"><span class="nav-number">12.</span> <span class="nav-text">LayoutInflate.inflate(int resource, ViewGroup root, boolean attachToRoot)参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DOM、SAX、PULL区别"><span class="nav-number">13.</span> <span class="nav-text">DOM、SAX、PULL区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Volley"><span class="nav-number">14.</span> <span class="nav-text">Volley</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#屏幕适配"><span class="nav-number">15.</span> <span class="nav-text">屏幕适配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Retrofit原理"><span class="nav-number">16.</span> <span class="nav-text">Retrofit原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化"><span class="nav-number">17.</span> <span class="nav-text">序列化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#序列化的原因"><span class="nav-number">18.</span> <span class="nav-text">序列化的原因</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#两种序列化的区别"><span class="nav-number">19.</span> <span class="nav-text">两种序列化的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多进程引发的问题"><span class="nav-number">20.</span> <span class="nav-text">多进程引发的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片圆角的实现"><span class="nav-number">21.</span> <span class="nav-text">图片圆角的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Android-drawable-放一个drawable资源"><span class="nav-number">22.</span> <span class="nav-text">Android:drawable 放一个drawable资源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文章"><span class="nav-number"></span> <span class="nav-text">文章</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AS导出jar包"><span class="nav-number">0.1.</span> <span class="nav-text">AS导出jar包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#混淆"><span class="nav-number">0.2.</span> <span class="nav-text">混淆</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Gradle管理Android"><span class="nav-number">0.3.</span> <span class="nav-text">使用Gradle管理Android</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵黎明</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

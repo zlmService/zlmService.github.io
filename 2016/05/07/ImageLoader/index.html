@@ -1,0 +1,793 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ImageLoader原理," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="在application中配置初始化
+  ImageLoader.getInstance().init（ImageLoaderConfiguration configuration）  getInstance 是一个懒汉式单例模式，获取ImageLoader的对象 双层是否为 null 判断提高性能
+  init的作用就是 开启一个引擎，也就是任务分发器，负责分发 是加载并显示图片任务 又或者是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ImageLoader">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/07/ImageLoader/index.html">
+<meta property="og:site_name" content="赵黎明的博客">
+<meta property="og:description" content="在application中配置初始化
+  ImageLoader.getInstance().init（ImageLoaderConfiguration configuration）  getInstance 是一个懒汉式单例模式，获取ImageLoader的对象 双层是否为 null 判断提高性能
+  init的作用就是 开启一个引擎，也就是任务分发器，负责分发 是加载并显示图片任务 又或者是">
+<meta property="og:updated_time" content="2016-05-07T15:41:38.080Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ImageLoader">
+<meta name="twitter:description" content="在application中配置初始化
+  ImageLoader.getInstance().init（ImageLoaderConfiguration configuration）  getInstance 是一个懒汉式单例模式，获取ImageLoader的对象 双层是否为 null 判断提高性能
+  init的作用就是 开启一个引擎，也就是任务分发器，负责分发 是加载并显示图片任务 又或者是">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> ImageLoader | 赵黎明的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">赵黎明的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ImageLoader
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-07T23:29:51+08:00" content="2016-05-07">
+              2016-05-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li><p>在application中配置初始化</p>
+<p>  ImageLoader.getInstance().init（ImageLoaderConfiguration configuration）<br>  getInstance 是一个懒汉式单例模式，获取ImageLoader的对象 双层是否为 null 判断提高性能</p>
+<p>  init的作用就是 开启一个引擎，也就是任务分发器，负责分发 是加载并显示图片任务 又或者是 处理并显示图片任务 给具体的线程池去执行，</p>
+</li>
+</ul>
+<ul>
+<li><p>加载图片时</p>
+<p>  配置完以后 我们在需要加载图片的地方 调用<br>  ImageLoader.getInstance().displayImage(image, holder.img_profile);<br>  先通过这一句话来进行加载图片  </p>
+<p>  它是通过一个displayImage的方法 进行加载图片  这个方法有很多重载<br>  它们都是调用了一个最全参数的displayImage  这个方法参数6个参数 分别是<br>  图片的路径，用来显示图片的控件，在application中定义的DisplayImageOptions的，图片加载的监听方法，图片的宽高，图片加载进度的回调接口</p>
+</li>
+</ul>
+<ul>
+<li><p>判断参数 ，并且内存中有这张图片</p>
+<p>  这个方法的内部会先判断 这些参数 哪些为null，如果image为null 就抛非法参数异常，判断图片的uri是否为null，如果为null 就用之前配置的uri为null的占位图来展示出来，如果不为null 它会先从内存中获取图片的信息  看看内存里面是否有这张图片， 通过根据图片的uri来生成图片在内存中存的key，来取出key对应的图片信息，如果图片不为null 并且它没有被回收掉，开启一个处理并显示图片的任务（ProcessAndDisplayImageTask）他就会将图片按照选项配置的大小，缩放等等信息进行处理 最终 显示到指定的控件中，</p>
+</li>
+</ul>
+<ul>
+<li><p>如果内存中没有</p>
+<p>  他会先显示一张 正在加载的占位图<br>  然后开启一个 加载并显示图片的任务（LoadAndDisplayImageTask）他其实就是一个继承Runnable的类</p>
+</li>
+</ul>
+<ul>
+<li><p>LoadingAndDisplayTask</p>
+<p>  在它的run方法里 他又判断了一遍<br>  在判断一遍 内存中是否有这个图片（防止多线程并发）<br>  然后 他又调用了 tryLoadBitmap方法</p>
+</li>
+</ul>
+<ul>
+<li><p>tryLoadBitmap</p>
+<p>  他会 通过 uri 获取 磁盘上的文件<br>  如果这个文件不为null并且存在 就把这个文件 处理 解码后 变成一个bitmap对象</p>
+<p>  如果这个内存卡上也没有这个文件<br>  就通过uri网络加载这个图片</p>
+<p>  然后根据uri获取一个inputStream流 把图片下载下来，根据配置的大小信息等，如果图片需要缓存<br>  就让uri+图片的宽高当file的名字 来生成一个file文件 就把这个文件存储到内存卡上<br>  如果根据uri获取的inputStream 是一个null的  就显示一个 网络加载失败的 占位图</p>
+<p>  最后根据存储的这个文件 获取他的 路径 然后 处理解码 变成一个bitmap对象 最终显示到控件上去</p>
+</li>
+</ul>
+<h4 id="总的来说-ImageLoader分成三种情况"><a href="#总的来说-ImageLoader分成三种情况" class="headerlink" title="总的来说 ImageLoader分成三种情况"></a>总的来说 ImageLoader分成三种情况</h4><pre><code>第一种是 直接在内存中获取到图片然后进行图片处理 显示到控件上
+第二种 在内存中获取不到，在内存卡中进行获取，然后得到文件路径 进行 解码处理 变成bitmap对象 显示到控件上
+第三种 内存和内存卡都获取不到，就从网路上进行加载 如果需要缓存，就用uri+图片宽高当file文件的名字 然后存储到内存卡中， 然后通过路径 获取这个图片 进行解码处理 变成bitmap对象 显示到控件上
+</code></pre><hr>
+<p>MemoryCache的key的样式</p>
+<pre><code>[imageUri]_[width]x[height]
+</code></pre><h3 id="加载图片的流程"><a href="#加载图片的流程" class="headerlink" title="加载图片的流程"></a>加载图片的流程</h3><p>1、displayImage(uri,ImageView)</p>
+<ul>
+<li>Uri 图片的路径</li>
+<li>ImageAware 用来显示图片的控件，相当于Imageview</li>
+<li>DisplayImageOptions 在application中定义的那些显示的选项，比如说错误或者加载中的占位图等</li>
+<li>ImageLoadingListener 图片加载中的监听方法</li>
+<li>Imagesize 图片的宽高，如果不设置，默认为Imageview的宽高</li>
+<li><p>ImageLoadingProgressListener  用来加载图片的进度信息</p>
+<p>  public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options,</p>
+<pre><code>    ImageSize targetSize, ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
+checkConfiguration();
+if (imageAware == null) {
+    throw new IllegalArgumentException(ERROR_WRONG_ARGUMENTS);
+}
+if (listener == null) {
+    listener = defaultListener;
+}
+if (options == null) {
+    options = configuration.defaultDisplayImageOptions;
+}
+
+if (TextUtils.isEmpty(uri)) {
+    //先判断图片的uri是否为空
+    engine.cancelDisplayTaskFor(imageAware);
+    listener.onLoadingStarted(uri, imageAware.getWrappedView());
+    if (options.shouldShowImageForEmptyUri()) {
+        //如果为空，就看是否配置的有占位图
+        imageAware.setImageDrawable(options.getImageForEmptyUri(configuration.resources));
+    } else {
+        imageAware.setImageDrawable(null);
+    }
+    listener.onLoadingComplete(uri, imageAware.getWrappedView(), null);
+    return;
+}
+
+if (targetSize == null) {
+    //设置图片的宽高信息
+    targetSize = ImageSizeUtils.defineTargetSizeForView(imageAware, configuration.getMaxImageSize());
+}
+</code></pre></li>
+</ul>
+<pre><code>    //重点：首先从内存中获取该图片信息
+    //第一步，根据图片的uri来生成图片在内存中存的key，默认情况下key是唯一的
+    String memoryCacheKey = MemoryCacheUtils.generateKey(uri, targetSize);
+    engine.prepareDisplayTaskFor(imageAware, memoryCacheKey);
+
+    listener.onLoadingStarted(uri, imageAware.getWrappedView());
+    //第二步 根据上面的key获取内存中的图片信息
+    Bitmap bmp = configuration.memoryCache.get(memoryCacheKey);
+    if (bmp != null &amp;&amp; !bmp.isRecycled()) {
+        //如果图片不为空并且图片没有被回收的情况下
+        L.d(LOG_LOAD_IMAGE_FROM_MEMORY_CACHE, memoryCacheKey);
+
+        if (options.shouldPostProcess()) {
+            //接着就是用来处理并显示图片到Imageview中
+            ImageLoadingInfo imageLoadingInfo = new ImageLoadingInfo(uri, imageAware, targetSize, memoryCacheKey,
+                    options, listener, progressListener, engine.getLockForUri(uri));
+            ProcessAndDisplayImageTask displayTask = new ProcessAndDisplayImageTask(engine, bmp, imageLoadingInfo,
+                    defineHandler(options));
+            if (options.isSyncLoading()) {
+                displayTask.run();
+            } else {
+                engine.submit(displayTask);
+            }
+        } else {
+            options.getDisplayer().display(bmp, imageAware, LoadedFrom.MEMORY_CACHE);
+            listener.onLoadingComplete(uri, imageAware.getWrappedView(), bmp);
+        }
+    } else {
+        //内存中不存在该图片的情况吧
+        if (options.shouldShowImageOnLoading()) {
+            //显示加载中的占位图
+            imageAware.setImageDrawable(options.getImageOnLoading(configuration.resources));
+        } else if (options.isResetViewBeforeLoading()) {
+            imageAware.setImageDrawable(null);
+        }
+
+        ImageLoadingInfo imageLoadingInfo = new ImageLoadingInfo(uri, imageAware, targetSize, memoryCacheKey,
+                options, listener, progressListener, engine.getLockForUri(uri));
+        //用来加载并显示图片的task
+        LoadAndDisplayImageTask displayTask = new LoadAndDisplayImageTask(engine, imageLoadingInfo,
+                defineHandler(options));
+        if (options.isSyncLoading()) {
+            displayTask.run();
+        } else {
+            engine.submit(displayTask);
+        }
+    }
+}
+</code></pre><h3 id="LoadingAndDisplayTask"><a href="#LoadingAndDisplayTask" class="headerlink" title="LoadingAndDisplayTask"></a>LoadingAndDisplayTask</h3><pre><code>@Override
+public void run() {
+    if (waitIfPaused()) return;
+    if (delayIfNeed()) return;
+
+    ReentrantLock loadFromUriLock = imageLoadingInfo.loadFromUriLock;
+    L.d(LOG_START_DISPLAY_IMAGE_TASK, memoryCacheKey);
+    if (loadFromUriLock.isLocked()) {
+        L.d(LOG_WAITING_FOR_IMAGE_LOADED, memoryCacheKey);
+    }
+
+    loadFromUriLock.lock();
+    Bitmap bmp;
+    try {
+        checkTaskNotActual();
+        //双重判断，继续判断内存中该图片信息是否存在
+        bmp = configuration.memoryCache.get(memoryCacheKey);
+        if (bmp == null || bmp.isRecycled()) {
+            //如果图片不存在或者图片被回收
+            //重点方法
+            bmp = tryLoadBitmap();
+
+            if (bmp == null) return; // listener callback already was fired
+
+            checkTaskNotActual();
+            checkTaskInterrupted();
+
+            if (options.shouldPreProcess()) {
+                L.d(LOG_PREPROCESS_IMAGE, memoryCacheKey);
+                bmp = options.getPreProcessor().process(bmp);
+                if (bmp == null) {
+                    L.e(ERROR_PRE_PROCESSOR_NULL, memoryCacheKey);
+                }
+            }
+
+            if (bmp != null &amp;&amp; options.isCacheInMemory()) {
+                L.d(LOG_CACHE_IMAGE_IN_MEMORY, memoryCacheKey);
+                configuration.memoryCache.put(memoryCacheKey, bmp);
+            }
+        } else {
+            loadedFrom = LoadedFrom.MEMORY_CACHE;
+            L.d(LOG_GET_IMAGE_FROM_MEMORY_CACHE_AFTER_WAITING, memoryCacheKey);
+        }
+
+        if (bmp != null &amp;&amp; options.shouldPostProcess()) {
+            L.d(LOG_POSTPROCESS_IMAGE, memoryCacheKey);
+            bmp = options.getPostProcessor().process(bmp);
+            if (bmp == null) {
+                L.e(ERROR_POST_PROCESSOR_NULL, memoryCacheKey);
+            }
+        }
+        checkTaskNotActual();
+        checkTaskInterrupted();
+    } catch (TaskCancelledException e) {
+        fireCancelEvent();
+        return;
+    } finally {
+        loadFromUriLock.unlock();
+    }
+
+    DisplayBitmapTask displayBitmapTask = new DisplayBitmapTask(bmp, imageLoadingInfo, engine, loadedFrom);
+    runTask(displayBitmapTask, syncLoading, handler, engine);
+}
+</code></pre><h4 id="tryLoadBitmap"><a href="#tryLoadBitmap" class="headerlink" title="tryLoadBitmap()"></a>tryLoadBitmap()</h4><pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//先从文件系统中获取该图片文件</span></span><br><span class="line">File imageFile = configuration.diskCache.get(uri);</span><br><span class="line">		<span class="keyword">if</span> (imageFile != <span class="keyword">null</span> &amp;&amp; imageFile.exists() &amp;&amp; imageFile.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			L.d(LOG_LOAD_IMAGE_FROM_DISK_CACHE, memoryCacheKey);</span><br><span class="line">			<span class="comment">//如果文件系统中存在的话，就从内存卡上加载该图片并显示</span></span><br><span class="line">			loadedFrom = LoadedFrom.DISC_CACHE;</span><br><span class="line"></span><br><span class="line">			checkTaskNotActual();</span><br><span class="line">			<span class="comment">//把文件信息转变成bitmap</span></span><br><span class="line">			bitmap = decodeImage(Scheme.FILE.wrap(imageFile.getAbsolutePath()));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (bitmap == <span class="keyword">null</span> || bitmap.getWidth() &lt;= <span class="number">0</span> || bitmap.getHeight() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="comment">//如果bitmap不存在</span></span><br><span class="line">			L.d(LOG_LOAD_IMAGE_FROM_NETWORK, memoryCacheKey);</span><br><span class="line">			<span class="comment">//就从网络上加载图片信息</span></span><br><span class="line">			loadedFrom = LoadedFrom.NETWORK;</span><br><span class="line"></span><br><span class="line">			String imageUriForDecoding = uri;</span><br><span class="line">			<span class="comment">//重点方法 tryCacheImageOnDisk  缓存图片到内存卡上</span></span><br><span class="line">			<span class="keyword">if</span> (options.isCacheOnDisk() &amp;&amp; tryCacheImageOnDisk()) &#123;</span><br><span class="line">				<span class="comment">//下载完并且存储好之后再次获取内存卡上的图片信息</span></span><br><span class="line">				imageFile = configuration.diskCache.get(uri);</span><br><span class="line">				<span class="keyword">if</span> (imageFile != <span class="keyword">null</span>) &#123;</span><br><span class="line">					imageUriForDecoding = Scheme.FILE.wrap(imageFile.getAbsolutePath());</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			checkTaskNotActual();</span><br><span class="line">			bitmap = decodeImage(imageUriForDecoding);</span><br><span class="line">			<span class="comment">//此处表明内存、内存卡、以及网路上都不存在该图片信息</span></span><br><span class="line">			<span class="comment">//回调图片加载失败的监听方法</span></span><br><span class="line">			<span class="keyword">if</span> (bitmap == <span class="keyword">null</span> || bitmap.getWidth() &lt;= <span class="number">0</span> || bitmap.getHeight() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">				fireFailEvent(FailType.DECODING_ERROR, <span class="keyword">null</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><h3 id="tryCacheImageOndisk"><a href="#tryCacheImageOndisk" class="headerlink" title="tryCacheImageOndisk"></a>tryCacheImageOndisk</h3><pre><code>private boolean tryCacheImageOnDisk() throws TaskCancelledException {
+    L.d(LOG_CACHE_IMAGE_ON_DISK, memoryCacheKey);
+
+    boolean loaded;
+    try {
+        //下载图片
+        loaded = downloadImage();
+        if (loaded) {
+            int width = configuration.maxImageWidthForDiskCache;
+            int height = configuration.maxImageHeightForDiskCache;
+            if (width &gt; 0 || height &gt; 0) {
+                L.d(LOG_RESIZE_CACHED_IMAGE_FILE, memoryCacheKey);
+                //此处是根据设置的大小，改变图片要缓存到内存卡上的大小并且把图片缓存下来
+                resizeAndSaveImage(width, height); // TODO : process boolean result
+            }
+        }
+    } catch (IOException e) {
+        L.e(e);
+        loaded = false;
+    }
+    return loaded;
+}
+</code></pre><h3 id="DownloadImage"><a href="#DownloadImage" class="headerlink" title="DownloadImage"></a>DownloadImage</h3><pre><code>private boolean downloadImage() throws IOException {
+    //根据图片的uri获取图片的流，然后存储图片到内存卡上
+    InputStream is = getDownloader().getStream(uri, options.getExtraForDownloader());
+    if (is == null) {
+        L.e(ERROR_NO_IMAGE_STREAM, memoryCacheKey);
+        return false;
+    } else {
+        try {
+            return configuration.diskCache.save(uri, is, this);
+        } finally {
+            IoUtils.closeSilently(is);
+        }
+    }
+}
+</code></pre><h3 id="ImageDownloader-gt-实现-BaseImageDownloader获取图片流的具体东西"><a href="#ImageDownloader-gt-实现-BaseImageDownloader获取图片流的具体东西" class="headerlink" title="ImageDownloader -&gt; 实现 BaseImageDownloader获取图片流的具体东西"></a>ImageDownloader -&gt; 实现 BaseImageDownloader获取图片流的具体东西</h3>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ImageLoader原理/" rel="tag">#ImageLoader原理</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/07/杂项/" rel="next" title="杂项">
+                <i class="fa fa-chevron-left"></i> 杂项
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/07/ActiveAndroid/" rel="prev" title="ActiveAndroid">
+                ActiveAndroid <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="赵黎明" />
+          <p class="site-author-name" itemprop="name">赵黎明</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#总的来说-ImageLoader分成三种情况"><span class="nav-number">1.</span> <span class="nav-text">总的来说 ImageLoader分成三种情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#加载图片的流程"><span class="nav-number"></span> <span class="nav-text">加载图片的流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LoadingAndDisplayTask"><span class="nav-number"></span> <span class="nav-text">LoadingAndDisplayTask</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#tryLoadBitmap"><span class="nav-number">1.</span> <span class="nav-text">tryLoadBitmap()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tryCacheImageOndisk"><span class="nav-number"></span> <span class="nav-text">tryCacheImageOndisk</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DownloadImage"><span class="nav-number"></span> <span class="nav-text">DownloadImage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ImageDownloader-gt-实现-BaseImageDownloader获取图片流的具体东西"><span class="nav-number"></span> <span class="nav-text">ImageDownloader -> 实现 BaseImageDownloader获取图片流的具体东西</span></a></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵黎明</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Service," />
 
 
 
@@ -84,15 +84,34 @@
 
 
 
-<meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="赵黎明的博客">
-<meta property="og:url" content="http://zhaoliming.com/archives/index.html">
+<meta name="description" content="IPC--：进程内部通信
+AIDL：跨进程通信
+两种启动方式：startService()
+onCreate()--&amp;gt;onStartCommand()--&amp;gt;onDestroy()
+这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
+bindSerVice()
+onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Service">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/07/Service/index.html">
 <meta property="og:site_name" content="赵黎明的博客">
-<meta property="og:description">
+<meta property="og:description" content="IPC--：进程内部通信
+AIDL：跨进程通信
+两种启动方式：startService()
+onCreate()--&amp;gt;onStartCommand()--&amp;gt;onDestroy()
+这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
+bindSerVice()
+onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
+<meta property="og:updated_time" content="2016-05-07T15:20:51.619Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="赵黎明的博客">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Service">
+<meta name="twitter:description" content="IPC--：进程内部通信
+AIDL：跨进程通信
+两种启动方式：startService()
+onCreate()--&amp;gt;onStartCommand()--&amp;gt;onDestroy()
+这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
+bindSerVice()
+onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
 
 
 
@@ -110,7 +129,7 @@
   };
 </script>
 
-  <title> 归档 | 赵黎明的博客 </title>
+  <title> Service | 赵黎明的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -131,7 +150,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  page-archive  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -209,288 +228,140 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
-
-    <span class="archive-page-counter">
-      
-      
-      
-        
-      
-      嗯..! 目前共计 7 篇日志。 继续努力。
-    </span>
-
+  <div id="posts" class="posts-expand">
     
-
-      
-      
-      
-
-      
-        
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2016">2016</h2>
-        </div>
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/ActiveAndroid/" itemprop="url">
-              
-                <span itemprop="name">ActiveAndroid</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T23:37:38+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/ImageLoader/" itemprop="url">
-              
-                <span itemprop="name">ImageLoader</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T23:29:51+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/杂项/" itemprop="url">
-              
-                <span itemprop="name">杂项</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T23:21:30+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/Service/" itemprop="url">
-              
-                <span itemprop="name">Service</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T23:19:28+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/Handler/" itemprop="url">
-              
-                <span itemprop="name">Handler</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T23:05:11+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/activity/" itemprop="url">
-              
-                <span itemprop="name">Activity</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T22:02:34+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2016/05/07/hello-world/" itemprop="url">
-              
-                <span itemprop="name">Hello World</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-05-07T21:37:37+08:00"
-              content="2016-05-07" >
-          05-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
 
   
+  
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Service
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-07T23:19:28+08:00" content="2016-05-07">
+              2016-05-07
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <pre><code>IPC--：进程内部通信
+AIDL：跨进程通信
+</code></pre><h3 id="两种启动方式："><a href="#两种启动方式：" class="headerlink" title="两种启动方式："></a>两种启动方式：</h3><p>startService()</p>
+<pre><code>onCreate()--&gt;onStartCommand()--&gt;onDestroy()
+这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
+</code></pre><p>bindSerVice()</p>
+<pre><code>onCreate()--&gt;onBind()--&gt;onUnbind()--&gt;onDestroy()
+这种方式 是和调用者绑定在一块，当调用者退出，他也会调用onDestroy（）
+如果多次调用bindService（）还是只会调用一次onBind（）但是如调用多次unBindService（）就会报错
+</code></pre><p>通常会 Start–&gt;Bind–&gt;unbind–&gt;stop 这样即使Service在unbind之后还能保证服务存在    </p>
+<h4 id="防止SerVice被强制停止"><a href="#防止SerVice被强制停止" class="headerlink" title="防止SerVice被强制停止"></a>防止SerVice被强制停止</h4><p>可能会创建2个Service 然后他们互相监听，如果监听到 其中一个停止掉了，就启动另一个Service</p>
+<p>可以通过 onStartCommand 设置Frag =START_REDELIVER_INTENT 就是如果Service被杀死了，系统会重新创建Service并且调用onStartCommand（）所有被挂起的intent都会一次传递</p>
+<h3 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h3><pre><code>1.IntentService 内部只有一个工作线程来完成耗时操作，只需实现onhandleIntent
+2.完成后会自动停止服务
+3.如果同时执行多个任务，会以队列的方式，一次执行
+4.通常使用该类来完成本App内部中的一些耗时工作。
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Service/" rel="tag">#Service</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/07/Handler/" rel="next" title="Handler">
+                <i class="fa fa-chevron-left"></i> Handler
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/07/杂项/" rel="prev" title="杂项">
+                杂项 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -498,6 +369,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -517,8 +392,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.jpg"
@@ -561,6 +445,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#两种启动方式："><span class="nav-number">1.</span> <span class="nav-text">两种启动方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#防止SerVice被强制停止"><span class="nav-number">1.1.</span> <span class="nav-text">防止SerVice被强制停止</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IntentService"><span class="nav-number">2.</span> <span class="nav-text">IntentService</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -664,11 +559,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
 
 
   
