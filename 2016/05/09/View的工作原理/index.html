@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="源自Android开发艺术探索第四章总结," />
+  <meta name="keywords" content="源自Android开发艺术探索总结," />
 
 
 
@@ -84,16 +84,30 @@
 
 
 
-<meta name="description" content="MeasureSpec：测量规格，很大">
+<meta name="description" content="MeasureSpec：测量规格
+转换过程：对于DecorView（顶级View）来说，MeasureSpec由窗口的尺寸和自身的LayoutParams来共同确定的；对于普通的View，其MeasureSpec由父容器的MeasureSpec和自身的LayoutParams来共同确定的。
+SpecMode：测量模式
+UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部
+EX">
 <meta property="og:type" content="article">
 <meta property="og:title" content="View的工作原理">
 <meta property="og:url" content="http://zhaoliming.com/2016/05/09/View的工作原理/index.html">
 <meta property="og:site_name" content="赵黎明的博客">
-<meta property="og:description" content="MeasureSpec：测量规格，很大">
-<meta property="og:updated_time" content="2016-05-09T13:31:24.022Z">
+<meta property="og:description" content="MeasureSpec：测量规格
+转换过程：对于DecorView（顶级View）来说，MeasureSpec由窗口的尺寸和自身的LayoutParams来共同确定的；对于普通的View，其MeasureSpec由父容器的MeasureSpec和自身的LayoutParams来共同确定的。
+SpecMode：测量模式
+UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部
+EX">
+<meta property="og:image" content="http://zhaoliming.com/.//viewMeasureSpec.png">
+<meta property="og:updated_time" content="2016-05-10T03:26:17.361Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="View的工作原理">
-<meta name="twitter:description" content="MeasureSpec：测量规格，很大">
+<meta name="twitter:description" content="MeasureSpec：测量规格
+转换过程：对于DecorView（顶级View）来说，MeasureSpec由窗口的尺寸和自身的LayoutParams来共同确定的；对于普通的View，其MeasureSpec由父容器的MeasureSpec和自身的LayoutParams来共同确定的。
+SpecMode：测量模式
+UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部
+EX">
+<meta name="twitter:image" content="http://zhaoliming.com/.//viewMeasureSpec.png">
 
 
 
@@ -271,7 +285,18 @@
       
 
       
-        <h3 id="MeasureSpec：测量规格，很大"><a href="#MeasureSpec：测量规格，很大" class="headerlink" title="MeasureSpec：测量规格，很大"></a>MeasureSpec：测量规格，很大</h3>
+        <h3 id="MeasureSpec：测量规格"><a href="#MeasureSpec：测量规格" class="headerlink" title="MeasureSpec：测量规格"></a>MeasureSpec：测量规格</h3><ul>
+<li>转换过程：对于<strong>DecorView</strong>（顶级View）来说，MeasureSpec由窗口的尺寸和自身的LayoutParams来共同确定的；对于<strong>普通的View</strong>，其MeasureSpec由父容器的MeasureSpec和自身的LayoutParams来共同确定的。</li>
+<li><strong>SpecMode</strong>：测量模式<ol>
+<li>UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部</li>
+<li>EXACTLY：父容器已经检测出View所需要的精确大小，相当于match_parent</li>
+<li>AT__MOST：父容器指定了一个可用大小即SpecSize，相当于wrap_content</li>
+</ol>
+</li>
+<li><strong>SpecSize</strong>：某种测量模式下的规格大小</li>
+</ul>
+<p><img src=".//viewMeasureSpec.png" alt=""></p>
+
       
     </div>
 
@@ -292,7 +317,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/源自Android开发艺术探索第四章总结/" rel="tag">#源自Android开发艺术探索第四章总结</a>
+            <a href="/tags/源自Android开发艺术探索总结/" rel="tag">#源自Android开发艺术探索总结</a>
           
         </div>
       
@@ -385,7 +410,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -414,7 +439,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MeasureSpec：测量规格，很大"><span class="nav-number">1.</span> <span class="nav-text">MeasureSpec：测量规格，很大</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MeasureSpec：测量规格"><span class="nav-number">1.</span> <span class="nav-text">MeasureSpec：测量规格</span></a></li></ol></div>
             
           </div>
         </section>
