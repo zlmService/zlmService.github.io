@@ -1,7 +1,7 @@
 ---
 title: Activity
 date: 2016-05-07 22:02:34
-tags: Activity
+tags: Android
 ---
 	exporte="true"表示可以被其他应用启动
 	Task：相当于存放Activity的栈

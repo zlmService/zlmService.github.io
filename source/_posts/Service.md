@@ -1,7 +1,7 @@
 ---
 title: Service
 date: 2016-05-07 23:19:28
-tags: Service
+tags: Android
 ---
 	IPC--：进程内部通信
 	AIDL：跨进程通信

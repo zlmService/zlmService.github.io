@@ -1,7 +1,7 @@
 ---
 title: View的事件体系
 date: 2016-05-09 21:23:22
-tags: 源自Android开发艺术探索第三章总结
+tags: 源自Android开发艺术探索总结
 ---
 #### getX()和getRawX()的区别：
 第一个是返回当前View左上角的x坐标，第二个是返回View相对于手机屏幕左上角的x坐标。
