@@ -99,7 +99,7 @@ SpecMode：测量模式
 UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部
 EX">
 <meta property="og:image" content="http://i.imgur.com/zPTyZOg.png">
-<meta property="og:updated_time" content="2016-05-10T13:54:31.669Z">
+<meta property="og:updated_time" content="2016-05-10T13:58:58.139Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="View的工作原理">
 <meta name="twitter:description" content="MeasureSpec：测量规格
@@ -306,10 +306,12 @@ EX">
 </li>
 </ul>
 <p><img src="http://i.imgur.com/zPTyZOg.png" alt="普通View的MeasureSpec的创建规则"></p>
-<pre><code>1. 当View采用固定宽高时：无论父容器的MeasureSpec是什么，View都是精确模式并且大小遵循LayoutParams中的大小。
-2. 当View是match_parent：①如果**父类是最大模式**，那么View也是最大模式并且大小**不会超过父容器的剩余空间** 。②如果**父类是精准模式**，那么View也是精准模式并且大小**就是父容器的剩余空间**。
-3. 当View是wrap_content：不管父类是什么模式，View总是最大化并且大小不能超过父容器的剩余空间。
-</code></pre><h3 id="Measure过程："><a href="#Measure过程：" class="headerlink" title="Measure过程："></a>Measure过程：</h3><p>1.view的Measure过程：解决在自定义View布局中使用 wrap-content 相当于match-parent</p>
+<ol>
+<li>当View采用固定宽高时：无论父容器的MeasureSpec是什么，View都是精确模式并且大小遵循LayoutParams中的大小。</li>
+<li>当View是match_parent：①如果<strong>父类是最大模式</strong>，那么View也是最大模式并且大小<strong>不会超过父容器的剩余空间</strong> 。②如果<strong>父类是精准模式</strong>，那么View也是精准模式并且大小<strong>就是父容器的剩余空间</strong>。</li>
+<li>当View是wrap_content：不管父类是什么模式，View总是最大化并且大小不能超过父容器的剩余空间。</li>
+</ol>
+<h3 id="Measure过程："><a href="#Measure过程：" class="headerlink" title="Measure过程："></a>Measure过程：</h3><p>1.view的Measure过程：解决在自定义View布局中使用 wrap-content 相当于match-parent</p>
 <p><strong>原因：</strong>当View在布局中使用wrap-content，那么它的specMode是AT_MOST模式，这种模式下，它的宽高等于specSize,也就是父容器当前剩余的空间大小。</p>
 <pre><code>    //源码
 public static int getDefaultSize(int size, int measureSpec) {
