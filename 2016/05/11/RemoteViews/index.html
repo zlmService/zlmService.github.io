@@ -1,0 +1,674 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="源于Android开发艺术探索总结," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="RemoteViews:远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。
+Notification：
+普通通知栏：使用系统的样式
+//发送普通通知
+public void sendNotification(View v){
+    Intent intent=new Intent">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RemoteViews">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/11/RemoteViews/index.html">
+<meta property="og:site_name" content="赵黎明的博客">
+<meta property="og:description" content="RemoteViews:远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。
+Notification：
+普通通知栏：使用系统的样式
+//发送普通通知
+public void sendNotification(View v){
+    Intent intent=new Intent">
+<meta property="og:updated_time" content="2016-05-11T14:04:17.162Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RemoteViews">
+<meta name="twitter:description" content="RemoteViews:远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。
+Notification：
+普通通知栏：使用系统的样式
+//发送普通通知
+public void sendNotification(View v){
+    Intent intent=new Intent">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> RemoteViews | 赵黎明的博客 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">赵黎明的博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                RemoteViews
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-11T16:52:32+08:00" content="2016-05-11">
+              2016-05-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="RemoteViews"><a href="#RemoteViews" class="headerlink" title="RemoteViews:"></a>RemoteViews:</h3><p>远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。</p>
+<h3 id="Notification："><a href="#Notification：" class="headerlink" title="Notification："></a>Notification：</h3><ul>
+<li><p>普通通知栏：使用系统的样式</p>
+<pre><code>//发送普通通知
+public void sendNotification(View v){
+    Intent intent=new Intent(this,Main2.class);
+    PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    Notification notification=new Notification.Builder(this)
+            .setContentText(&quot;hello,world&quot;)
+            .setContentTitle(&quot;hello&quot;)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setTicker(&quot;测试&quot;)
+            .setContentIntent(pendingIntent)
+            .build();
+    NotificationManager notificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(1,notification);
+}
+</code></pre></li>
+<li><p>自定义通知栏：当使用自定义通知的时候，就使用到了RemoteViews</p>
+<pre><code>  //发送自定义通知
+public void sendNotification2(View v){
+    //通过RemoteViews加载自定义的布局文件
+    RemoteViews remoteViews=new RemoteViews(getPackageName(),R.layout.layout_notification);
+    //设置自定义布局的TextView的字体颜色
+    remoteViews.setTextColor(R.id.text, Color.RED);
+    Intent intent=new Intent(this,Main2.class);
+    PendingIntent pend=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    //设置点击事件
+    remoteViews.setOnClickPendingIntent(R.id.image,pend);
+    Notification notification=new Notification.Builder(this)
+            .setContent(remoteViews)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setTicker(&quot;测试2&quot;)
+            .build();
+    NotificationManager notificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(2,notification);
+}
+</code></pre></li>
+</ul>
+<h3 id="AppWidgetProvider"><a href="#AppWidgetProvider" class="headerlink" title="AppWidgetProvider"></a>AppWidgetProvider</h3><ol>
+<li><p><strong>简介</strong>：用于实现桌面小部件的类，本质就是一个广播。</p>
+</li>
+<li><p><strong>例子：</strong><a href="https://github.com/zlmService/RemoteViews" target="_blank" rel="external">桌面小部件例子</a></p>
+</li>
+<li><p><strong>注意:</strong> 因为它本质是一个广播组件，所以需要声明，</p>
+<pre><code>&lt;receiver android:name=&quot;.MyAppWidgetProvider&quot;&gt;
+ &lt;meta-data
+     android:name=&quot;android.appwidget.provider&quot;
+     android:resource=&quot;@xml/appwidget_provider_info&quot;&gt;
+ &lt;/meta-data&gt;
+ &lt;intent-filter&gt;
+ 第一个action用于识别小部件的单击行为
+ 第二个action作为标识必须存在，否则无法出现在手机小部件列表中。
+     &lt;action android:name=&quot;com.zlm.action.CLICK&quot;/&gt;
+     &lt;action android:name=&quot;android.appwidget.action.APPWIDGET_UPDATE&quot;/&gt;
+ &lt;/intent-filter&gt;
+</code></pre><p> </p>
+</li>
+<li><p><strong>方法</strong>：</p>
+<ul>
+<li>onEnable：当小部件第一次添加到桌面的时候调用，可添加多次，但只在第一次调用。</li>
+<li><p>onUpdate：当每次被添加或者更新的时候都会调用，每个周期小部件都会自动更新一次</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;appwidget-provider xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+android:initialLayout=&quot;@layout/widget&quot;
+//初始化布局和大小。
+android:minHeight=&quot;84dp&quot;
+android:minWidth=&quot;84dp&quot;
+//每个一个周期，就会自动更新一次
+android:updatePeriodMillis=&quot;5000&quot; &gt;
+&lt;/appwidget-provider&gt;
+</code></pre></li>
+<li>onDeleted：每删除一次就调用一次。</li>
+<li>onDisable：当最后一个该类型的小部件被删除时调用。</li>
+<li>onReceive：广播内置方法，用于分发具体的事件给其他方法，内部通过不同的Action来分别调用对应的onEnable、onUpdate等方法。</li>
+</ul>
+</li>
+</ol>
+<h3 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h3><ul>
+<li>对比：pending待定，等待，即在将来某个不确定的时间发生，而Intent是立即发生。</li>
+<li><p><strong>匹配规则：</strong>当两个PendingIntent它们内部的Intent相同并且requestCode也相同，那么这两个PendingIntent就是相同的。而<strong>Intent的匹配规则</strong>：当两个Intent的ComponentName（组件名称）和intent-filter相同，那么这两个Intent就相同。</p>
+<pre><code> Intent intent=new Intent();
+intent.setComponent(new ComponentName(this,Main2.class));
+intent.setComponent(new ComponentName(this,&quot;com.demo.zlm.remoteviewssample.Main2&quot;));
+</code></pre></li>
+<li><strong>FLAG：</strong><ul>
+<li><strong>FLAG-ONE-SHOT</strong>：当前描述的PendingIntent只能使用一次，然后自动被cancel，后续有相同的PendingIntent，它们的send方法就会调用失败。对于通知栏来说：后续的通知无法打开</li>
+<li><strong>FLAG-NO-CREATE</strong>：PendingIntent不会主动创建，如果PendingIntent之前不存在，那么getActivity返回null，它无法单独使用</li>
+<li><strong>FLAG-CANCEL-CURRENT</strong>：如果当前描述的PendingIntent已经存在，那么它们会被cancel，然后系统会创建一个新的PendingIntent。对于通知栏来说：那些被cancel的消息点击后将不会打开。</li>
+<li><strong>FLAG-UPDATE-CURRENT</strong>：如果当前描述的PendingIntent已经存在，那么它们会被更新。</li>
+</ul>
+</li>
+<li><strong>notify(1,notification)</strong>：<ol>
+<li>如果第一个参数一样的话，那么不管PendingIntent是否匹配，后续的通知会把前面的覆盖掉。</li>
+<li>如果第一个参数每次都不同，那么当PendingIntent不匹配的时候（匹配指：intent和requestCode都相同），无论采用哪个标记位，它们之间都不互相干扰；如果PendingIntent匹配，就按照FLAG标记位的规则。</li>
+</ol>
+</li>
+</ul>
+<h3 id="RemoteViews的内部机制："><a href="#RemoteViews的内部机制：" class="headerlink" title="RemoteViews的内部机制："></a>RemoteViews的内部机制：</h3><ul>
+<li>通过Action的概念去支持View的跨进程通信，Action实现Parcelable,每一个Action代表一个View的操作，当我们在应用中每调用一个set方法（比如：remoteViews.setTextColor(R.id.text, Color.RED)RemoteViews内部就添加了一个对应的Action，并加入到一个集合中，内部有一个ArrayList集合专门负责进行存储，RemoteViews的apply方法会去遍历这个集合中所有的Action，并调用它们的apply方法，具体的View更新操作由Action对象的apply来完成的。</li>
+<li>当我们调用set方法的时候并不会立即更新它们的界面，而必须要通过NotificationManager的notify方法以及AppWidgetManager的updateAppWidget才能更新它们的界面。它们其实是通过RemoteViews的apply和reapply方法进行加载，当第一次加载的时候，只会调用apply，而后续的更新界面时则会调用reapply方法。它们的区别是apply：来加载布局并更新界面，而reapply方法只会更新界面。</li>
+</ul>
+<h3 id="RemoteViews单击事件"><a href="#RemoteViews单击事件" class="headerlink" title="RemoteViews单击事件"></a>RemoteViews单击事件</h3><ul>
+<li>setOnClickPendingIntent：只用于给普通View设置单击事件，不能给集合（ListView，StackView）进行设置。</li>
+<li>如果要给ListView设置单击事件，通过将setPendingIntentTemplate和setOnClickFillInIntent组合使用才可以。</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/源于Android开发艺术探索总结/" rel="tag">#源于Android开发艺术探索总结</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/09/View的工作原理/" rel="next" title="View的工作原理">
+                <i class="fa fa-chevron-left"></i> View的工作原理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="赵黎明" />
+          <p class="site-author-name" itemprop="name">赵黎明</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews"><span class="nav-number">1.</span> <span class="nav-text">RemoteViews:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Notification："><span class="nav-number">2.</span> <span class="nav-text">Notification：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AppWidgetProvider"><span class="nav-number">3.</span> <span class="nav-text">AppWidgetProvider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PendingIntent"><span class="nav-number">4.</span> <span class="nav-text">PendingIntent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews的内部机制："><span class="nav-number">5.</span> <span class="nav-text">RemoteViews的内部机制：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews单击事件"><span class="nav-number">6.</span> <span class="nav-text">RemoteViews单击事件</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵黎明</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+  
+  
+  
+
+  
+
+  
+
+</body>
+</html>

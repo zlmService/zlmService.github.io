@@ -233,6 +233,205 @@
             
               
                 
+                <a class="post-title-link" href="/2016/05/11/RemoteViews/" itemprop="url">
+                  RemoteViews
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-11T16:52:32+08:00" content="2016-05-11">
+              2016-05-11
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="RemoteViews"><a href="#RemoteViews" class="headerlink" title="RemoteViews:"></a>RemoteViews:</h3><p>远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。</p>
+<h3 id="Notification："><a href="#Notification：" class="headerlink" title="Notification："></a>Notification：</h3><ul>
+<li><p>普通通知栏：使用系统的样式</p>
+<pre><code>//发送普通通知
+public void sendNotification(View v){
+    Intent intent=new Intent(this,Main2.class);
+    PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    Notification notification=new Notification.Builder(this)
+            .setContentText(&quot;hello,world&quot;)
+            .setContentTitle(&quot;hello&quot;)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setTicker(&quot;测试&quot;)
+            .setContentIntent(pendingIntent)
+            .build();
+    NotificationManager notificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(1,notification);
+}
+</code></pre></li>
+<li><p>自定义通知栏：当使用自定义通知的时候，就使用到了RemoteViews</p>
+<pre><code>  //发送自定义通知
+public void sendNotification2(View v){
+    //通过RemoteViews加载自定义的布局文件
+    RemoteViews remoteViews=new RemoteViews(getPackageName(),R.layout.layout_notification);
+    //设置自定义布局的TextView的字体颜色
+    remoteViews.setTextColor(R.id.text, Color.RED);
+    Intent intent=new Intent(this,Main2.class);
+    PendingIntent pend=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+    //设置点击事件
+    remoteViews.setOnClickPendingIntent(R.id.image,pend);
+    Notification notification=new Notification.Builder(this)
+            .setContent(remoteViews)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setTicker(&quot;测试2&quot;)
+            .build();
+    NotificationManager notificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    notificationManager.notify(2,notification);
+}
+</code></pre></li>
+</ul>
+<h3 id="AppWidgetProvider"><a href="#AppWidgetProvider" class="headerlink" title="AppWidgetProvider"></a>AppWidgetProvider</h3><ol>
+<li><p><strong>简介</strong>：用于实现桌面小部件的类，本质就是一个广播。</p>
+</li>
+<li><p><strong>例子：</strong><a href="https://github.com/zlmService/RemoteViews" target="_blank" rel="external">桌面小部件例子</a></p>
+</li>
+<li><p><strong>注意:</strong> 因为它本质是一个广播组件，所以需要声明，</p>
+<pre><code>&lt;receiver android:name=&quot;.MyAppWidgetProvider&quot;&gt;
+ &lt;meta-data
+     android:name=&quot;android.appwidget.provider&quot;
+     android:resource=&quot;@xml/appwidget_provider_info&quot;&gt;
+ &lt;/meta-data&gt;
+ &lt;intent-filter&gt;
+ 第一个action用于识别小部件的单击行为
+ 第二个action作为标识必须存在，否则无法出现在手机小部件列表中。
+     &lt;action android:name=&quot;com.zlm.action.CLICK&quot;/&gt;
+     &lt;action android:name=&quot;android.appwidget.action.APPWIDGET_UPDATE&quot;/&gt;
+ &lt;/intent-filter&gt;
+</code></pre><p> </p>
+</li>
+<li><p><strong>方法</strong>：</p>
+<ul>
+<li>onEnable：当小部件第一次添加到桌面的时候调用，可添加多次，但只在第一次调用。</li>
+<li><p>onUpdate：当每次被添加或者更新的时候都会调用，每个周期小部件都会自动更新一次</p>
+<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;appwidget-provider xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+android:initialLayout=&quot;@layout/widget&quot;
+//初始化布局和大小。
+android:minHeight=&quot;84dp&quot;
+android:minWidth=&quot;84dp&quot;
+//每个一个周期，就会自动更新一次
+android:updatePeriodMillis=&quot;5000&quot; &gt;
+&lt;/appwidget-provider&gt;
+</code></pre></li>
+<li>onDeleted：每删除一次就调用一次。</li>
+<li>onDisable：当最后一个该类型的小部件被删除时调用。</li>
+<li>onReceive：广播内置方法，用于分发具体的事件给其他方法，内部通过不同的Action来分别调用对应的onEnable、onUpdate等方法。</li>
+</ul>
+</li>
+</ol>
+<h3 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h3><ul>
+<li>对比：pending待定，等待，即在将来某个不确定的时间发生，而Intent是立即发生。</li>
+<li><p><strong>匹配规则：</strong>当两个PendingIntent它们内部的Intent相同并且requestCode也相同，那么这两个PendingIntent就是相同的。而<strong>Intent的匹配规则</strong>：当两个Intent的ComponentName（组件名称）和intent-filter相同，那么这两个Intent就相同。</p>
+<pre><code> Intent intent=new Intent();
+intent.setComponent(new ComponentName(this,Main2.class));
+intent.setComponent(new ComponentName(this,&quot;com.demo.zlm.remoteviewssample.Main2&quot;));
+</code></pre></li>
+<li><strong>FLAG：</strong><ul>
+<li><strong>FLAG-ONE-SHOT</strong>：当前描述的PendingIntent只能使用一次，然后自动被cancel，后续有相同的PendingIntent，它们的send方法就会调用失败。对于通知栏来说：后续的通知无法打开</li>
+<li><strong>FLAG-NO-CREATE</strong>：PendingIntent不会主动创建，如果PendingIntent之前不存在，那么getActivity返回null，它无法单独使用</li>
+<li><strong>FLAG-CANCEL-CURRENT</strong>：如果当前描述的PendingIntent已经存在，那么它们会被cancel，然后系统会创建一个新的PendingIntent。对于通知栏来说：那些被cancel的消息点击后将不会打开。</li>
+<li><strong>FLAG-UPDATE-CURRENT</strong>：如果当前描述的PendingIntent已经存在，那么它们会被更新。</li>
+</ul>
+</li>
+<li><strong>notify(1,notification)</strong>：<ol>
+<li>如果第一个参数一样的话，那么不管PendingIntent是否匹配，后续的通知会把前面的覆盖掉。</li>
+<li>如果第一个参数每次都不同，那么当PendingIntent不匹配的时候（匹配指：intent和requestCode都相同），无论采用哪个标记位，它们之间都不互相干扰；如果PendingIntent匹配，就按照FLAG标记位的规则。</li>
+</ol>
+</li>
+</ul>
+<h3 id="RemoteViews的内部机制："><a href="#RemoteViews的内部机制：" class="headerlink" title="RemoteViews的内部机制："></a>RemoteViews的内部机制：</h3><ul>
+<li>通过Action的概念去支持View的跨进程通信，Action实现Parcelable,每一个Action代表一个View的操作，当我们在应用中每调用一个set方法（比如：remoteViews.setTextColor(R.id.text, Color.RED)RemoteViews内部就添加了一个对应的Action，并加入到一个集合中，内部有一个ArrayList集合专门负责进行存储，RemoteViews的apply方法会去遍历这个集合中所有的Action，并调用它们的apply方法，具体的View更新操作由Action对象的apply来完成的。</li>
+<li>当我们调用set方法的时候并不会立即更新它们的界面，而必须要通过NotificationManager的notify方法以及AppWidgetManager的updateAppWidget才能更新它们的界面。它们其实是通过RemoteViews的apply和reapply方法进行加载，当第一次加载的时候，只会调用apply，而后续的更新界面时则会调用reapply方法。它们的区别是apply：来加载布局并更新界面，而reapply方法只会更新界面。</li>
+</ul>
+<h3 id="RemoteViews单击事件"><a href="#RemoteViews单击事件" class="headerlink" title="RemoteViews单击事件"></a>RemoteViews单击事件</h3><ul>
+<li>setOnClickPendingIntent：只用于给普通View设置单击事件，不能给集合（ListView，StackView）进行设置。</li>
+<li>如果要给ListView设置单击事件，通过将setPendingIntentTemplate和setOnClickFillInIntent组合使用才可以。</li>
+</ul>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/05/09/View的工作原理/" itemprop="url">
                   View的工作原理
                 </a>
@@ -2172,7 +2371,7 @@ setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过�
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">9</span>
+              <span class="site-state-item-count">10</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -2182,7 +2381,7 @@ setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过�
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
