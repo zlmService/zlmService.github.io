@@ -100,7 +100,7 @@ Notification：
 //发送普通通知
 public void sendNotification(View v){
     Intent intent=new Intent">
-<meta property="og:updated_time" content="2016-05-11T14:06:10.008Z">
+<meta property="og:updated_time" content="2016-05-11T14:31:47.689Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RemoteViews">
 <meta name="twitter:description" content="RemoteViews:远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。
@@ -392,6 +392,9 @@ intent.setComponent(new ComponentName(this,&quot;com.demo.zlm.remoteviewssample.
 <li>setOnClickPendingIntent：只用于给普通View设置单击事件，不能给集合（ListView，StackView）进行设置。</li>
 <li>如果要给ListView设置单击事件，通过将setPendingIntentTemplate和setOnClickFillInIntent组合使用才可以。</li>
 </ul>
+<h3 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h3><ul>
+<li>如果我们需要一个应用更新另一个应用界面的时候，我们可以使用AIDL，但是面对频繁的更新AIDL会变得比较复杂，如果是只对界面更新，里面的View都是RemoteViews支持的View且没有自定义的View时候，我们可以选择RemoteViews来完成。</li>
+</ul>
 
       
     </div>
@@ -535,7 +538,7 @@ intent.setComponent(new ComponentName(this,&quot;com.demo.zlm.remoteviewssample.
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews"><span class="nav-number">1.</span> <span class="nav-text">RemoteViews:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Notification："><span class="nav-number">2.</span> <span class="nav-text">Notification：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AppWidgetProvider"><span class="nav-number">3.</span> <span class="nav-text">AppWidgetProvider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PendingIntent"><span class="nav-number">4.</span> <span class="nav-text">PendingIntent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews的内部机制："><span class="nav-number">5.</span> <span class="nav-text">RemoteViews的内部机制：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews单击事件"><span class="nav-number">6.</span> <span class="nav-text">RemoteViews单击事件</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews"><span class="nav-number">1.</span> <span class="nav-text">RemoteViews:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Notification："><span class="nav-number">2.</span> <span class="nav-text">Notification：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AppWidgetProvider"><span class="nav-number">3.</span> <span class="nav-text">AppWidgetProvider</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PendingIntent"><span class="nav-number">4.</span> <span class="nav-text">PendingIntent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews的内部机制："><span class="nav-number">5.</span> <span class="nav-text">RemoteViews的内部机制：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RemoteViews单击事件"><span class="nav-number">6.</span> <span class="nav-text">RemoteViews单击事件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用场景："><span class="nav-number">7.</span> <span class="nav-text">使用场景：</span></a></li></ol></div>
             
           </div>
         </section>
