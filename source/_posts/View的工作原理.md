@@ -20,14 +20,14 @@ tags: 源自Android开发艺术探索总结
 	- parentSize：代表父容器中目前可使用的大小
 	
 	
-	![普通View的MeasureSpec的创建规则](http://i.imgur.com/zPTyZOg.png)
+![普通View的MeasureSpec的创建规则](http://i.imgur.com/zPTyZOg.png)
 
 	
-	1. 当View采用固定宽高时：无论父容器的MeasureSpec是什么，View都是精确模式并且大小遵循LayoutParams中的大小。
-	2. 当View是match_parent：①如果**父类是最大模式**，那么View也是最大模式并且大小**不会超过父容器的剩余空间** 。②如果**父类是精准模式**，那么View也是精准模式并且大小**就是父容器的剩余空间**。
-	3. 当View是wrap_content：不管父类是什么模式，View总是最大化并且大小不能超过父容器的剩余空间。
+1. 当View采用固定宽高时：无论父容器的MeasureSpec是什么，View都是精确模式并且大小遵循LayoutParams中的大小。
+2. 当View是match_parent：①如果**父类是最大模式**，那么View也是最大模式并且大小**不会超过父容器的剩余空间** 。②如果**父类是精准模式**，那么View也是精准模式并且大小**就是父容器的剩余空间**。
+3. 当View是wrap_content：不管父类是什么模式，View总是最大化并且大小不能超过父容器的剩余空间。
 	
-###Measure过程：
+### Measure过程：
 1.view的Measure过程：解决在自定义View布局中使用 wrap-content 相当于match-parent
 
 **原因：**当View在布局中使用wrap-content，那么它的specMode是AT_MOST模式，这种模式下，它的宽高等于specSize,也就是父容器当前剩余的空间大小。
