@@ -277,144 +277,16 @@
       
         
           
-            <h3 id="Drawable简介："><a href="#Drawable简介：" class="headerlink" title="Drawable简介："></a>Drawable简介：</h3><ul>
-<li>Drawable有很多种，它们都表示一种图像的概念，但是它们又不全是图片，通过颜色也可以构造出各式各样的图像的效果。在实际开发中，Drawable常常被用来当做View的背景使用。</li>
-<li>Drawable的内部宽高 通过getIntrinsicIdth和getIntrinsicHeight这两个方法可以获取它们，但是并不是所有的Drawable都有内部宽高，比如一个图片所形成的Drawable，它的内部宽高就是这个图片的宽高，但是一个颜色所形成Drawable，它就没有内部宽高。注意的是：内部宽高不等同它的大小，当用作View背景的时候，Drawable会被拉伸至View的同等大小。</li>
-</ul>
-<h3 id="Drawable的分类："><a href="#Drawable的分类：" class="headerlink" title="Drawable的分类："></a>Drawable的分类：</h3><ul>
-<li><p><strong>BitmapDrawable</strong>：对应<bitmap>标签，它表示的就是一站图片，也支持.9图片</bitmap></p>
-<pre><code>&lt;bitmap xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:src=&quot;@mipmap/ic_launcher&quot;//图片资源的Id
-    android:antialias=&quot;true&quot;//是否开启抗锯齿 
-    android:dither=&quot;true&quot;//是否开启抖动，当图片和手机像素不一致时，可以智能的改变为手机支持的色彩模式
-    android:filter=&quot;true&quot;//是否开启过滤效果，当图片被拉伸时，可以保持较好的显示效果
-    android:gravity=&quot;center&quot;//当图片小于容器尺寸的时候，可以对图片进行定位
-    android:tileMode=&quot;repeat&quot; &gt;//平铺效果，开启这个效果，gravity就会失效
-&lt;/bitmap&gt;
-</code></pre></li>
-<li><p><strong>ShapeDrawable</strong>：对应<shape>标签，它表示通过颜色来构造的图形，既可以是纯色，也可以是渐变效果的</shape></p>
-<pre><code>&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:shape=&quot;rectangle&quot;&gt;//表示图形的形状：oval（椭圆）line（横线）ring（圆形）默认是rectangle（矩形）
-    &lt;corners android:radius=&quot;20sp&quot;/&gt;//表示shape四个角的角度，只适用于矩形
-    &lt;gradient android:startColor=&quot;#f00&quot;//表示渐变效果 和solid互相排斥
-        android:centerColor=&quot;#0f0&quot;
-        android:endColor=&quot;#00f&quot;/&gt;
-       &lt;solid android:color=&quot;#f0f&quot;/&gt; //表示纯色填充
-    &lt;size android:height=&quot;50dp&quot; //表示图形大小，默认情况下shape是没有固定宽高的，
-    如果设置了size，那么size的宽高就是shape的固定宽高，
-    但是作为View的背景时，shape还会被拉伸或缩小为view的大小
-        android:width=&quot;50dp&quot;/&gt;
-    //表示 描边，边框
-    &lt;stroke android:width=&quot;2sp&quot; 描边的宽度
-        android:color=&quot;#ff0&quot;    颜色
-        android:dashGap=&quot;2sp&quot;  设置这属性后，边框由实现变成虚线 描边虚线的线段宽度
-        android:dashWidth=&quot;10sp&quot;/&gt; 组成虚线的线段之间间隔
-&lt;/shape&gt;
-</code></pre></li>
-<li><p><strong>LayerDrawable</strong>：对应<layer-list>标签，表示一种层次化的Drawable集合，将不同的Drawable放置不同的层上面从而达到一种叠加后的效果，一个集合中可以包含多个item，一个item相当于一个Drawable。效果类似于FrameLayout 后来的会覆盖到之前的上面。</layer-list></p>
-<pre><code>&lt;layer-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;        
-    //可以引用一个已有的Drawable资源，也可以自定义一个
-    &lt;item android:drawable=&quot;@drawable/bitmap_drawable&quot;&gt;
-        &lt;shape&gt;
-            &lt;solid android:color=&quot;#0ac39e&quot; /&gt;
-        &lt;/shape&gt;
-    &lt;/item&gt;
-    //代表偏移量
-    &lt;item android:bottom=&quot;25dp&quot;&gt;
-        &lt;shape&gt;
-            &lt;solid android:color=&quot;#ff0&quot; /&gt;
-        &lt;/shape&gt;
-    &lt;/item&gt;
+          Drawable简介：
+Drawable有很多种，它们都表示一种图像的概念，但是它们又不全是图片，通过颜色也可以构造出各式各样的图像的效果。在实际开发中，Drawable常常被用来当做View的背景使用。
+Drawable的内部宽高 通过getIntrinsicIdth和getIntrinsicHe
+          ...
 
-    &lt;item android:bottom=&quot;50dp&quot;&gt;
-        &lt;shape&gt;
-            &lt;solid android:color=&quot;#f00&quot; /&gt;
-        &lt;/shape&gt;
-    &lt;/item&gt;
-&lt;/layer-list&gt;
-</code></pre></li>
-<li><p><strong>StateListDrawable</strong>：对应<selector>标签，它表示的也是Drawable集合，每个Drawable都对应View的一种状态，这样系统可以根据View的状态来选择合适的Drawable。</selector></p>
-<p>  <strong>constantSize</strong>：表示固有大小是否不随着其状态的改变而改变，因为随着状态的不同，它们的Drawable也不同，而不同的Drawable有不同的大小，true就表示固有大小保持不变，默认为false。固有大小：内部所有的Drawable的固有大小的最大值。</p>
-<pre><code>//常用属性
-&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:constantSize=&quot;true&quot;&gt;
-//用户选择了View  可以在View的点击事件中 View.setSelected(true);
-    &lt;item android:drawable=&quot;@drawable/image1&quot; android:state_selected=&quot;true&quot;/&gt;
-//用户按下状态，比如Button按下后没有松开的状态
-    &lt;item  android:drawable=&quot;@drawable/image1&quot; android:state_pressed=&quot;true&quot; /&gt;
-//表示View已经获取焦点 te.setFocusable();
-    &lt;item android:state_focused=&quot;true&quot;/&gt;
-//表示用户选中了View,适于用CheckBox这类View
-    &lt;item android:state_checked= &quot;true&quot;/&gt;
-//表示View处于可用状态
-    &lt;item android:state_enabled=&quot;true&quot;/&gt;
-//表示默认状态，一般来说，应该把默认状态写到最下面，当上面所有都匹配不到的情况下，系统就会选择默认的item
-    &lt;item android:drawable=&quot;@mipmap/ic_launcher&quot;/&gt;
-&lt;/selector&gt;
-</code></pre></li>
-<li><p><strong>LevelListDrawable</strong>：根据不同的等级，会切换对应的Drawable,如果用来作为ImageView的前景Drawable，可以通过ImageView的setImageLevel方法来切换Drawable</p>
-<pre><code>&lt;level-list xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
-    //等级范围是 0~10000 
-    &lt;item
-        android:drawable=&quot;@drawable/image1&quot;
-        android:minLevel=&quot;0&quot; 
-        android:maxLevel=&quot;10&quot; /&gt;
-    &lt;item
-        android:drawable=&quot;@mipmap/ic_launcher&quot;
-        android:minLevel=&quot;11&quot; 
-        android:maxLevel=&quot;20&quot; /&gt;
-&lt;/level-list&gt;
-</code></pre></li>
-<li><p><strong>TransitionDrawable</strong>： 它用于实现两个Drawable之间淡入淡出的效果。</p>
-<pre><code>&lt;transition xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;&gt;
-    &lt;item android:drawable=&quot;@drawable/shape_drawable_gradient_linear&quot; /&gt;
-    &lt;item android:drawable=&quot;@drawable/shape_drawable_gradient_radius&quot; /&gt;
-&lt;/transition&gt;
-</code></pre></li>
-</ul>
-<p>然后通过代码方式进行变换</p>
-<pre><code>textView= (TextView) findViewById(R.id.text_transition);
-TransitionDrawable drawable = (TransitionDrawable) textView.getBackground();
-drawable.startTransition(2000);//淡入淡出运行的的时间
-drawable.reverseTransition(2000);//返过来运行淡入淡出
-</code></pre><ul>
-<li><p><strong>InsetDrawable</strong>：它可以将其他的Drawable内嵌到自己当中，并可以在四周留出一定间距。当一个View希望自己的背景比自己实际区域小的时候，可以使用它来实现。</p>
-<pre><code>&lt;inset xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:insetTop=&quot;15dp&quot;
-    android:insetBottom=&quot;15dp&quot;
-    android:insetLeft=&quot;15dp&quot;
-    android:insetRight=&quot;15dp&quot;&gt;
-        &lt;shape android:shape=&quot;oval&quot;&gt;
-            &lt;solid android:color=&quot;#f0f&quot; /&gt;
-        &lt;/shape&gt;
-&lt;/inset&gt;
-</code></pre></li>
-<li><p><strong>ScaleDrawable</strong>：它可以根据自己的等级将指定的Drawable缩放到一定比例</p>
-<pre><code>&lt;scale xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:drawable=&quot;@drawable/image1&quot;
-    android:scaleGravity=&quot;center&quot;//位置
-    android:scaleHeight=&quot;70%&quot; //缩放比例
-    android:scaleWidth=&quot;70%&quot;&gt;
-&lt;/scale&gt;
-</code></pre><p>还必须通过代码进行等级设置 因为不设置的等级，默认等级为0，这样ScaleDrawable就不会显示出来，同时缩放大小受等级的大小的影响。10000表示不缩放。级别越大 内部的Drawable越大，缩放比例越大，内部的Drawable越小。</p>
-<pre><code>im3= (ImageView) findViewById(R.id.image_scale);
-ScaleDrawable scaleDrawable= (ScaleDrawable) im3.getBackground();
-scaleDrawable.setLevel(5555);
-</code></pre></li>
-<li><p><strong>ClipDrawable</strong>： 它可以根据自己当前的等级来裁剪另一个Drawable，裁剪后只是Drawable变化了，但是空间还是占原来的大小</p>
-</li>
-</ul>
-<pre><code>&lt;clip xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-    android:clipOrientation=&quot;vertical&quot;//裁剪的方向
-    android:drawable=&quot;@drawable/image1&quot;
-    android:gravity=&quot;bottom&quot;&gt;//表示如果是 垂直裁剪，那么从顶部开始剪
-    //裁剪的方向是由这两个属性组合一起控制的
-&lt;/clip&gt;
-</code></pre><p>通过代码进行等级设置， 0代表完全裁剪，10000代表不裁剪，等级越大，裁剪的比例越小</p>
-<pre><code>im4= (ImageView) findViewById(R.id.image_clip);
-ClipDrawable clipDrawable= (ClipDrawable) im4.getBackground();
-clipDrawable.setLevel(5000);
-</code></pre>
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/12/Android中的Drawable/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -506,117 +378,18 @@ clipDrawable.setLevel(5000);
       
         
           
-            <h3 id="RemoteViews"><a href="#RemoteViews" class="headerlink" title="RemoteViews:"></a>RemoteViews:</h3><p>远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。</p>
-<h3 id="Notification："><a href="#Notification：" class="headerlink" title="Notification："></a>Notification：</h3><ul>
-<li><p>普通通知栏：使用系统的样式</p>
-<pre><code>//发送普通通知
-public void sendNotification(View v){
-    Intent intent=new Intent(this,Main2.class);
-    PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-    Notification notification=new Notification.Builder(this)
-            .setContentText(&quot;hello,world&quot;)
-            .setContentTitle(&quot;hello&quot;)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setTicker(&quot;测试&quot;)
-            .setContentIntent(pendingIntent)
-            .build();
-    NotificationManager notificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    notificationManager.notify(1,notification);
-}
-</code></pre></li>
-<li><p>自定义通知栏：当使用自定义通知的时候，就使用到了RemoteViews</p>
-<pre><code>  //发送自定义通知
-public void sendNotification2(View v){
-    //通过RemoteViews加载自定义的布局文件
-    RemoteViews remoteViews=new RemoteViews(getPackageName(),R.layout.layout_notification);
-    //设置自定义布局的TextView的字体颜色
-    remoteViews.setTextColor(R.id.text, Color.RED);
-    Intent intent=new Intent(this,Main2.class);
-    PendingIntent pend=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-    //设置点击事件
-    remoteViews.setOnClickPendingIntent(R.id.image,pend);
-    Notification notification=new Notification.Builder(this)
-            .setContent(remoteViews)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setTicker(&quot;测试2&quot;)
-            .build();
-    NotificationManager notificationManager= (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-    notificationManager.notify(2,notification);
-}
-</code></pre></li>
-</ul>
-<h3 id="AppWidgetProvider"><a href="#AppWidgetProvider" class="headerlink" title="AppWidgetProvider"></a>AppWidgetProvider</h3><ol>
-<li><p><strong>简介</strong>：用于实现桌面小部件的类，本质就是一个广播。</p>
-</li>
-<li><p><strong>例子：</strong><a href="https://github.com/zlmService/RemoteViews" target="_blank" rel="external">桌面小部件例子</a></p>
-</li>
-<li><p><strong>注意:</strong> 因为它本质是一个广播组件，所以需要声明，</p>
-<pre><code>&lt;receiver android:name=&quot;.MyAppWidgetProvider&quot;&gt;
- &lt;meta-data
-     android:name=&quot;android.appwidget.provider&quot;
-     android:resource=&quot;@xml/appwidget_provider_info&quot;&gt;
- &lt;/meta-data&gt;
- &lt;intent-filter&gt;
- 第一个action用于识别小部件的单击行为
- 第二个action作为标识必须存在，否则无法出现在手机小部件列表中。
-     &lt;action android:name=&quot;com.zlm.action.CLICK&quot;/&gt;
-     &lt;action android:name=&quot;android.appwidget.action.APPWIDGET_UPDATE&quot;/&gt;
- &lt;/intent-filter&gt;
-</code></pre><p> </p>
-</li>
-<li><p><strong>方法</strong>：</p>
-<ul>
-<li>onEnable：当小部件第一次添加到桌面的时候调用，可添加多次，但只在第一次调用。</li>
-<li><p>onUpdate：当每次被添加或者更新的时候都会调用，每个周期小部件都会自动更新一次</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;appwidget-provider xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-android:initialLayout=&quot;@layout/widget&quot;
-//初始化布局和大小。
-android:minHeight=&quot;84dp&quot;
-android:minWidth=&quot;84dp&quot;
-//每个一个周期，就会自动更新一次
-android:updatePeriodMillis=&quot;5000&quot; &gt;
-&lt;/appwidget-provider&gt;
-</code></pre></li>
-<li>onDeleted：每删除一次就调用一次。</li>
-<li>onDisable：当最后一个该类型的小部件被删除时调用。</li>
-<li>onReceive：广播内置方法，用于分发具体的事件给其他方法，内部通过不同的Action来分别调用对应的onEnable、onUpdate等方法。</li>
-</ul>
-</li>
-</ol>
-<h3 id="PendingIntent"><a href="#PendingIntent" class="headerlink" title="PendingIntent"></a>PendingIntent</h3><ul>
-<li>对比：pending待定，等待，即在将来某个不确定的时间发生，而Intent是立即发生。</li>
-<li><p><strong>匹配规则：</strong>当两个PendingIntent它们内部的Intent相同并且requestCode也相同，那么这两个PendingIntent就是相同的。而<strong>Intent的匹配规则</strong>：当两个Intent的ComponentName（组件名称）和intent-filter相同，那么这两个Intent就相同。</p>
-<pre><code> Intent intent=new Intent();
-intent.setComponent(new ComponentName(this,Main2.class));
-intent.setComponent(new ComponentName(this,&quot;com.demo.zlm.remoteviewssample.Main2&quot;));
-</code></pre></li>
-<li><strong>FLAG：</strong><ul>
-<li><strong>FLAG-ONE-SHOT</strong>：当前描述的PendingIntent只能使用一次，然后自动被cancel，后续有相同的PendingIntent，它们的send方法就会调用失败。对于通知栏来说：后续的通知无法打开</li>
-<li><strong>FLAG-NO-CREATE</strong>：PendingIntent不会主动创建，如果PendingIntent之前不存在，那么getActivity返回null，它无法单独使用</li>
-<li><strong>FLAG-CANCEL-CURRENT</strong>：如果当前描述的PendingIntent已经存在，那么它们会被cancel，然后系统会创建一个新的PendingIntent。对于通知栏来说：那些被cancel的消息点击后将不会打开。</li>
-<li><strong>FLAG-UPDATE-CURRENT</strong>：如果当前描述的PendingIntent已经存在，那么它们会被更新。</li>
-</ul>
-</li>
-<li><strong>notify(1,notification)</strong>：<ol>
-<li>如果第一个参数一样的话，那么不管PendingIntent是否匹配，后续的通知会把前面的覆盖掉。</li>
-<li>如果第一个参数每次都不同，那么当PendingIntent不匹配的时候（匹配指：intent和requestCode都相同），无论采用哪个标记位，它们之间都不互相干扰；如果PendingIntent匹配，就按照FLAG标记位的规则。</li>
-</ol>
-</li>
-</ul>
-<h3 id="RemoteViews的内部机制："><a href="#RemoteViews的内部机制：" class="headerlink" title="RemoteViews的内部机制："></a>RemoteViews的内部机制：</h3><ul>
-<li>通过Action的概念去支持View的跨进程通信，Action实现Parcelable,每一个Action代表一个View的操作，当我们在应用中每调用一个set方法（比如：remoteViews.setTextColor(R.id.text, Color.RED)RemoteViews内部就添加了一个对应的Action，并加入到一个集合中，内部有一个ArrayList集合专门负责进行存储，RemoteViews的apply方法会去遍历这个集合中所有的Action，并调用它们的apply方法，具体的View更新操作由Action对象的apply来完成的。</li>
-<li>当我们调用set方法的时候并不会立即更新它们的界面，而必须要通过NotificationManager的notify方法以及AppWidgetManager的updateAppWidget才能更新它们的界面。它们其实是通过RemoteViews的apply和reapply方法进行加载，当第一次加载的时候，只会调用apply，而后续的更新界面时则会调用reapply方法。它们的区别是apply：来加载布局并更新界面，而reapply方法只会更新界面。</li>
-</ul>
-<h3 id="RemoteViews单击事件"><a href="#RemoteViews单击事件" class="headerlink" title="RemoteViews单击事件"></a>RemoteViews单击事件</h3><ul>
-<li>setOnClickPendingIntent：只用于给普通View设置单击事件，不能给集合（ListView，StackView）进行设置。</li>
-<li>如果要给ListView设置单击事件，通过将setPendingIntentTemplate和setOnClickFillInIntent组合使用才可以。</li>
-</ul>
-<h3 id="使用场景："><a href="#使用场景：" class="headerlink" title="使用场景："></a>使用场景：</h3><ul>
-<li>如果我们需要一个应用更新另一个应用界面的时候，我们可以使用AIDL，但是面对频繁的更新AIDL会变得比较复杂，如果是只对界面更新，里面的View都是RemoteViews支持的View且没有自定义的View时候，我们可以选择RemoteViews来完成。</li>
-</ul>
+          RemoteViews:远程View，在其他进程中显示并更新View，在安卓①Notification通知栏，②AppWidgetProvider桌面小部件中都应用到了RemoteViews。
+Notification：
+普通通知栏：使用系统的样式
+//发送普通通知
+public void send
+          ...
 
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/11/RemoteViews/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -708,160 +481,16 @@ intent.setComponent(new ComponentName(this,&quot;com.demo.zlm.remoteviewssample.
       
         
           
-            <h3 id="MeasureSpec：测量规格"><a href="#MeasureSpec：测量规格" class="headerlink" title="MeasureSpec：测量规格"></a>MeasureSpec：测量规格</h3><ul>
-<li>转换过程：对于<strong>DecorView</strong>（顶级View）来说，MeasureSpec由窗口的尺寸和自身的LayoutParams来共同确定的；对于<strong>普通的View</strong>，其MeasureSpec由父容器的MeasureSpec和自身的LayoutParams来共同确定的。</li>
-<li><strong>SpecMode</strong>：测量模式<ol>
-<li>UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部</li>
-<li>EXACTLY：父容器已经检测出View所需要的精确大小，相当于match_parent</li>
-<li>AT__MOST：父容器指定了一个可用大小即SpecSize，相当于wrap_content</li>
-</ol>
-</li>
-<li><p><strong>SpecSize</strong>：某种测量模式下的规格大小</p>
-</li>
-<li><p><strong>普通View的SpasureSpec的创建过程:</strong></p>
-<ul>
-<li>红色：代表父容器的SpecMode类别</li>
-<li>绿色：代表普通View的LayoutParams的设置</li>
-<li>黄色：代表普通View的SpecMode的类别</li>
-<li>蓝色：代表普通View的SpecSize</li>
-<li>parentSize：代表父容器中目前可使用的大小</li>
-</ul>
-</li>
-</ul>
-<p><img src="http://i.imgur.com/zPTyZOg.png" alt="普通View的MeasureSpec的创建规则"></p>
-<ol>
-<li>当View采用固定宽高时：无论父容器的MeasureSpec是什么，View都是精确模式并且大小遵循LayoutParams中的大小。</li>
-<li>当View是match_parent：①如果<strong>父类是最大模式</strong>，那么View也是最大模式并且大小<strong>不会超过父容器的剩余空间</strong> 。②如果<strong>父类是精准模式</strong>，那么View也是精准模式并且大小<strong>就是父容器的剩余空间</strong>。</li>
-<li>当View是wrap_content：不管父类是什么模式，View总是最大化并且大小不能超过父容器的剩余空间。</li>
-</ol>
-<h3 id="Measure过程："><a href="#Measure过程：" class="headerlink" title="Measure过程："></a>Measure过程：</h3><p>1.view的Measure过程：解决在自定义View布局中使用 wrap-content 相当于match-parent</p>
-<p><strong>原因：</strong>当View在布局中使用wrap-content，那么它的specMode是AT_MOST模式，这种模式下，它的宽高等于specSize,也就是父容器当前剩余的空间大小。</p>
-<pre><code>    //源码
-public static int getDefaultSize(int size, int measureSpec) {
-// 将我们获得的最小值赋给result
-int result = size;
+          MeasureSpec：测量规格
+转换过程：对于DecorView（顶级View）来说，MeasureSpec由窗口的尺寸和自身的LayoutParams来共同确定的；对于普通的View，其MeasureSpec由父容器的MeasureSpec和自身的LayoutParams来共同确定的。
+Spec
+          ...
 
-// 从measureSpec中解算出测量规格的模式和尺寸
-int specMode = MeasureSpec.getMode(measureSpec);
-int specSize = MeasureSpec.getSize(measureSpec);
-
-/*
- * 根据测量规格模式确定最终的测量尺寸
- */
-switch (specMode) {
--------------------
-//如果是UNSPECIFIED模式下，
-当我们没有设置background属性的情况下，size就是我们所设置的值，当我们没有设置 默认是0
-//如果我们设置了background，size就是minWidth和设置的background的最小宽度这两者中的最大值。
-case MeasureSpec.UNSPECIFIED:
-    result = size;
-    break;
--------------------------
-从这可以看出 为什么设置wrap_content还是match_parent
-因为它的宽高等于specSize，而这个specSize就是父容器当前剩余的空间大小
-case MeasureSpec.AT_MOST:
-case MeasureSpec.EXACTLY:
-    result = specSize;
-    break;
-}
-return result;
-}
-</code></pre><p><strong>解决办法：重写子类的onMeasure方法</strong></p>
-<pre><code> @Override
-protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
- int measuredWidth;//定义一个默认宽高，
- int measuredHeight;
-//获取测量的模式和大小
-int widthSpaceSize = MeasureSpec.getSize(widthMeasureSpec);
-int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
-int heightSpaceSize = MeasureSpec.getSize(heightMeasureSpec);
-int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
-//如果 宽和高的模式都是AT_MOST（表示父容器不知道具体多大）
- if (widthSpecMode == MeasureSpec.AT_MOST &amp;&amp; heightSpecMode == MeasureSpec.AT_MOST) {
-//就子View自己设置测量尺寸（比如是一个ImageView,可以获取bitmap的宽高来当做这个控件的大小）
- setMeasuredDimension(measuredWidth, measuredHeight);
-} else if (heightSpecMode == MeasureSpec.AT_MOST) {
-//如果宽不确定，就重新设置宽，高不确定就设置高
- setMeasuredDimension(widthSpaceSize, childView.getMeasuredHeight());
-} else if (widthSpecMode == MeasureSpec.AT_MOST) {
-    setMeasuredDimension(measuredWidth, heightSpaceSize);
-    }
-}
-</code></pre><p>2.ViewGroup的measure过程</p>
-<ul>
-<li>它是一个抽象类，提供了一个measureChildren的方法，这个方法内部就是取出所有的子元素，然后获取每个子元素的LayoutParams,然后子元素自己去实现具体的onMeasure方法，他会通过变量来记录每一个子元素测量后的宽高，每测量一个子元素，这个变量就会增加，增加的部分主要是（子元素的宽高+子元素的margin），当所有子元素测量完毕后，它也就计算出了自己的大小。</li>
-</ul>
-<h3 id="layout过程："><a href="#layout过程：" class="headerlink" title="layout过程："></a>layout过程：</h3><p>Layout的作用就是ViewGroup用来确定子元素的位置，layout（）确定view本身的位置，而onLayout（）确定所有子元素的位置。当ViewGroup的位置确定后，就会在onLayout中遍历所有的子元素并调用其layout方法，在子元素的layout方法中又会调用onLayout方法来确定自身的位置。</p>
-<ul>
-<li><p>getMeasureWidth和getWidth的区别：在默认情况下它们都是相等的，但是如果是重写了View的layout方法 又进行了赋值，getWidth就会是 重新赋值的这个宽度，</p>
-<pre><code>这种情况下，getWidth就会比getMeasureWidth多100
-view.layout(left,top,right+100,bottom+100);
-</code></pre></li>
-</ul>
-<h3 id="draw过程："><a href="#draw过程：" class="headerlink" title="draw过程："></a>draw过程：</h3><pre><code> 就是把View绘制到屏幕上：
-1. 绘制背景background.draw(canvas)
-2. 绘制自己(onDraw)
-3. 绘制children(dispatchDraw)
-4. 绘制装饰(onDrawScrollBars)
-</code></pre><ul>
-<li>View的绘制过程传递是通过dispatchDraw来实现的，它会遍历调用所有子元素的draw方法，如此draw事件就一层一层传递下去。</li>
-<li><p>setWillNotDraw：如果一个View不需要绘制任何内容，就设置为true以后，系统就会进行相应的优化。默认情况下①View没有启这个优化标记位，②ViewGroup启用了这个标记位。所以当我们需要一个ViewGroup通过onDraw来绘制内容时，就需要关闭这个标记位。</p>
-<pre><code>public void setWillNotDraw(boolean willNotDraw) {
-       setFlags(willNotDraw ? WILL_NOT_DRAW : 0, DRAW_MASK);
-   }
-</code></pre></li>
-</ul>
-<h3 id="自定义View"><a href="#自定义View" class="headerlink" title="自定义View"></a>自定义View</h3><ul>
-<li><p>直接继承View或者ViewGroup的控件，padding默认是无法生效的，需要自己处理。</p>
-<pre><code>@Override
-  protected void onDraw(Canvas canvas) {
-      super.onDraw(canvas);
-      int paddingBottom = getPaddingBottom();
-      int paddingLeft = getPaddingLeft();
-      int paddingRight = getPaddingRight();
-      int paddingTop = getPaddingTop();
-      int width = getMeasuredWidth() - paddingLeft - paddingRight;
-      int height = getMeasuredHeight() - paddingTop - paddingBottom;
-      int radius = Math.min(width, height) / 2;
-      canvas.drawCircle(paddingLeft + width / 2, paddingTop + height / 2, radius, paint);
-  }
-</code></pre></li>
-<li><p>自定义属性：</p>
-<ol>
-<li><p>在values创建自定义属性xml：</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-&lt;resources&gt;
-        &lt;declare-styleable name=&quot;CircleView&quot;&gt;
-            &lt;attr name=&quot;circle_color&quot; format=&quot;color&quot;/&gt;
-        &lt;/declare-styleable&gt;
-&lt;/resources&gt;
-</code></pre></li>
-<li><p>在自定义View类中进行代码编写：</p>
-<pre><code>//在自定义View的构造函数中 获取自定义属性的文件，然后获取文件中CircleView_circle_color的这个属性，
-如果布局中没有设置，就用黄色当默认值，然后recycle（）来实现资源。
- TypedArray typedArray = context.obtainStyledAttributes(attrs,R.styleable.CircleView);
- mColor = typedArray.getColor(R.styleable.CircleView_circle_color, Color.YELLOW);
- typedArray.recycle();
-</code></pre></li>
-<li><p>在布局中应用：</p>
-<pre><code>//先在布局中进行声明，app是自定义属性的前缀 可以随意起，但是在自定义View中的自定义属性 前缀必须和这里的一致
-xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
-
-    &lt;com.demo.zlm.viewsample.CircleView
-        android:layout_width=&quot;100dp&quot;
-        android:layout_height=&quot;100dp&quot;
-        android:layout_margin=&quot;20dp&quot;
-        //使用自定义属性
-       app:circle_color=&quot;#f00&quot;
-        android:background=&quot;#000&quot;
-    android:padding=&quot;20dp&quot; /&gt;
-</code></pre></li>
-</ol>
-</li>
-</ul>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/09/View的工作原理/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -953,168 +582,16 @@ xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
       
         
           
-            <h4 id="getX-和getRawX-的区别："><a href="#getX-和getRawX-的区别：" class="headerlink" title="getX()和getRawX()的区别："></a>getX()和getRawX()的区别：</h4><p>第一个是返回当前View左上角的x坐标，第二个是返回View相对于手机屏幕左上角的x坐标。</p>
-<h4 id="VelocityTracker"><a href="#VelocityTracker" class="headerlink" title="VelocityTracker:"></a>VelocityTracker:</h4><p>速度追踪，可用于监听滑动的速度，加载列表的数据多少。</p>
-<h4 id="GestureDetector"><a href="#GestureDetector" class="headerlink" title="GestureDetector:"></a>GestureDetector:</h4><p>手势检测，用于辅助检测用户的单击、滑动、长按、双击等行为。如果只是监听滑动相关的事件在onTouchEvent中实现；如果要监听双击这种行为的话，那么就使用GestureDetector。</p>
-<h4 id="TouchSlop："><a href="#TouchSlop：" class="headerlink" title="TouchSlop："></a>TouchSlop：</h4><p>系统所能识别出的最小滑动距离。ViewConfiguration.get((getConText)).getScaledTouchSlop()</p>
-<h4 id="View的滑动："><a href="#View的滑动：" class="headerlink" title="View的滑动："></a>View的滑动：</h4><ol>
-<li><strong>scrollTo/scrollBy</strong>：操作简单，适合对View内容的滑动。只能改变View内容的位置，不能改变View在布局中的位置。比如：ImageView改变了src的位置，但是background位置并没有改变</li>
-<li><strong>动画</strong>:操作简单，适用于对没有交互的View和实现复杂的动画效果，比如：Button有一个点击事件，但是当滑动过后，新的位置无法触发onClick事件，而单击原始的空白位置仍然可以触发onClick事件。</li>
-<li><strong>LatoutParams</strong>:操作稍微麻烦，适用于和用户有交互的View，</li>
-</ol>
-<h4 id="弹性滑动："><a href="#弹性滑动：" class="headerlink" title="弹性滑动："></a>弹性滑动：</h4><p><strong>大致思想：</strong>将一次大的滑动分成若干次小的滑动，并在一个时间段内完成。</p>
-<p><strong>实现方法：</strong>它们三个只滑动了内容，并没有滑动本身。因为内部都使用了scrollTo实现滑动效果。</p>
-<ol>
-<li><p><strong>Scroller</strong>:它本身不能实现View的滑动，他需要配合View的computeScroll方法才能完成弹性滑动的效果，它不断地让View重绘，而每一次重绘起始时间都会有一个时间间隔，通过这个时间间隔得到View当前的滑动位置，然后通过scrollTO方法来完成View的滑动，View每一次的重绘都导致View进行小幅度的滑动，而多次的小幅度就组成了弹性滑动。</p>
-<ul>
-<li><p>大致流程：当创建了一个Scroller对象，然后调用startScroll方法（这个方法其实就是保存我们传递过来的参数），然后调用invalidate（）方法（这个方法会导致View重绘，他会自动去调用computeScroll（）方法，这个方法是一个空方法需要我们去实现）</p>
-<pre><code>@Override
-public void computeScroll() {
-    //这个方法就是会根据时间的流逝的百分比来计算出需要滑动的值，当滑动还未结束就返回true，结束就返回false
-    if (scroller.computeScrollOffset()) {
-        //判断返回值如果是true 也就是滑动未结束，然后就进行滑动，
-        scrollTo(scroller.getCurrX(),scroller.getCurrY());
-        //重新绘制。
-        postInvalidate();
-    }
-}
-</code></pre></li>
-</ul>
-</li>
-<li><p><strong>动画</strong>：我们可以在onAnimationUpdate方法中实现其他想要的操作。</p>
-<pre><code>//动画 实现弹性滑动
-  ValueAnimator animator = ValueAnimator.ofInt(0,1).setDuration(1000);
-  animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-      @Override
-      public void onAnimationUpdate(ValueAnimator animation) {
-          float fraction=animation.getAnimatedFraction();
-          System.out.println(&quot;fraction:&quot;+fraction);
-          btn.scrollTo(0+(int)(-100*fraction),0);
-      }
-  });
-  animator.start();
-</code></pre></li>
-<li><p><strong>使用延时策略</strong>：通过一个循环，不断的发送消息，然后在消息中进行View的滑动，从而实现弹性滑动的效果。</p>
-<ul>
-<li><p>Handler+sendEmptyMessageDelayed（）：</p>
-<pre><code>  handler=new Handler(){
-    int count=0;
-    @Override
-    public void handleMessage(Message msg) {
-        super.handleMessage(msg);
-        switch (msg.what){
-            case 1: {
-                count++;
-                if (count &lt;= 30) {
-                //分成30份的小幅度滑动最终组合成一个大幅度的滑动
-                    System.out.println(count);
-                    float fraction = count / (float) 30;
-                    int scrollX = (int) (fraction * 100);
-                    System.out.println(scrollX);
-                    btn.scrollTo(-scrollX, 0);
-                    //每隔33毫秒 滑动一次
-                    handler.sendEmptyMessageDelayed(1, 33);
-                }
-                break;
-            }
-        }
-    }
-};       
-</code></pre></li>
-<li><p>View的postDelayed（）</p>
-</li>
-<li>线程的sleep（）</li>
-</ul>
-</li>
-</ol>
-<h4 id="View的事件分发机制"><a href="#View的事件分发机制" class="headerlink" title="View的事件分发机制"></a>View的事件分发机制</h4><p><strong>分发流程</strong>：当事件产生后，会由Activity先接收，然后调用自身的dispatchTouchEvent方法进行分发，分发到Window（唯一实现类：PhoneWindow，它用来控制顶级View的外观和行为策略）中，然后再传递到View（先传递到DecorView：它继承FrameLayout，它内部会获取我们setContentView设置的View，然后传递给它的子View）中。期间如果某个进行了拦截（onInterceptTouchEvent=true）就会调用自身的onTouchEvent进行消耗事件，如果不拦截最终会传递到最底层的View中，然后消耗事件，如果onTouchEvent返回false（表示不消耗事件），这个事件就会回传给上层，直到某一层消耗了这个事件。</p>
-<ul>
-<li><p><strong>如何不消耗事件</strong>：View的onTouchEvent默认都会消耗事件（返回值为true），但是当clickable和longclickable同时为false的时候，这个View是不会消耗事件的，比如button的clickable默认为true，但是TextView的clickable默认为false，一般longclickable默认为false。</p>
-</li>
-<li><p><strong>setOnClickListener：</strong>当view设置setOnClickListener的时候，它会自动将view的clickable设置为true，同理setOnLongClickListener的时候，也会自动把longclickable设置为true。</p>
-</li>
-<li><p><strong>onTouchListener和onTouchEvent的区别</strong>：</p>
-<ul>
-<li>相同点：<br>onTouch()与onTouchEvent()都是用户处理触摸事件的API。</li>
-<li>不同点：<br>(01)，onTouch()是View专门提供给用户的接口，目的是为了方便用户自己处理触摸事件。而onTouchEvent()是Android系统自己实现的接口。<br>(02)，onTouch()的优先级比onTouchEvent()的优先级更高。<br>dispatchTouchEvent()中分发事件的时候，会先将事件分配给onTouch()进行处理，然后才分配给onTouchEvent()进行处理。 如果onTouch()对触摸事件进行了处理，并且返回true；那么，该触摸事件就不会分配在分配给onTouchEvent()进行处理了。只有当onTouch()没有处理，或者处理了但返回false时，才会分配给onTouchEvent()进行处理。</li>
-</ul>
-</li>
-<li><p><strong>enabled不会影响view消耗事件</strong>：当一个View处于不可用的状态下（enabled=false），它照样会消耗事件，尽管它看起来不可用。只要clickable或者longclickable有一个为true，那么它的onTouchEvent就会返回为true</p>
-</li>
-</ul>
-<h4 id="View的事件冲突："><a href="#View的事件冲突：" class="headerlink" title="View的事件冲突："></a>View的事件冲突：</h4><p><strong>场景：</strong></p>
-<ol>
-<li>外部滑动方向和内部滑动方向不一致</li>
-<li>外部滑动方向和内部滑动方向一致</li>
-<li>上面两种情况的嵌套</li>
-</ol>
-<p><strong>解决方式：</strong></p>
-<ul>
-<li><p>方向不一致：</p>
-<ol>
-<li><p>外部拦截法： 当事件发生后，先经过父容器进行拦截，然后判断是否需要消耗此事件，如果不需要此事件就不拦截。<strong>注意</strong>：外部拦截的时候，<strong>Action_Down</strong>必须返回为false，因为如果返回true代表拦截Action_Down事件，那么后续的Action_Move和Action_UP也会直接交给父容器进行处理;<strong>Action_Move:</strong>进行判断如果需要就拦截返回true，反之返回false;<strong>Action_UP：</strong>也必须返回false：如果拦截这个事件，那么子View就接收不到，也就不会触发Click点击事件。</p>
-<pre><code>//父容器的方法：
-@Override
-public boolean onInterceptTouchEvent(MotionEvent ev) {
-    int x = 0,y = 0;
-    switch (ev.getAction()){
-        case MotionEvent.ACTION_DOWN:
-            x= (int) ev.getX();
-            y= (int) ev.getY();
-            return false;
-        case MotionEvent.ACTION_MOVE:
-</code></pre><p> //         比如解决横向和竖向滑动的冲突，需要拦截左右滑动的事件<br> //          如果 滑动x坐标大于滑动y坐标，表示左右滑动，拦截事件 返回true</p>
-<pre><code>        if (Math.abs(x)&gt;Math.abs(y)){
-            return true;
-        }else{
-            return false;
-        }
-    case MotionEvent.ACTION_UP:
-        return false;
-}
-</code></pre></li>
-<li><p>内部拦截法：指父容器不拦截所有事件，全部传递到子元素中，如果子元素需要此事件就消耗掉，否则就给父容器进行处理。<strong>注意：</strong>requestDisallowInterceptTouchEvent(true);表示父容器会跳过onInterceptTouchEvent回调，也就是说，在down之后的move，up等等 父容器都不能进行拦截</p>
-<pre><code>//子元素的方法：
-  @Override
-public boolean dispatchTouchEvent(MotionEvent ev) {
-    int x = 0,y = 0;
-    switch (ev.getAction()){
-        case MotionEvent.ACTION_DOWN:
-           getParent().requestDisallowInterceptTouchEvent(true);//表示父容器会跳过onInterceptTouchEvent回调，也就是说，在down之后的move，up等等 父容器都不能进行拦截
-            break;
-        case MotionEvent.ACTION_MOVE:
-            //判断 入容器需要此类事件
-            if (Math.abs(x)&gt;Math.abs(y)) {
-                getParent().requestDisallowInterceptTouchEvent(false);//返回给父容器
-            }
-            break;
+          getX()和getRawX()的区别：第一个是返回当前View左上角的x坐标，第二个是返回View相对于手机屏幕左上角的x坐标。
+VelocityTracker:速度追踪，可用于监听滑动的速度，加载列表的数据多少。
+GestureDetector:手势检测，用于辅助检测用户的单击、滑动、长按、双击
+          ...
 
-        case MotionEvent.ACTION_UP:
-            break;
-    }
-    return super.dispatchTouchEvent(ev);
-}
-
-//父容器的拦截方法：
-   //表示 父容器拦截除了Action_Down以外的所有事件.
-    // 这样子View调用 getParent().requestDisallowInterceptTouchEvent(false);父容器才能继续拦截所需的事件.
-    // 不能拦截Action_Down:因为如果拦截Action_Down，那么所有事件都无法传递到子View中去，这样内部拦截就无法其作用.
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getAction()==MotionEvent.ACTION_DOWN){
-            return  false;
-        }else{
-            return true;
-        }
-    }
-</code></pre></li>
-</ol>
-</li>
-<li><p>方向一致：判断子View是否滑动到当前View顶部并且继续向下滑动，这时候父容器拦截事件，并进行处理</p>
-</li>
-</ul>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/09/View的事件体系/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1206,278 +683,17 @@ public boolean dispatchTouchEvent(MotionEvent ev) {
       
         
           
-            <h3 id="总流程："><a href="#总流程：" class="headerlink" title="总流程："></a>总流程：</h3><pre><code>ActiveAndroid.initialize(this,true); 入口
-</code></pre><ul>
-<li><p>initialize有三个构造方法 </p>
-<p>   initialize(Context context)<br>   initialize(Configuration configuration)<br>  initialize(Context context, boolean loggingEnabled)</p>
-</li>
-<li><p>这三个构造方法内部其实都是调用了一个方法</p>
-<p>  public static void initialize(Configuration configuration, boolean loggingEnabled) {</p>
-<pre><code>// Set logging enabled first
-//是否打印log信息  
-setLoggingEnabled(loggingEnabled);
-//初始化Cache
-Cache.initialize(configuration);
-</code></pre><p>  }</p>
-</li>
-</ul>
-<ul>
-<li><p>cache中的初始化分为如下几步: </p>
-<ol>
-<li>创建ModelInfo，modelInfo又会创建关于tableInfo和TypeSerializer的信息 </li>
-<li>创建DatabaseHelper，这个DatabaseHelper就是继承自SQLiteOpenHelper，</li>
-<li>创建一个LruCache用来对数据库对象进行缓存，加快存取操作 </li>
-<li>调用openDatabase(),这个函数实际上调用了sDatabaseHelper.getWritableDatabase()， </li>
-<li>ModelInfo储存了每个需要储存的类与TableInfo的映射关系。每当用户要对要储存的类进行读/写操作时，就需要从mTableInfos这个map中找到属于自己的TableInfo，然后根据TableInfo中信息进行相关操作。</li>
-<li>TableInfo 就是通过穿过来的Class文件 获取里面 @Table@Column 的值 然后存储到Map集合中 。</li>
-<li>DatabaseHelper 其实就是继承了 SQLiteOpenHelper</li>
-<li>在onCreate的时候 调用了一个方法  这个方法 先获取 存有所有的Tableinfo的这个Map集合 然后遍历 这个集合 然后又调用一个创建表的方法 把TableInfo传入进去<br>在里面在遍历TableInfo这一个表的所有字段，然后执行sql语句，把这些字段动态的添加到sql语句中，从而达到创建表的操作。</li>
-</ol>
-</li>
-</ul>
-<p>-总的来说：Application初始化 调用一个Cache的初始化，Cache里面又初始化了几个东西<br>        一个是ModelInfo，存储所有的 TableInfo的Map集合<br>        一个是DatabaseHelper，继承了SQLiteOpenHelper的一个类，在里面遍历获取到集合中的内容，然后和固定的sql语句组合成完整的语句，最终完成创建数据库表的操作.</p>
-<hr>
-<p>Cache.initialize这个方法：</p>
-<pre><code>  //获取context；
-sContext = configuration.getContext();
-  //创建一个ModelInfo 获取自定义的model信息 
-   获取设置的table名和columns名 存入到一个map集合中
-sModelInfo = new ModelInfo(configuration);
-  //创建一个DataBaseHeleper  获取map集合  把里面的自定义的名字啊 列啊  都获取出来 然后底部还是通过一个继承SQLiteOpenHelper的类 把这些值都填入   进去 最后创建数据库
-sDatabaseHelper = new DatabaseHelper(configuration);
-</code></pre><p>sModelInfo = new ModelInfo(configuration)</p>
-<pre><code>//内部创建了一个Map集合
-private Map&lt;Class&lt;? extends Model&gt;, TableInfo&gt; mTableInfos = new HashMap&lt;Class&lt;? extends Model&gt;, TableInfo&gt;();
-//创建一个list集合 获取configuration那个装有继承model类的list集合
-final List&lt;Class&lt;? extends Model&gt;&gt; models = configuration.getModelClasses();
-    if (models != null) {
-        for (Class&lt;? extends Model&gt; model : models) {
-            如果model不等于空 就遍历获取出来的list集合
-            然后存入到之前创建的那个 Map集合
+          总流程：ActiveAndroid.initialize(this,true); 入口
 
-            mTableInfos.put(model, new TableInfo(model));
+initialize有三个构造方法 
+   initialize(Context context)   initialize(Configuration configuration)  initialize(C
+          ...
 
-        }
-    }
-</code></pre><p>mTableInfos.put(model, new TableInfo(model));<br>//这个类有一个构造方法 接收继承Model的类<br>TableInfo其实就是同来  获取@Table @Column注解的值<br>public TableInfo(Class&lt;? extends Model&gt; type) </p>
-<pre><code>   //这段代码其实就是 先获取@Table注解的这个class文件
-   final Table tableAnnotation = type.getAnnotation(Table.class);
-   //如果不为空  就把这个文件的name值和id值取出来
-   if (tableAnnotation != null) {
-       mTableName = tableAnnotation.name();
-       mIdName = tableAnnotation.id();
-   }
-   //如果为null 也就是别人在使用的时候 没有进行name字段的赋值
-   就使用这个类的名字来当 这个name 的值
-   else {
-       mTableName = type.getSimpleName();
-   }
-   //最后把 id存放在Map集合中
-   mColumnNames.put(idField, mIdName);
-
-
-   获取Table注解后   下面获取@Column的属性
-       获取自定义所有的字段 存入到集合中
-List&lt;Field&gt; fields = new LinkedList&lt;Field&gt;(ReflectionUtils.getDeclaredColumnFields(type));
-   循环集合
-    for (Field field : fields) {
-       这句话的意思就是 如果字段引用了Column的注解 返回true
-       if (field.isAnnotationPresent(Column.class)) {
-               //返回Column注解的Class文件
-           final Column columnAnnotation = field.getAnnotation(Column.class);
-               //把name值取出来 如果没有就按照 字段的名字
-           String columnName = columnAnnotation.name();
-           if (TextUtils.isEmpty(columnName)) {
-               columnName = field.getName();
-           }
-           最后放在一个集合中  key就是field，value是这个name的值
-           mColumnNames.put(field, columnName);
-       也就是说mColumnNames这个Map集合中就是存放创建数据库表的那些个列名 从id开始 比如name  age 等等
-       }
-   }    
-</code></pre><p>DatabaseHelper = new DatabaseHelper(configuration)</p>
-<pre><code>继承了SQLiteOpenHelper
-构造函数 获取之前 Configuration中获取到的 版本和数据库名字    
-在它的onCreate中 调用了executeCreate(db);
-这个方法 就是在循环  有几个tableInfo  也就是有几张表
-
-for (TableInfo tableInfo : Cache.getTableInfos()) {
-            db.execSQL(SQLiteUtils.createTableDefinition(tableInfo));
-        }
-然后执行createTableDefinition方法
-    里面就是循环么一个Tableinfo类中那个集合
-        也就是每个表中 的所有字段
-for (Field field : tableInfo.getFields()) {
-        String definition = createColumnDefinition(tableInfo, field);
-最后 return String.format(&quot;CREATE TABLE IF NOT EXISTS %s (%s);&quot;, tableInfo.getTableName(),
-TextUtils.join(&quot;, &quot;, definitions));
- 就是把表名取出来  替换第一个占位符
-TextUtils.join(&quot;, &quot;, definitions))这句话就是 获取这个列名的名字 类型
-和约束条件等
-通过createColumnDefinition（TableInfo tableInfo, Field field）
-
-这个方法 返回一个 String 在里面判断获取 类型和一些自定义的约束
-field.getType();获取类型
-@column(name=&quot;&quot;,unique=&quot;&quot;,notNull=&quot;&quot;)等
-获取完以后 就拼接成一句完整的 创建表的 sql语句
-</code></pre><ol>
-<li>程序入口 </li>
-</ol>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">	initialize(<span class="keyword">new</span> Configuration.Builder(context).create());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(Configuration configuration)</span> </span>&#123;</span><br><span class="line">	initialize(configuration, <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(Context context, <span class="keyword">boolean</span> loggingEnabled)</span> </span>&#123;</span><br><span class="line">	initialize(<span class="keyword">new</span> Configuration.Builder(context).create(), loggingEnabled);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">initialize</span><span class="params">(Configuration configuration, <span class="keyword">boolean</span> loggingEnabled)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// Set logging enabled first</span></span><br><span class="line">	setLoggingEnabled(loggingEnabled);</span><br><span class="line">	Cache.initialize(configuration);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>分析Configuration</li>
-</ol>
-<p>create方法主要从清单文件里面获取 数据库等信息。<br>   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Configuration <span class="title">create</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			Configuration configuration = <span class="keyword">new</span> Configuration(mContext);</span><br><span class="line">			configuration.mCacheSize = mCacheSize;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Get database name from meta-data</span></span><br><span class="line">			<span class="comment">// 获取数据库名字</span></span><br><span class="line">			<span class="keyword">if</span> (mDatabaseName != <span class="keyword">null</span>) &#123;</span><br><span class="line">				configuration.mDatabaseName = mDatabaseName;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				configuration.mDatabaseName = getMetaDataDatabaseNameOrDefault();</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">// 获取数据库版本号</span></span><br><span class="line">			<span class="comment">// Get database version from meta-data</span></span><br><span class="line">			<span class="keyword">if</span> (mDatabaseVersion != <span class="keyword">null</span>) &#123;</span><br><span class="line">				configuration.mDatabaseVersion = mDatabaseVersion;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				configuration.mDatabaseVersion = getMetaDataDatabaseVersionOrDefault();</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Get SQL parser from meta-data</span></span><br><span class="line">			<span class="keyword">if</span> (mSqlParser != <span class="keyword">null</span>) &#123;</span><br><span class="line">			    configuration.mSqlParser = mSqlParser;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			    configuration.mSqlParser = getMetaDataSqlParserOrDefault();</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// Get model classes from meta-data</span></span><br><span class="line">			<span class="comment">// 获取清单文件里面配置的models</span></span><br><span class="line">			<span class="keyword">if</span> (mModelClasses != <span class="keyword">null</span>) &#123;</span><br><span class="line">				configuration.mModelClasses = mModelClasses;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">final</span> String modelList = ReflectionUtils.getMetaData(mContext, AA_MODELS);</span><br><span class="line">				<span class="keyword">if</span> (modelList != <span class="keyword">null</span>) &#123;</span><br><span class="line">					configuration.mModelClasses = loadModelList(modelList.split(<span class="string">","</span>));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">// Get type serializer classes from meta-data</span></span><br><span class="line">			<span class="keyword">if</span> (mTypeSerializers != <span class="keyword">null</span>) &#123;</span><br><span class="line">				configuration.mTypeSerializers = mTypeSerializers;</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				<span class="keyword">final</span> String serializerList = ReflectionUtils.getMetaData(mContext, AA_SERIALIZERS);</span><br><span class="line">				<span class="keyword">if</span> (serializerList != <span class="keyword">null</span>) &#123;</span><br><span class="line">					configuration.mTypeSerializers = loadSerializerList(serializerList.split(<span class="string">","</span>));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> configuration;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> String <span class="title">getMetaDataDatabaseNameOrDefault</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			String aaName = ReflectionUtils.getMetaData(mContext, AA_DB_NAME);</span><br><span class="line">			<span class="keyword">if</span> (aaName == <span class="keyword">null</span>) &#123;</span><br><span class="line">				aaName = DEFAULT_DB_NAME;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">return</span> aaName;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="meta">@SuppressWarnings</span>(<span class="string">"unchecked"</span>)</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">T <span class="title">getMetaData</span><span class="params">(Context context, String name)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="keyword">final</span> ApplicationInfo ai = context.getPackageManager().getApplicationInfo(context.getPackageName(),</span><br><span class="line">					PackageManager.GET_META_DATA);</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (ai.metaData != <span class="keyword">null</span>) &#123;</span><br><span class="line">				<span class="keyword">return</span> (T) ai.metaData.get(name);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			Log.w(<span class="string">"Couldn't find meta-data: "</span> + name);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-初始化一个Cache"><a href="#3-初始化一个Cache" class="headerlink" title="3. 初始化一个Cache"></a>3. 初始化一个Cache</h3><pre><code>public static synchronized void initialize(Configuration configuration) {
-    if (sIsInitialized) {
-        Log.v(&quot;ActiveAndroid already initialized.&quot;);
-        return;
-    }
-
-    sContext = configuration.getContext();
-    sModelInfo = new ModelInfo(configuration);
-    sDatabaseHelper = new DatabaseHelper(configuration);
-
-    // TODO: It would be nice to override sizeOf here and calculate the memory
-    // actually used, however at this point it seems like the reflection
-    // required would be too costly to be of any benefit. We&apos;ll just set a max
-    // object size instead.
-    sEntities = new LruCache&lt;String, Model&gt;(configuration.getCacheSize());
-
-    openDatabase();
-
-    sIsInitialized = true;
-
-    Log.v(&quot;ActiveAndroid initialized successfully.&quot;);
-}
-</code></pre><h3 id="ModelInfo"><a href="#ModelInfo" class="headerlink" title="ModelInfo"></a>ModelInfo</h3><pre><code>public ModelInfo(Configuration configuration) {
-        if (!loadModelFromMetaData(configuration)) {
-            try {
-                scanForModel(configuration.getContext());
-            }
-            catch (IOException e) {
-                Log.e(&quot;Couldn&apos;t open source path.&quot;, e);
-            }
-        }
-
-        Log.i(&quot;ModelInfo loaded.&quot;);
-    }
-
-private boolean loadModelFromMetaData(Configuration configuration) {
-        if (!configuration.isValid()) {
-            return false;
-        }
-
-    final List&lt;Class&lt;? extends Model&gt;&gt; models = configuration.getModelClasses();
-    if (models != null) {
-        for (Class&lt;? extends Model&gt; model : models) {
-            mTableInfos.put(model, new TableInfo(model));
-        }
-    }
-
-    final List&lt;Class&lt;? extends TypeSerializer&gt;&gt; typeSerializers = configuration.getTypeSerializers();
-    if (typeSerializers != null) {
-        for (Class&lt;? extends TypeSerializer&gt; typeSerializer : typeSerializers) {
-            try {
-                TypeSerializer instance = typeSerializer.newInstance();
-                mTypeSerializers.put(instance.getDeserializedType(), instance);
-            }
-            catch (InstantiationException e) {
-                Log.e(&quot;Couldn&apos;t instantiate TypeSerializer.&quot;, e);
-            }
-            catch (IllegalAccessException e) {
-                Log.e(&quot;IllegalAccessException&quot;, e);
-            }
-        }
-    }
-
-    return true;
-}
-
-
-private void scanForModel(Context context) throws IOException {
-        String packageName = context.getPackageName();
-        String sourcePath = context.getApplicationInfo().sourceDir;
-        List&lt;String&gt; paths = new ArrayList&lt;String&gt;();
-
-    if (sourcePath != null &amp;&amp; !(new File(sourcePath).isDirectory())) {
-        DexFile dexfile = new DexFile(sourcePath);
-        Enumeration&lt;String&gt; entries = dexfile.entries();
-
-        while (entries.hasMoreElements()) {
-            paths.add(entries.nextElement());
-        }
-    }
-    // Robolectric fallback
-    else {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        Enumeration&lt;URL&gt; resources = classLoader.getResources(&quot;&quot;);
-
-        while (resources.hasMoreElements()) {
-            String path = resources.nextElement().getFile();
-            if (path.contains(&quot;bin&quot;) || path.contains(&quot;classes&quot;)) {
-                paths.add(path);
-            }
-        }
-    }
-
-    for (String path : paths) {
-        File file = new File(path);
-        scanForModelClasses(file, packageName, context.getClassLoader());
-    }
-}
-</code></pre><hr>
-<pre><code>// 存储model的信息
-// TableInfo 主要是用来封装Model的表信息
-
-// 表名 ，列名 
-
-&lt;Person.class,
-private Map&lt;Class&lt;? extends Model&gt;, TableInfo&gt; mTableInfos = new HashMap&lt;Class&lt;? extends Model&gt;, TableInfo&gt;();
-
-@Table(name=&quot;Person&quot;,Id= _id)
-public class Person extends Model{
-
-}
-
-public TableInfo(Class&lt;? extends Model&gt; type) {
-        mType = type;
-// 获取注解对象 
-        final Table tableAnnotation = type.getAnnotation(Table.class);
-
-        if (tableAnnotation != null) {
-// 表名
-            mTableName = tableAnnotation.name();
-// id的名字
-            mIdName = tableAnnotation.id();
-        }
-        else {
-//
-            mTableName = type.getSimpleName();
-        }
-
-        // Manually add the id column since it is not declared like the other columns.
-        Field idField = getIdField(type);
-        mColumnNames.put(idField, mIdName);
-
-        List&lt;Field&gt; fields = new LinkedList&lt;Field&gt;(ReflectionUtils.getDeclaredColumnFields(type));
-        Collections.reverse(fields);
-
-        for (Field field : fields) {
-            if (field.isAnnotationPresent(Column.class)) {
-                final Column columnAnnotation = field.getAnnotation(Column.class);
-                String columnName = columnAnnotation.name();
-                if (TextUtils.isEmpty(columnName)) {
-                    columnName = field.getName();
-                }
-
-                mColumnNames.put(field, columnName);
-            }
-        }
-
-    }
-</code></pre>
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/07/ActiveAndroid/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1569,238 +785,16 @@ public TableInfo(Class&lt;? extends Model&gt; type) {
       
         
           
-            <ul>
-<li><p>在application中配置初始化</p>
-<p>  ImageLoader.getInstance().init（ImageLoaderConfiguration configuration）<br>  getInstance 是一个懒汉式单例模式，获取ImageLoader的对象 双层是否为 null 判断提高性能</p>
-<p>  init的作用就是 开启一个引擎，也就是任务分发器，负责分发 是加载并显示图片任务 又或者是 处理并显示图片任务 给具体的线程池去执行，</p>
-</li>
-</ul>
-<ul>
-<li><p>加载图片时</p>
-<p>  配置完以后 我们在需要加载图片的地方 调用<br>  ImageLoader.getInstance().displayImage(image, holder.img_profile);<br>  先通过这一句话来进行加载图片  </p>
-<p>  它是通过一个displayImage的方法 进行加载图片  这个方法有很多重载<br>  它们都是调用了一个最全参数的displayImage  这个方法参数6个参数 分别是<br>  图片的路径，用来显示图片的控件，在application中定义的DisplayImageOptions的，图片加载的监听方法，图片的宽高，图片加载进度的回调接口</p>
-</li>
-</ul>
-<ul>
-<li><p>判断参数 ，并且内存中有这张图片</p>
-<p>  这个方法的内部会先判断 这些参数 哪些为null，如果image为null 就抛非法参数异常，判断图片的uri是否为null，如果为null 就用之前配置的uri为null的占位图来展示出来，如果不为null 它会先从内存中获取图片的信息  看看内存里面是否有这张图片， 通过根据图片的uri来生成图片在内存中存的key，来取出key对应的图片信息，如果图片不为null 并且它没有被回收掉，开启一个处理并显示图片的任务（ProcessAndDisplayImageTask）他就会将图片按照选项配置的大小，缩放等等信息进行处理 最终 显示到指定的控件中，</p>
-</li>
-</ul>
-<ul>
-<li><p>如果内存中没有</p>
-<p>  他会先显示一张 正在加载的占位图<br>  然后开启一个 加载并显示图片的任务（LoadAndDisplayImageTask）他其实就是一个继承Runnable的类</p>
-</li>
-</ul>
-<ul>
-<li><p>LoadingAndDisplayTask</p>
-<p>  在它的run方法里 他又判断了一遍<br>  在判断一遍 内存中是否有这个图片（防止多线程并发）<br>  然后 他又调用了 tryLoadBitmap方法</p>
-</li>
-</ul>
-<ul>
-<li><p>tryLoadBitmap</p>
-<p>  他会 通过 uri 获取 磁盘上的文件<br>  如果这个文件不为null并且存在 就把这个文件 处理 解码后 变成一个bitmap对象</p>
-<p>  如果这个内存卡上也没有这个文件<br>  就通过uri网络加载这个图片</p>
-<p>  然后根据uri获取一个inputStream流 把图片下载下来，根据配置的大小信息等，如果图片需要缓存<br>  就让uri+图片的宽高当file的名字 来生成一个file文件 就把这个文件存储到内存卡上<br>  如果根据uri获取的inputStream 是一个null的  就显示一个 网络加载失败的 占位图</p>
-<p>  最后根据存储的这个文件 获取他的 路径 然后 处理解码 变成一个bitmap对象 最终显示到控件上去</p>
-</li>
-</ul>
-<h4 id="总的来说-ImageLoader分成三种情况"><a href="#总的来说-ImageLoader分成三种情况" class="headerlink" title="总的来说 ImageLoader分成三种情况"></a>总的来说 ImageLoader分成三种情况</h4><pre><code>第一种是 直接在内存中获取到图片然后进行图片处理 显示到控件上
-第二种 在内存中获取不到，在内存卡中进行获取，然后得到文件路径 进行 解码处理 变成bitmap对象 显示到控件上
-第三种 内存和内存卡都获取不到，就从网路上进行加载 如果需要缓存，就用uri+图片宽高当file文件的名字 然后存储到内存卡中， 然后通过路径 获取这个图片 进行解码处理 变成bitmap对象 显示到控件上
-</code></pre><hr>
-<p>MemoryCache的key的样式</p>
-<pre><code>[imageUri]_[width]x[height]
-</code></pre><h3 id="加载图片的流程"><a href="#加载图片的流程" class="headerlink" title="加载图片的流程"></a>加载图片的流程</h3><p>1、displayImage(uri,ImageView)</p>
-<ul>
-<li>Uri 图片的路径</li>
-<li>ImageAware 用来显示图片的控件，相当于Imageview</li>
-<li>DisplayImageOptions 在application中定义的那些显示的选项，比如说错误或者加载中的占位图等</li>
-<li>ImageLoadingListener 图片加载中的监听方法</li>
-<li>Imagesize 图片的宽高，如果不设置，默认为Imageview的宽高</li>
-<li><p>ImageLoadingProgressListener  用来加载图片的进度信息</p>
-<p>  public void displayImage(String uri, ImageAware imageAware, DisplayImageOptions options,</p>
-<pre><code>    ImageSize targetSize, ImageLoadingListener listener, ImageLoadingProgressListener progressListener) {
-checkConfiguration();
-if (imageAware == null) {
-    throw new IllegalArgumentException(ERROR_WRONG_ARGUMENTS);
-}
-if (listener == null) {
-    listener = defaultListener;
-}
-if (options == null) {
-    options = configuration.defaultDisplayImageOptions;
-}
-
-if (TextUtils.isEmpty(uri)) {
-    //先判断图片的uri是否为空
-    engine.cancelDisplayTaskFor(imageAware);
-    listener.onLoadingStarted(uri, imageAware.getWrappedView());
-    if (options.shouldShowImageForEmptyUri()) {
-        //如果为空，就看是否配置的有占位图
-        imageAware.setImageDrawable(options.getImageForEmptyUri(configuration.resources));
-    } else {
-        imageAware.setImageDrawable(null);
-    }
-    listener.onLoadingComplete(uri, imageAware.getWrappedView(), null);
-    return;
-}
-
-if (targetSize == null) {
-    //设置图片的宽高信息
-    targetSize = ImageSizeUtils.defineTargetSizeForView(imageAware, configuration.getMaxImageSize());
-}
-</code></pre></li>
-</ul>
-<pre><code>    //重点：首先从内存中获取该图片信息
-    //第一步，根据图片的uri来生成图片在内存中存的key，默认情况下key是唯一的
-    String memoryCacheKey = MemoryCacheUtils.generateKey(uri, targetSize);
-    engine.prepareDisplayTaskFor(imageAware, memoryCacheKey);
-
-    listener.onLoadingStarted(uri, imageAware.getWrappedView());
-    //第二步 根据上面的key获取内存中的图片信息
-    Bitmap bmp = configuration.memoryCache.get(memoryCacheKey);
-    if (bmp != null &amp;&amp; !bmp.isRecycled()) {
-        //如果图片不为空并且图片没有被回收的情况下
-        L.d(LOG_LOAD_IMAGE_FROM_MEMORY_CACHE, memoryCacheKey);
-
-        if (options.shouldPostProcess()) {
-            //接着就是用来处理并显示图片到Imageview中
-            ImageLoadingInfo imageLoadingInfo = new ImageLoadingInfo(uri, imageAware, targetSize, memoryCacheKey,
-                    options, listener, progressListener, engine.getLockForUri(uri));
-            ProcessAndDisplayImageTask displayTask = new ProcessAndDisplayImageTask(engine, bmp, imageLoadingInfo,
-                    defineHandler(options));
-            if (options.isSyncLoading()) {
-                displayTask.run();
-            } else {
-                engine.submit(displayTask);
-            }
-        } else {
-            options.getDisplayer().display(bmp, imageAware, LoadedFrom.MEMORY_CACHE);
-            listener.onLoadingComplete(uri, imageAware.getWrappedView(), bmp);
-        }
-    } else {
-        //内存中不存在该图片的情况吧
-        if (options.shouldShowImageOnLoading()) {
-            //显示加载中的占位图
-            imageAware.setImageDrawable(options.getImageOnLoading(configuration.resources));
-        } else if (options.isResetViewBeforeLoading()) {
-            imageAware.setImageDrawable(null);
-        }
-
-        ImageLoadingInfo imageLoadingInfo = new ImageLoadingInfo(uri, imageAware, targetSize, memoryCacheKey,
-                options, listener, progressListener, engine.getLockForUri(uri));
-        //用来加载并显示图片的task
-        LoadAndDisplayImageTask displayTask = new LoadAndDisplayImageTask(engine, imageLoadingInfo,
-                defineHandler(options));
-        if (options.isSyncLoading()) {
-            displayTask.run();
-        } else {
-            engine.submit(displayTask);
-        }
-    }
-}
-</code></pre><h3 id="LoadingAndDisplayTask"><a href="#LoadingAndDisplayTask" class="headerlink" title="LoadingAndDisplayTask"></a>LoadingAndDisplayTask</h3><pre><code>@Override
-public void run() {
-    if (waitIfPaused()) return;
-    if (delayIfNeed()) return;
-
-    ReentrantLock loadFromUriLock = imageLoadingInfo.loadFromUriLock;
-    L.d(LOG_START_DISPLAY_IMAGE_TASK, memoryCacheKey);
-    if (loadFromUriLock.isLocked()) {
-        L.d(LOG_WAITING_FOR_IMAGE_LOADED, memoryCacheKey);
-    }
-
-    loadFromUriLock.lock();
-    Bitmap bmp;
-    try {
-        checkTaskNotActual();
-        //双重判断，继续判断内存中该图片信息是否存在
-        bmp = configuration.memoryCache.get(memoryCacheKey);
-        if (bmp == null || bmp.isRecycled()) {
-            //如果图片不存在或者图片被回收
-            //重点方法
-            bmp = tryLoadBitmap();
-
-            if (bmp == null) return; // listener callback already was fired
-
-            checkTaskNotActual();
-            checkTaskInterrupted();
-
-            if (options.shouldPreProcess()) {
-                L.d(LOG_PREPROCESS_IMAGE, memoryCacheKey);
-                bmp = options.getPreProcessor().process(bmp);
-                if (bmp == null) {
-                    L.e(ERROR_PRE_PROCESSOR_NULL, memoryCacheKey);
-                }
-            }
-
-            if (bmp != null &amp;&amp; options.isCacheInMemory()) {
-                L.d(LOG_CACHE_IMAGE_IN_MEMORY, memoryCacheKey);
-                configuration.memoryCache.put(memoryCacheKey, bmp);
-            }
-        } else {
-            loadedFrom = LoadedFrom.MEMORY_CACHE;
-            L.d(LOG_GET_IMAGE_FROM_MEMORY_CACHE_AFTER_WAITING, memoryCacheKey);
-        }
-
-        if (bmp != null &amp;&amp; options.shouldPostProcess()) {
-            L.d(LOG_POSTPROCESS_IMAGE, memoryCacheKey);
-            bmp = options.getPostProcessor().process(bmp);
-            if (bmp == null) {
-                L.e(ERROR_POST_PROCESSOR_NULL, memoryCacheKey);
-            }
-        }
-        checkTaskNotActual();
-        checkTaskInterrupted();
-    } catch (TaskCancelledException e) {
-        fireCancelEvent();
-        return;
-    } finally {
-        loadFromUriLock.unlock();
-    }
-
-    DisplayBitmapTask displayBitmapTask = new DisplayBitmapTask(bmp, imageLoadingInfo, engine, loadedFrom);
-    runTask(displayBitmapTask, syncLoading, handler, engine);
-}
-</code></pre><h4 id="tryLoadBitmap"><a href="#tryLoadBitmap" class="headerlink" title="tryLoadBitmap()"></a>tryLoadBitmap()</h4><pre><code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//先从文件系统中获取该图片文件</span></span><br><span class="line">File imageFile = configuration.diskCache.get(uri);</span><br><span class="line">		<span class="keyword">if</span> (imageFile != <span class="keyword">null</span> &amp;&amp; imageFile.exists() &amp;&amp; imageFile.length() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">			L.d(LOG_LOAD_IMAGE_FROM_DISK_CACHE, memoryCacheKey);</span><br><span class="line">			<span class="comment">//如果文件系统中存在的话，就从内存卡上加载该图片并显示</span></span><br><span class="line">			loadedFrom = LoadedFrom.DISC_CACHE;</span><br><span class="line"></span><br><span class="line">			checkTaskNotActual();</span><br><span class="line">			<span class="comment">//把文件信息转变成bitmap</span></span><br><span class="line">			bitmap = decodeImage(Scheme.FILE.wrap(imageFile.getAbsolutePath()));</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (bitmap == <span class="keyword">null</span> || bitmap.getWidth() &lt;= <span class="number">0</span> || bitmap.getHeight() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="comment">//如果bitmap不存在</span></span><br><span class="line">			L.d(LOG_LOAD_IMAGE_FROM_NETWORK, memoryCacheKey);</span><br><span class="line">			<span class="comment">//就从网络上加载图片信息</span></span><br><span class="line">			loadedFrom = LoadedFrom.NETWORK;</span><br><span class="line"></span><br><span class="line">			String imageUriForDecoding = uri;</span><br><span class="line">			<span class="comment">//重点方法 tryCacheImageOnDisk  缓存图片到内存卡上</span></span><br><span class="line">			<span class="keyword">if</span> (options.isCacheOnDisk() &amp;&amp; tryCacheImageOnDisk()) &#123;</span><br><span class="line">				<span class="comment">//下载完并且存储好之后再次获取内存卡上的图片信息</span></span><br><span class="line">				imageFile = configuration.diskCache.get(uri);</span><br><span class="line">				<span class="keyword">if</span> (imageFile != <span class="keyword">null</span>) &#123;</span><br><span class="line">					imageUriForDecoding = Scheme.FILE.wrap(imageFile.getAbsolutePath());</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			checkTaskNotActual();</span><br><span class="line">			bitmap = decodeImage(imageUriForDecoding);</span><br><span class="line">			<span class="comment">//此处表明内存、内存卡、以及网路上都不存在该图片信息</span></span><br><span class="line">			<span class="comment">//回调图片加载失败的监听方法</span></span><br><span class="line">			<span class="keyword">if</span> (bitmap == <span class="keyword">null</span> || bitmap.getWidth() &lt;= <span class="number">0</span> || bitmap.getHeight() &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">				fireFailEvent(FailType.DECODING_ERROR, <span class="keyword">null</span>);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
-</code></pre><h3 id="tryCacheImageOndisk"><a href="#tryCacheImageOndisk" class="headerlink" title="tryCacheImageOndisk"></a>tryCacheImageOndisk</h3><pre><code>private boolean tryCacheImageOnDisk() throws TaskCancelledException {
-    L.d(LOG_CACHE_IMAGE_ON_DISK, memoryCacheKey);
-
-    boolean loaded;
-    try {
-        //下载图片
-        loaded = downloadImage();
-        if (loaded) {
-            int width = configuration.maxImageWidthForDiskCache;
-            int height = configuration.maxImageHeightForDiskCache;
-            if (width &gt; 0 || height &gt; 0) {
-                L.d(LOG_RESIZE_CACHED_IMAGE_FILE, memoryCacheKey);
-                //此处是根据设置的大小，改变图片要缓存到内存卡上的大小并且把图片缓存下来
-                resizeAndSaveImage(width, height); // TODO : process boolean result
-            }
-        }
-    } catch (IOException e) {
-        L.e(e);
-        loaded = false;
-    }
-    return loaded;
-}
-</code></pre><h3 id="DownloadImage"><a href="#DownloadImage" class="headerlink" title="DownloadImage"></a>DownloadImage</h3><pre><code>private boolean downloadImage() throws IOException {
-    //根据图片的uri获取图片的流，然后存储图片到内存卡上
-    InputStream is = getDownloader().getStream(uri, options.getExtraForDownloader());
-    if (is == null) {
-        L.e(ERROR_NO_IMAGE_STREAM, memoryCacheKey);
-        return false;
-    } else {
-        try {
-            return configuration.diskCache.save(uri, is, this);
-        } finally {
-            IoUtils.closeSilently(is);
-        }
-    }
-}
-</code></pre><h3 id="ImageDownloader-gt-实现-BaseImageDownloader获取图片流的具体东西"><a href="#ImageDownloader-gt-实现-BaseImageDownloader获取图片流的具体东西" class="headerlink" title="ImageDownloader -&gt; 实现 BaseImageDownloader获取图片流的具体东西"></a>ImageDownloader -&gt; 实现 BaseImageDownloader获取图片流的具体东西</h3>
           
+在application中配置初始化
+  ImageLoader.getInstance().init（ImageLoaderConfiguration configuration）  getInstance 是一个懒汉式单例模式，获取ImageLoader的对象 双层是否为 null 判断提高性
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/07/ImageLoader/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1892,144 +886,16 @@ public void run() {
       
         
           
-            <h3 id="Android中跨进程通讯有几种方式"><a href="#Android中跨进程通讯有几种方式" class="headerlink" title="Android中跨进程通讯有几种方式"></a>Android中跨进程通讯有几种方式</h3><p>1.通过Intent 设置Action匹配规则 比如打开系统通话应用</p>
-<pre><code>IntentcallIntent=newIntent(Intent.ACTION_CALL,Uri.parse(&quot;tel:12345678&quot;);
-startActivity(callIntent);
-</code></pre><p>2.通过 ContentProvider 访问联系人信息</p>
-<p>3.广播 Broadcast 获取 手机电量等 信息</p>
-<p>4.AIDL</p>
-<h3 id="强引用，软引用，弱引用"><a href="#强引用，软引用，弱引用" class="headerlink" title="强引用，软引用，弱引用"></a>强引用，软引用，弱引用</h3><ul>
-<li>强引用 如果一个对象具有强引用，那垃圾回收器绝不会回收它   </li>
-<li>软引用 如果一个对象只具有软引用，则内存空间足够，垃圾回收器就不会回收它；如果内存空间不足了，就会回收这些对象的内存  软引用可用来实现内存敏感的高速缓存。   </li>
-<li>弱引用 不管内存是否足够，只要垃圾回收器扫描到它 ，就会把它给回收掉  不过，由于垃圾回收器是一个优先级很低的线程，因此不一定会很快发现那些只具有弱引用的对象。</li>
-</ul>
-<h3 id="Android动画"><a href="#Android动画" class="headerlink" title="Android动画"></a>Android动画</h3><ul>
-<li>帧动画，类似电影播放一样，由一个图片一个图片组成</li>
-<li>补间动画，是对某个View进行一系列的动画的操作，包括淡入淡出（Alpha），缩放（Scale），平移（Translate），旋转（Rotate）四种模式。</li>
-<li>属性动画，不再仅仅是一种视觉效果了，而是一种不断地对值进行操作，并将值赋到指定对象的指定属性上，可以是任意对象的任意属性</li>
-</ul>
-<h3 id="CursorLoader原理"><a href="#CursorLoader原理" class="headerlink" title="CursorLoader原理"></a>CursorLoader原理</h3><p>整个过程其实应用了 观察者模式，通常我们会在ContenProvider的query方法中调用setNotificationUri 这句话的作用其实就是告诉Cursor的观察者 数据发生了变化，</p>
-<ul>
-<li>通过ContentPorvider和ContentResolver使得数据发生了改变</li>
-<li>ContentProvider通知Cursor的观察者数据发生了改变</li>
-<li>Cursor通知CursorLoader的观察者数据发生了改变</li>
-<li>CursorLoader通过ContentProvider加载新的数据</li>
-<li>ContentPovider向DataBase请求新的数据</li>
-<li>CursorLoader调用CursorAdapter#changeCursor,用封装了新数据的Cursor替换旧的Cursor</li>
-<li>CursorAdapter告知AdapterView的观察者有新的数据</li>
-<li>AdapterView重新加载并显示数据</li>
-</ul>
-<h3 id="ListView优化"><a href="#ListView优化" class="headerlink" title="ListView优化"></a>ListView优化</h3><ul>
-<li>尽量宽高设置成固定的（避免内容listview重新渲染 加载）</li>
-<li>使用ViewHolder 避免每次getView的时候 重复调用 findViewById</li>
-<li>convertView </li>
-<li>使用分页加载 </li>
-<li>避免在getView中做耗时操作</li>
-<li>如果item有图片的加载，一定要对图片进行优化压缩缓存，</li>
-</ul>
-<h3 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h3><ul>
-<li>dispatchTouchEvent    用来分派事件 其中调用了onInterceptTouchEvent()和onTouchEvent()，一般不重写该方法</li>
-<li>onInterceptTouchEvent    用来拦截事件 ViewGroup类中的源码实现就是{return false;}表示不拦截该事件，事件将向下传递（传递给其子View）；若手动重写该方法，使其返回true则表示拦截，事件将终止向下传递，事件由当前ViewGroup类来处理，就是调用该类的onTouchEvent()方法</li>
-<li>onTouchEvent    用来处理事件 返回true则表示该View能处理该事件，事件将终止向上传递（传递给其父View）；返回false表示不能处理，则把事件传递给其父View的onTouchEvent()方法来处理</li>
-<li>记忆功能：比如说一个onClick事件，他其实有2个事件，第一个ACTION_DOWN，第二个ACTION_UP，当第一个ACTIONDOWN传递到某View的时候，他是怎么记录该事件是否被下面的View给处理成功了（因为，如果子View没有成功处理该事件的话，这个事件会一次回传上来）通过是否向上传递来记录ACTION_DOWN是否被处理成功了，如果子View处理成功了，ACTION_UP也传递到子View中，如果没有处理成功，ACTION_UP的时候也不会在传递到子View中，他会直接调用自己的onTouchEvent方法来处理。</li>
-<li>关于这“记忆”功能的信息只在一系列事件完成之前有效，也就是从ACTION_DOWN事件开始，直到后续事件ACTION_MOVE，ACTION_UP结束后，“记忆”的信息就会清除。</li>
-</ul>
-<h3 id="设计模式："><a href="#设计模式：" class="headerlink" title="设计模式："></a>设计模式：</h3><ul>
-<li>装饰模式：在不必改变原类文件和使用继承的情况下，动态地扩展一个对象的功能。它是通过创建一个包装对象，也就是装饰来包裹真实的对象。</li>
-<li>工厂模式：就是不需要new了，  它会自动帮你实现实例化。<br>getSystemService（String name）根据传过来的条件，生成对应的对象。</li>
-<li>观察者模式：定义对象间一对多的关系，当一个发生变化的时候，所依赖它的所有对象，都得到通知并自动更新。</li>
-<li>单例模式：确保该类只有一个实例存在。</li>
-</ul>
-<h3 id="AsyncTask内部实现，适用的场景"><a href="#AsyncTask内部实现，适用的场景" class="headerlink" title="AsyncTask内部实现，适用的场景"></a>AsyncTask内部实现，适用的场景</h3><ul>
-<li>AsyncTask内部也是Handler机制来完成的，只不过Android提供了执行框架来提供线程池来执行相应地任务，因为线程池的大小问题，所以AsyncTask只应该用来执行耗时时间较短的任务，比如HTTP请求，大规模的下载和数据库的更改不适用于AsyncTask，因为会导致线程池堵塞，没有线程来执行其他的任务，导致的情形是会发生AsyncTask根本执行不了的问题。</li>
-</ul>
-<h3 id="FragmentPagerAdapter和FragmentStatePagerAdapter"><a href="#FragmentPagerAdapter和FragmentStatePagerAdapter" class="headerlink" title="FragmentPagerAdapter和FragmentStatePagerAdapter"></a>FragmentPagerAdapter和FragmentStatePagerAdapter</h3><ul>
-<li>FragmentPageAdapter该类缓存当前Fragment的左边和右边同时保存到内存之中，适合用于那些相对静态的页，数量也较少的那种。</li>
-<li>FragmentStatePagerAdapter适合数据动态性较大，需要处理很多页的情况，它也继承PagerAdapter，但是它只保留当前页面，当页面离开视线的时候，就会被清除，释放资源。</li>
-</ul>
-<h3 id="自定义View"><a href="#自定义View" class="headerlink" title="自定义View"></a>自定义View</h3><ul>
-<li>自定义View<br>解释什么情况下 引发的 需要去自定义控件<br>如果是自定义一个View  首先我会去分析这个View  需要哪些自定义的属性 然后去编写  在自定义View的构造方法中去获取  获取到以后 我会重写他测量的方法 然后觉得这个View 到底占据多大的空间  测量完成后 我会去复写他的onDraw方法 去绘制我们的View 到底显示什么样的形状   这就是自定义View 的过程</li>
-<li>自定义ViewGroup<br>首先测量决定 ViewGroup的自身大小  还有一个职责就是去测量 它子View 的大小  给子View 一个参考值<br>然后完成测量 他的最主要一个任务就是 onLayout 去布局 去决定他ziView的位置显示的规则  比如是垂直的还是相对的 如果没有手势与用户交互的话  那他主要的也就是测量和一个Layout的过程  如果有和用户交互的话 那么还需要去考虑重写onTouchEvent 决定和用户如何交互  还有onInterceptTOuchEvent（ViewGroup）的情况下 你觉得这个手势是你应当去拦截的（从down到move到up 整个过程）</li>
-<li>getHeight()获取到的时候 在手机上面显示出来的高度</li>
-<li>getMeasuredHeight() 获取到的是 显示的高度+隐藏的高度</li>
-<li>getWidth（）View在設定好佈局後整個View的寬度。</li>
-<li>getMeasuredWidth（）對View上的內容進行測量後得到的View內容佔據的寬度</li>
-</ul>
-<h3 id="Canvas-save-和restore"><a href="#Canvas-save-和restore" class="headerlink" title="Canvas save()和restore()"></a>Canvas save()和restore()</h3><ul>
-<li>save：用来保存Canvas的状态。save之后，可以调用Canvas的平移、放缩、旋转、错切、裁剪等操作。</li>
-<li>restore：用来恢复Canvas之前保存的状态。防止save后对Canvas执行的操作对后续的绘制有影响。</li>
-<li>save和restore要配对使用（restore可以比save少，但不能多），如果restore调用次数比save多，会引发Error。</li>
-</ul>
-<hr>
-<h3 id="LayoutInflate-inflate-int-resource-ViewGroup-root-boolean-attachToRoot-参数"><a href="#LayoutInflate-inflate-int-resource-ViewGroup-root-boolean-attachToRoot-参数" class="headerlink" title="LayoutInflate.inflate(int resource, ViewGroup root, boolean attachToRoot)参数"></a>LayoutInflate.inflate(int resource, ViewGroup root, boolean attachToRoot)参数</h3><ul>
-<li>resource：需要加载布局文件的id，意思是需要将这个布局文件中加载到Activity中来操作。</li>
-<li>root：需要附加到resource资源文件的根控件，什么意思呢，就是inflate()会返回一个View对象，如果第三个参数attachToRoot为true，就将这个root作为根对象返回，否则仅仅将这个root对象的LayoutParams属性附加到resource对象的根布局对象上，也就是布局文件resource的最外层的View上，比如是一个LinearLayout或者其它的Layout对象。</li>
-<li>attachToRoot：是否将root附加到布局文件的根视图上</li>
-</ul>
-<h3 id="DOM、SAX、PULL区别"><a href="#DOM、SAX、PULL区别" class="headerlink" title="DOM、SAX、PULL区别"></a>DOM、SAX、PULL区别</h3><ul>
-<li>DOM：一次性把整个xml都加载进来，当文件比较大的时候速度比较慢。好处是：可以随时访问到某个节点的相邻节点，并且对xml文档的插入也非常的方便。</li>
-<li>SAX：通过事件驱动的方式，它会判断当前读到的字符是否符合xml语法中的某部分，如果符合就触发事件。所谓事件，其实就是一些回调（callback）方法，这些方法(事件)定义在ContentHandler接口。</li>
-<li>PULL：允许你的应用程序代码主动从解析器中获取事件，正因为是主动获取事件，因此可以在满足了需要的条件后不再获取事件，结束解析。</li>
-</ul>
-<h3 id="Volley"><a href="#Volley" class="headerlink" title="Volley"></a>Volley</h3><ul>
-<li>创建一个 RequestQueue queue=Volley.newRequestQueue(context);</li>
-<li>创建一个StringRequest对象 StringRequest s=new StringRequest(URL,响应成功回调，响应失败回调)</li>
-<li>强StringRequest对象添加到RequestQueue里面  </li>
-<li>如果是一个post请求的话 就要在 StringRequest s=new StringRequest（）{ 内部中重写一个onParams方法 在里面的Map集合中 添加post请求的数据 }</li>
-<li>StringRequest   JSONObjectRequest ImageRequest  不同的需求 对应不同的对象</li>
-<li>ImageLoader 使用缓存<br>  ①ImageLoader il=new ImageLoader(RequestQueue,new ImageCache());<br>  ②ImageLoader.ImageListener listener=ImageLoader.getImageListener(ImageView，默认图片，出错图片);<br>  ③il.get(url,listener,winth,height); </li>
-<li>使用 NetWorkImageView 控件   显示图片 并且缓存<br>  ①netWorkImageView.setDefault(默认图片);<br>  ②netWorkImageView.setError(出错图片);<br>  ③netWorkImageView.setImageUrl(url,new ImageLoader(RequestQueue,new ImageCache());</li>
-<li>内部原理：RequestQueue queue=Volley.newRequestQueue(context) 内部会启动五个线程 在等待处理数据<br>  当RequestQueue.add（）方法来添加一条网路请求的时候，这条请求会先加入缓存队列中，如果在缓存中可以找到对应的结果，就直接读取缓存并且解析，然后回调给主线程，如果在缓存中没有找到结果，就将这条请求加入到网络请求队列中，然后处理发送HTTP请求，解析响应结果，写入缓存，并回调给主线程。</li>
-</ul>
-<hr>
-<h3 id="屏幕适配"><a href="#屏幕适配" class="headerlink" title="屏幕适配"></a>屏幕适配</h3><ul>
-<li>weight  dp   sp</li>
-<li><p>layout_sw600dp   最小宽度600dp  不区分是否是 横屏还是竖屏<br>在这个文件夹下的布局文件 只要宽度大于600dp 就会使用这里面布局</p>
-</li>
-<li><p>layout-sw600dp-port 是垂直方向所用的布局</p>
-</li>
-<li>layout-sw600dp-land 是水平方向所用的布局</li>
-</ul>
-<hr>
-<h3 id="Retrofit原理"><a href="#Retrofit原理" class="headerlink" title="Retrofit原理"></a>Retrofit原理</h3><p>其实Retrofit无非就是让用户创建接口，使用自己指定的规则进行网络访问，把接口传入Retrofit，接口上附着的规则由Retrofit进行层层解析后，再进行实际的网络调用。</p>
-<p>Retrofit非常巧妙的用注解来描述一个HTTP请求，将一个HTTP请求抽象成一个Java接口，然后用了Java动态代理的方式，动态的将这个接口的注解“翻译”成一个HTTP请求，最后再执行这个HTTP请求</p>
-<hr>
-<h3 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h3><h3 id="序列化的原因"><a href="#序列化的原因" class="headerlink" title="序列化的原因"></a>序列化的原因</h3><ul>
-<li>当android传递的参数是Bean对象的时候，需要对Bean对象实现序列化。（2个Activity之间需要传递一个Bean对象）</li>
-<li>永久性保存对象，保存对象的字节序列到本地文件中，</li>
-<li>对象在网络中传递</li>
-<li>对象在IPC间传递</li>
-</ul>
-<h3 id="两种序列化的区别"><a href="#两种序列化的区别" class="headerlink" title="两种序列化的区别"></a>两种序列化的区别</h3><ul>
-<li>Serializable：在序列化的时候会产生大量的临时变量，从而引起频繁的GC，但是当 永久性保存对象，保存对象的字节序列到本地文件中，推荐使用Serializable</li>
-<li>Parcelable 效率高，速度快，适用于在网络中传递对象，或者序列化在进程间传递对象，推荐使用Parcelable</li>
-</ul>
-<hr>
-<h3 id="多进程引发的问题"><a href="#多进程引发的问题" class="headerlink" title="多进程引发的问题"></a>多进程引发的问题</h3><ul>
-<li>静态成员和单例模式失效：不同的虚拟机访问同一个类的对象，会产生多个副本，他们互不干扰。</li>
-<li>线程同步机制失效：因为不是一片内存了，所以进程所的不是同一个对象</li>
-<li>SharedPreferences的可靠性下降：不支持两个进程同时去执行写的操作，否则会有几率导致数据丢失</li>
-<li>Application会多次创建：不同的进程，需要分配不同的虚拟机，也就是启动一个应用，所有就会创建新的Application</li>
-</ul>
-<hr>
-<h3 id="图片圆角的实现"><a href="#图片圆角的实现" class="headerlink" title="图片圆角的实现"></a>图片圆角的实现</h3><ul>
-<li>通过设置图片本身：图片本身其实就是一个矩形，然后获取这个Bitmap的宽高new一个画布出来，然后在canvas有一个方法，绘制圆角矩形的方法，然后把圆角的大小传进进去，先绘制一个圆角矩形，然后在绘制一个Bitmap在这个矩形的上面，最终返回这个圆角bitmap，从而实现了圆角的图片.</li>
-<li>自定义ImageView：</li>
-</ul>
-<hr>
-<h3 id="Android-drawable-放一个drawable资源"><a href="#Android-drawable-放一个drawable资源" class="headerlink" title="Android:drawable 放一个drawable资源"></a>Android:drawable 放一个drawable资源</h3><ul>
-<li>android:state_pressed 是否按下，如一个按钮触摸或者点击。</li>
-<li>android:state_focused 是否取得焦点，比如用户选择了一个文本框。</li>
-<li>android:state_hovered 光标是否悬停，通常与focused state相同，它是4.0的新特性</li>
-<li>android:state_selected 被选中，它与focus state并不完全一样，如一个list view 被选中的时候，它里面的各个子组件可能通过方向键，被选中了。</li>
-<li>android:state_checkable 组件是否能被check。如：RadioButton是可以被check的。</li>
-<li>android:state_checked 被checked了，如：一个RadioButton可以被check了。</li>
-<li>android:state_enabled 能够接受触摸或者点击事件</li>
-<li>android:state_activated 被激活(这个麻烦举个例子，不是特明白)</li>
-<li>android:state_window_focused 应用程序是否在前台，当有通知栏被拉下来或者一个对话框弹出的时候应用程序就不在前台了</li>
-</ul>
-<h2 id="文章"><a href="#文章" class="headerlink" title="文章"></a>文章</h2><h4 id="AS导出jar包"><a href="#AS导出jar包" class="headerlink" title="AS导出jar包"></a><a href="http://yifeiyuan.me/2015/09/17/AndroidStudio%E5%AF%BC%E5%87%BAJar%E5%8C%85/" target="_blank" rel="external">AS导出jar包</a></h4><h4 id="混淆"><a href="#混淆" class="headerlink" title="混淆"></a><a href="http://www.jianshu.com/p/60e82aafcfd0" target="_blank" rel="external">混淆</a></h4><h4 id="使用Gradle管理Android"><a href="#使用Gradle管理Android" class="headerlink" title="使用Gradle管理Android"></a><a href="http://www.flysnow.org/2015/03/30/manage-your-android-project-with-gradle.html" target="_blank" rel="external">使用Gradle管理Android</a></h4>
-          
+          Android中跨进程通讯有几种方式1.通过Intent 设置Action匹配规则 比如打开系统通话应用
+IntentcallIntent=newIntent(Intent.ACTION_CALL,Uri.parse(&quot;tel:12345678&quot;);
+startActivity(
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/07/杂项/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -2121,24 +987,19 @@ startActivity(callIntent);
       
         
           
-            <pre><code>IPC--：进程内部通信
+          IPC--：进程内部通信
 AIDL：跨进程通信
-</code></pre><h3 id="两种启动方式："><a href="#两种启动方式：" class="headerlink" title="两种启动方式："></a>两种启动方式：</h3><p>startService()</p>
-<pre><code>onCreate()--&gt;onStartCommand()--&gt;onDestroy()
+两种启动方式：startService()
+onCreate()--&gt;onStartCommand()--&gt;onDestroy()
 这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
-</code></pre><p>bindSerVice()</p>
-<pre><code>onCreate()--&gt;onBind()--&gt;onUnbind()--&gt;onDestroy()
-这种方式 是和调用者绑定在一块，当调用者退出，他也会调用onDestroy（）
-如果多次调用bindService（）还是只会调用一次onBind（）但是如调用多次unBindService（）就会报错
-</code></pre><p>通常会 Start–&gt;Bind–&gt;unbind–&gt;stop 这样即使Service在unbind之后还能保证服务存在    </p>
-<h4 id="防止SerVice被强制停止"><a href="#防止SerVice被强制停止" class="headerlink" title="防止SerVice被强制停止"></a>防止SerVice被强制停止</h4><p>可能会创建2个Service 然后他们互相监听，如果监听到 其中一个停止掉了，就启动另一个Service</p>
-<p>可以通过 onStartCommand 设置Frag =START_REDELIVER_INTENT 就是如果Service被杀死了，系统会重新创建Service并且调用onStartCommand（）所有被挂起的intent都会一次传递</p>
-<h3 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h3><pre><code>1.IntentService 内部只有一个工作线程来完成耗时操作，只需实现onhandleIntent
-2.完成后会自动停止服务
-3.如果同时执行多个任务，会以队列的方式，一次执行
-4.通常使用该类来完成本App内部中的一些耗时工作。
-</code></pre>
-          
+bindSerV
+          ...
+
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/07/Service/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -2230,54 +1091,17 @@ AIDL：跨进程通信
       
         
           
-            <pre><code>创建Handler的时候就会 在里面 得到当前线程的保存的Looper实例，
+          创建Handler的时候就会 在里面 得到当前线程的保存的Looper实例，
 而Looper里面又有一个MessageQueue对象，每一个线程只能有一个Looper实例 
 每一个Looper里面也只有一个MessageQueue实例
-获取到以后，handler就和MessageQueue关联上了， 然后当它执行 sendMessage的时候
-就会把消息传送到MessageQueue里面去  Looper 通过loop方法负责从MessageQueue里面去取Message   
-把取出来的Message 在传递个Handler ，Handler接收并且负责处理
-</code></pre><h4 id="Looper-：主要是-prepare和loop方法"><a href="#Looper-：主要是-prepare和loop方法" class="headerlink" title="Looper ：主要是 prepare和loop方法"></a>Looper ：主要是 prepare和loop方法</h4><pre><code>prepare（）方法
-    主要是 在当前线程中保存一个Looper实例，然后在该实例中保存一个MessageQueue实例， 
-    这个方法只会调用一次 所有Looper 在一个线程中只会存在一个
-loop()方法
-    会让当前线程进入一个无限循环，从MessageQueue实例中不断读取消息，然后把消息传递给Handler
-</code></pre><h4 id="Handler：主要负责发送消息到MessageQueue中，-然后接收从Looper传递过来的信息"><a href="#Handler：主要负责发送消息到MessageQueue中，-然后接收从Looper传递过来的信息" class="headerlink" title="Handler：主要负责发送消息到MessageQueue中， 然后接收从Looper传递过来的信息"></a>Handler：主要负责发送消息到MessageQueue中， 然后接收从Looper传递过来的信息</h4><pre><code>handler的构造函数会获取当前线程 保存的Looper对象，
-从而根据这个looper对象获取他里面保存的MessageQueue实例，
-这样就保证了handler和MessageQueue关联上了
-</code></pre><h4 id="MessageQueue：负责存储Handler发送过来的信息-底部采用队列-先进先出"><a href="#MessageQueue：负责存储Handler发送过来的信息-底部采用队列-先进先出" class="headerlink" title="MessageQueue：负责存储Handler发送过来的信息 底部采用队列 先进先出"></a>MessageQueue：负责存储Handler发送过来的信息 底部采用队列 先进先出</h4><hr>
-<h5 id="Message-obtain"><a href="#Message-obtain" class="headerlink" title="Message.obtain()"></a>Message.obtain()</h5><pre><code>获取Message的实例时候 推荐使用 Message.obtain()
-因为Message内部会有一个Message池 用于Message的复用，避免了new Message的时候重新分配内存。
-</code></pre><h5 id="handler用法："><a href="#handler用法：" class="headerlink" title="handler用法："></a>handler用法：</h5><pre><code>handler不光可以用来更新UI  还可以在子线程中创建一个Handler实例，
-然后使用这个handler实例去任何其他线程中发送消息，
-最终处理的代码都会在你创建的这个Handler实例都线程中运行
-</code></pre><h5 id="Handler的post方法创建的线程和UI线程有什么关系"><a href="#Handler的post方法创建的线程和UI线程有什么关系" class="headerlink" title="Handler的post方法创建的线程和UI线程有什么关系"></a>Handler的post方法创建的线程和UI线程有什么关系</h5><pre><code>其实这个Runnable并没有创建一个线程，而是发送了一条消息，只不过是把这个Runable对象当成callback（回调）属性，赋值给了Message  然后还是 把消息添加到MessageQueue中去，和上面的一样。
-</code></pre><hr>
-<h3 id="内存泄漏问题"><a href="#内存泄漏问题" class="headerlink" title="内存泄漏问题"></a>内存泄漏问题</h3><ul>
-<li><p>原因：因为Handler是一个内部类，它会获得外部类Activity的引用，如果Activity被用户关掉了，但是Handler有一个延时发送的信息 还没有执行，所以表面是关闭了Activity 释放了资源，实际上其实，Handler还在调用着它的引用，这样就导致了内存泄漏，</p>
-</li>
-<li><p>解决：使用静态内部类，然后在该类里使用弱引用来指向所在的Activity。</p>
-</li>
-<li><p>如果Activity关闭的时候，也要remove掉MessageQueue中的Message消息和Runnable</p>
-<pre><code>@Override  
- public void onDestroy() {  
- mHandler.removeMessages(MESSAGE_1);  
- mHandler.removeMessages(MESSAGE_2);  
+获取到以后，handler就和MessageQueue关联上了，
+          ...
 
- mHandler.removeCallbacks(mRunnable);  
-
- // ... ...  
- }
-
-或者是
-@Override  
-public void onDestroy() {  
-    //  If null, all callbacks and messages will be removed.  
-    mHandler.removeCallbacksAndMessages(null);  
-}
-</code></pre></li>
-</ul>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/07/Handler/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -2369,71 +1193,19 @@ public void onDestroy() {
       
         
           
-            <pre><code>exporte=&quot;true&quot;表示可以被其他应用启动
+          exporte=&quot;true&quot;表示可以被其他应用启动
 Task：相当于存放Activity的栈
-</code></pre><h3 id="四种启动模式："><a href="#四种启动模式：" class="headerlink" title="四种启动模式："></a>四种启动模式：</h3><p>1.Standard</p>
-<pre><code>：每次启动Activity的时候，这种模式下每次创建新的Activity不会创建新的Task，
+四种启动模式：1.Standard
+：每次启动Activity的时候，这种模式下每次创建新的Activity不会创建新的Task，
 只会将新的Activity添加到原有的Task中
-A-B-A-B-C 依次打开 就会创建5个Activity
-</code></pre><p>2.SingleTop  使用场景如新闻类或者阅读类App的内容页面。</p>
-<pre><code>：与第一个基本相似，但是如果要添加的Activity已经在栈顶 就不会创建新的，而是复用
-A-A-A-A-A 打开5个Activity 如果名字是一样的 并且它是在栈顶， 就只会创建一个A的实例
-A-B-A-B-B 打开5个Activity 只会创建四个Activity 因为最后一个B是在栈顶 所以就直接调用不会在创建一个新的Activity
-</code></pre><p>3.SingleTask 如浏览器的主界面</p>
-<pre><code>：同一个栈中 只能有一个Activity的实例
-⑴如果要启动的不存在，系统将创建新的 并且加到栈顶
-⑵如果要启动的Activity已经在栈顶，就不会创建新的，而是复用  和SingleTop一样
-⑶如果存在，但是没有位于栈顶，系统就把位于该Activity上面的所有Activity移除，从而使目标Activity转入栈顶
-A-B-C-A 在创建一个A的时候  如果有这个Activity，就不会创建 只会把这个Activity所在的栈上面的所有Activity给清除出去，也就是 把B-C给清楚出去 从而显示这个 A
-</code></pre><p>4.SingleInstance 如打开打电话 发短信界面</p>
-<pre><code>：无论从那个Task中启动目标Activity，只会创建一个目标实例，并使用一个全新的Task栈来装载该Activity实例  类似于单例模式 每一个栈中 只能存放一个Activity
-⑴如果不存在，就创建一个新的Task栈，创建一个新的Activity 并加入到栈顶
-⑵如果目标Activity已经存在，无论它位于哪个程序中，无论它位于哪个Task中，系统都会把该Activity所在的Task转到前台，从而使用该Activity展示出来。
-A-B-C 就会创建三个Task栈 来状态对应的Activity
-</code></pre><hr>
-<h3 id="生命周期："><a href="#生命周期：" class="headerlink" title="生命周期："></a>生命周期：</h3><pre><code>1.onCreate()
-创建Activity的时候调用 只会调用一次
-2.onStart()
-启动Activity的时候调用 
-3.onResume()
-获取焦点的时候调用，也就是与用户交互的时候
-4.onPause()
-失去焦点的时候调用
-5.onStop()
-暂停的时候调用
-6.onDestroy()
-销毁Activity的时候调用 只会调用一次
-7.onRestart()    
-重新运行的Activity的时候调用
+A-
+          ...
 
-- onCreate和onDestroy代表Activty的创建和销毁
-- onStart和onStop代表设备屏幕的点亮和熄灭 (按下home键)
-- onResume和onPause代表Activity是否在前台（来短信）
-启动一个Activity onCreate()--&gt;onStart()--&gt;onResume()
-销毁一个Activity onPause()--&gt;onStop()--&gt;onDestroy()
-失去焦点后，又重新获取焦点    onPause（）--&gt;onStop()--&gt;onRestart()--&gt;onStart()--&gt;onResume()
-</code></pre><h3 id="四种状态："><a href="#四种状态：" class="headerlink" title="四种状态："></a>四种状态：</h3><p>1.活动状态：Activity处于界面最顶端，获取焦点</p>
-<p>2.暂停状态：失去焦点，但是用户可见，</p>
-<p>3.停止状态：被完全遮挡，但是保留所有的状态和成员信息 相当于按下home见，程序在后台运行</p>
-<p>4.销毁状态：被销毁了 ，</p>
-<h3 id="当Activity异常终止的时候"><a href="#当Activity异常终止的时候" class="headerlink" title="当Activity异常终止的时候"></a>当Activity异常终止的时候</h3><pre><code>系统会调用onSaveInstanceState来保存Activity的状态
-可以在里面存入一些需要保存的数据，当Activity被重新创建的时候，可以用onRestoreInstanceState来恢复之前保存的数据。
-</code></pre><h3 id="当Activity进行屏幕翻转的时候"><a href="#当Activity进行屏幕翻转的时候" class="headerlink" title="当Activity进行屏幕翻转的时候"></a>当Activity进行屏幕翻转的时候</h3><pre><code>如果不想重新创建Activity就把
-android:configChanges=&quot;orientation
-</code></pre><h3 id="Activity之间传值"><a href="#Activity之间传值" class="headerlink" title="Activity之间传值"></a>Activity之间传值</h3><pre><code> startActivityForResult(intent, 1); //打开第二个Activity  请求码是 1；
-setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过来的数据
-然后在第一个Activity中 
-重写onActivityResult（int requestCode, int resultCode, Intent data）方法
- if(requestCode==1&amp;&amp;resultCode==2)判断（第一次是请求码，第二个是返回码）
-如果相等 就调用 data.getStringExtra(“key”);来获取数据
-</code></pre><h3 id="Intent的属性"><a href="#Intent的属性" class="headerlink" title="Intent的属性"></a>Intent的属性</h3><p>动作(Action),数据(Data),分类(Category),类型(Type),组件(Compent)以及扩展信(Extra)。其中最常用的是Action属性和Data属性。</p>
-<ul>
-<li>原则上一个Intent不应该既是显示调用又是隐式调用，如果二者同时存在的话，以显示调用为主。 </li>
-<li>需要同时匹配过滤列表中的action，category，data信息，否则匹配失败</li>
-<li>一个列表中可以有多个action，category，data，只有一个Intent同时匹配action类别，category类别，data类别才算完全匹配，只有完全匹配，才能成功启动Activity，一个Activity可以有多个Intent-filter，一个Intent只要匹配上任何一组Intent-filter就能成功启动该Activity。</li>
-</ul>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/05/07/activity/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
