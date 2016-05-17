@@ -1,4 +1,4 @@
-# Hexo Configuration
+﻿# Hexo Configuration
 ## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
@@ -9,6 +9,12 @@ description:
 author: 赵黎明
 language: zh-Hans
 timezone: 
+
+
+
+social:
+  github: https://github.com/zlmService
+  weibo: http://weibo.com/5263919914/profile?rightmod=1&wvr=6&mod=personnumber&is_all=1
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
