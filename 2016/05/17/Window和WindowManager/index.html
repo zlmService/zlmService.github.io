@@ -90,7 +90,7 @@
 <meta property="og:url" content="http://zhaoliming.com/2016/05/17/Window和WindowManager/index.html">
 <meta property="og:site_name" content="赵黎明的博客">
 <meta property="og:description" content="WindowWindow表示一个窗口的概念，创建一个Window通过WindowManager来完成。WindowManager是外界访问Window的入口，Window的具体试下位于WindowManagerService中。Android所有的视图都是通过Window来呈现的，不管是Activity、Dialog还是Toast，他们的视图都是附加在Window上的。因此Window实际是Vie">
-<meta property="og:updated_time" content="2016-05-17T13:48:52.220Z">
+<meta property="og:updated_time" content="2016-05-18T03:43:00.796Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Window和WindowManager">
 <meta name="twitter:description" content="WindowWindow表示一个窗口的概念，创建一个Window通过WindowManager来完成。WindowManager是外界访问Window的入口，Window的具体试下位于WindowManagerService中。Android所有的视图都是通过Window来呈现的，不管是Activity、Dialog还是Toast，他们的视图都是附加在Window上的。因此Window实际是Vie">
@@ -350,6 +350,33 @@ public boolean onTouch(View v, MotionEvent event) {
 <h3 id="Window的更新过程"><a href="#Window的更新过程" class="headerlink" title="Window的更新过程"></a>Window的更新过程</h3><ul>
 <li>通过更新LayoutParams，然后对View重新布局，包括测量，布局，重绘，除了View本身的重绘，还会更新Window的视图，这个过程最终是由WindowManagerService的relayoutWindow方法来具体完成的，它同样是一个IPC过程。</li>
 </ul>
+<hr>
+<h3 id="各级别window创建过程"><a href="#各级别window创建过程" class="headerlink" title="各级别window创建过程"></a>各级别window创建过程</h3><h4 id="Activity的Window创建中视图如何附属在Window上"><a href="#Activity的Window创建中视图如何附属在Window上" class="headerlink" title="Activity的Window创建中视图如何附属在Window上"></a>Activity的Window创建中视图如何附属在Window上</h4><p>获取PhoneWindow</p>
+<pre><code>public Window makeNewWindow(Context context){
+    return new PhoneWindow(context)//从这可以看出，Window的实现类确实是PhoneWindow，
+}
+</code></pre><p>通过PhoneWindow实现，如果没有DecorView，就创建它，然后把View添加到DecorView的ContenParent中，最终回调onContentChanged方法通知Activity视图已经发生了改变，然后在onPause方法之后调用makeVisible，这时候就能看到视图了。</p>
+<pre><code>void makeVisible() {
+if (!mWindowAdded) {
+    ViewManager wm = getWindowManager();
+    wm.addView(mDecor, getWindow().getAttributes());
+    mWindowAdded = true;
+}
+mDecor.setVisibility(View.VISIBLE);
+}
+</code></pre><h4 id="Dialog的Window创建"><a href="#Dialog的Window创建" class="headerlink" title="Dialog的Window创建"></a>Dialog的Window创建</h4><p>如果是Dialog的Window创建，普通Dialog必须采用Activity的context，如果采用了Application的就会报错，<br>原因是因为没有应用token所导致的，而token一般只有Activity拥有<br>但是如果指定对话框的Window为系统类型（2000~2999）就可以正常弹出对话框，因为系统Window不需要token，系统window需要加权限。</p>
+<pre><code> public void onDialogClick(View v){
+    Dialog dialog = new Dialog(getApplicationContext());
+    TextView textView = new TextView(this);
+    textView.setText(&quot;this is toast!&quot;);
+    dialog.setContentView(textView);
+    dialog.getWindow().setType(LayoutParams.TYPE_SYSTEM_ERROR);
+    dialog.show();
+}
+</code></pre><h4 id="Toast的Window创建"><a href="#Toast的Window创建" class="headerlink" title="Toast的Window创建"></a>Toast的Window创建</h4><ul>
+<li>因为有定时取消，所以采用Handler来完成，意味着Toast只能在有Looper的线程中弹出，因为Handler需要使用Looper才能完成切换线程的功能</li>
+<li>内部有一个集合，负责存储所有的Toast，最多只能存储50个</li>
+</ul>
 
       
     </div>
@@ -387,6 +414,10 @@ public boolean onTouch(View v, MotionEvent event) {
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/20/Android的线程和线程池“/" rel="prev" title="Android的线程和线程池">
+                Android的线程和线程池 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -454,7 +485,7 @@ public boolean onTouch(View v, MotionEvent event) {
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">14</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -513,7 +544,7 @@ public boolean onTouch(View v, MotionEvent event) {
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Window"><span class="nav-number">1.</span> <span class="nav-text">Window</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#LayoutParams-flags：表示Window的属性，有很多选项代表不同的特性。"><span class="nav-number">1.0.1.</span> <span class="nav-text">LayoutParams.flags：表示Window的属性，有很多选项代表不同的特性。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LayoutParams-type-表示Window的类型。Window有三种类型，分别是应用Window，子Window，系统Window。"><span class="nav-number">1.0.2.</span> <span class="nav-text">LayoutParams.type:表示Window的类型。Window有三种类型，分别是应用Window，子Window，系统Window。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WindowManager"><span class="nav-number">2.</span> <span class="nav-text">WindowManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window的添加过程"><span class="nav-number">3.</span> <span class="nav-text">Window的添加过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window的删除过程"><span class="nav-number">4.</span> <span class="nav-text">Window的删除过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window的更新过程"><span class="nav-number">5.</span> <span class="nav-text">Window的更新过程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Window"><span class="nav-number">1.</span> <span class="nav-text">Window</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#LayoutParams-flags：表示Window的属性，有很多选项代表不同的特性。"><span class="nav-number">1.0.1.</span> <span class="nav-text">LayoutParams.flags：表示Window的属性，有很多选项代表不同的特性。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#LayoutParams-type-表示Window的类型。Window有三种类型，分别是应用Window，子Window，系统Window。"><span class="nav-number">1.0.2.</span> <span class="nav-text">LayoutParams.type:表示Window的类型。Window有三种类型，分别是应用Window，子Window，系统Window。</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WindowManager"><span class="nav-number">2.</span> <span class="nav-text">WindowManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window的添加过程"><span class="nav-number">3.</span> <span class="nav-text">Window的添加过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window的删除过程"><span class="nav-number">4.</span> <span class="nav-text">Window的删除过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Window的更新过程"><span class="nav-number">5.</span> <span class="nav-text">Window的更新过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#各级别window创建过程"><span class="nav-number">6.</span> <span class="nav-text">各级别window创建过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Activity的Window创建中视图如何附属在Window上"><span class="nav-number">6.1.</span> <span class="nav-text">Activity的Window创建中视图如何附属在Window上</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dialog的Window创建"><span class="nav-number">6.2.</span> <span class="nav-text">Dialog的Window创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Toast的Window创建"><span class="nav-number">6.3.</span> <span class="nav-text">Toast的Window创建</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
