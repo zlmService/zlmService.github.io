@@ -189,3 +189,64 @@ AsyncTask提供了四个核心方法：
         }
 - 当onHandlerIntent方法执行完以后，会通过stopSelf（int startId）方法停止服务，为什么采用带参数的stopSelf（int startId），因为这个方法不会直接停止服务，而是等待所有的消息都处理完毕后才终止服务，stopSelf（）会立刻停止服务
 
+### 线城池
+
+优点：
+
+1. 重用线程池中的线程
+2. 能有效控制线城池中的最大并发数，避免大量线程之间因互相抢占资源而导致阻塞的现象。
+3. 能够对线程进行简单的管理，并提供定时执行以及指定间隔循环执行等功能。
+	
+#### ThreadPoolExeutor
+ThreadPoolExecutor是Executor的真正实现类，他的构造方法提供一系列的参数来配置线程池。
+
+	    public ThreadPoolExecutor(int corePoolSize,
+	                              int maximumPoolSize,
+	                              long keepAliveTime,
+	                              TimeUnit unit,
+	                              BlockingQueue<Runnable> workQueue,
+	                              ThreadFactory threadFactory)
+参数：
+
+1. corePoolSize：线程池中的核心线程数，默认情况下，核心线程会一直存活，即便是闲置状态。但是如果将ThreadPoolExecutor的allowCoreThreadTimeOut的属性设置为true以后，那么闲置的核心线程会有一个闲置的时间期限（由keepAliveTime指定），一旦超出这个时间期限，那么核心线程也被会终止。
+2. maximumPoolSize：线程池中的最大线程数，当活动线程的数量达到这个值后，后续的任务就会被阻塞。
+3. keepAliveTime：非核心线程闲置时间的期限，如果超过这个期限，系统就会回收非核心线程。当allowCoreThreadTimeOut的属性设置为true以后，keepAliveTime指定的时间也作用于核心线程。
+4. unit：用于指定keepAliveTime参数时间的单位，是一个枚举（毫秒，秒，分钟等）。
+5. workQueue：线程池中的任务队列，通过线程池的execute方法提交的Runnable对象会存储在这个参数中。
+6. threadFactory：线程工厂，为线程池提供创建新线程的功能，它是一个接口，只有一个方法：Thread newThread(Runnable r)。
+
+ThreadPoolExecutor的大致流程：
+1. 如果线程池中的线程未达到核心线程的数量，那么会直接开启一个核心线程来执行任务，
+2. 如果线程中的数量达到或者超过核心线程的数量，那么任务会被插入到任务队列中排队等待执行。
+3. 如果在步骤2中无法将任务插入到任务队列中去（可能是任务队列满了），这个时候如果线程数量没有达到线程池中的最大数，那么就开启一个非核心线程去执行这个任务。
+4. 在步骤3中 如果线程数量已经达到了线程池中的最大数，那么就拒绝执行此任务，会调用RejectedExeutionHandler的rejectedExcution方法来通知调用者。
+
+#### 线程池的分类
+他们都是直接或者间接通过配置ThreadPoolExecutor来实现自己的功能
+
+- FixedThreadPool
+
+	     Executors.newFixedThreadPool(1);通过Executor的newFixedThreadPool方法来创建
+		**简介**：它是一种线程数量固定的线程池，里面只有核心线程并且不会被回收，
+		另外任务队列也没有大小限制它可以更加快速的响应外界的请求。
+
+- CachedThreadPool
+
+       	Executors.newCachedThreadPool();创建
+		**简介**：它是一种线程数量不固定的线程池，它只有非核心线程，并且最大线程数为Integer.MAX_VALUE。也可以说是接近无限大。
+		当线程中的线程都处于活动状态时，线程池会创建新的线程来处理新任务，否则就会利用空闲线程来处理任务。
+		线程池中的空闲空闲线程有超时机制，超过60秒后的闲置线程就会被回收掉。
+		可以把它看做是一个空集合，任何来的任务都可以立即执行，当整个线程池处于闲置状态时，里面的线程都会超时而被停止，
+		这个时候它里面是没有线程的，几乎不占任何系统资源。所以它适用于执行大量的耗时较少的任务，
+
+- ScheduledThreadPool
+
+		 Executors.newScheduledThreadPool(1);创建
+		核心线程是固定的，而非核心线程是没有闲置的，并且当非核心线程闲置时会立即回收
+		这类线程池主要用于执行定时任务和具有固定周期的重复任务。
+
+- SingleThreadExecutor
+
+	    Executors.newSingleThreadExecutor();创建
+		内部只有一个核心线程，它确保所有任务都能在同一个线程中按照顺序执行
+		它可以统一外界的任务到一个线程中，这使得这些任务之间不需要处理同步问题
