@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="源自Android开发艺术探索总结," />
 
 
 
@@ -84,34 +84,25 @@
 
 
 
-<meta name="description" content="exporte=&amp;quot;true&amp;quot;表示可以被其他应用启动
-Task：相当于存放Activity的栈
-四种启动模式：1.Standard
-：每次启动Activity的时候，这种模式下每次创建新的Activity不会创建新的Task，
-只会将新的Activity添加到原有的Task中
-A-B-A-B-C 依次打开 就会创建5个Activity
-2.SingleTop  使用场景如新闻类或">
+<meta name="description" content="Bitmap的高效加载为什么采取高效加载：因为当我们需要显示的图片远远小于图片本身的大小的时候，就会很浪费内存资源，为了提高Bitmap的性能，我们需要通过BitmapFactory.Options可以按照一定的采样率来加载缩小后的图片，这样一定程度上避免了OOM。
+如何获取采样率：
+
+将BitmapFactory.Options的inJustDecodeBounds参数设置为true并加载图片">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Activity">
-<meta property="og:url" content="http://zhaoliming.com/2016/05/07/activity/index.html">
+<meta property="og:title" content="Bitmap的加载和Cache">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/23/Bitmap的加载和Cache/index.html">
 <meta property="og:site_name" content="赵黎明的博客">
-<meta property="og:description" content="exporte=&amp;quot;true&amp;quot;表示可以被其他应用启动
-Task：相当于存放Activity的栈
-四种启动模式：1.Standard
-：每次启动Activity的时候，这种模式下每次创建新的Activity不会创建新的Task，
-只会将新的Activity添加到原有的Task中
-A-B-A-B-C 依次打开 就会创建5个Activity
-2.SingleTop  使用场景如新闻类或">
-<meta property="og:updated_time" content="2016-05-10T03:26:43.052Z">
+<meta property="og:description" content="Bitmap的高效加载为什么采取高效加载：因为当我们需要显示的图片远远小于图片本身的大小的时候，就会很浪费内存资源，为了提高Bitmap的性能，我们需要通过BitmapFactory.Options可以按照一定的采样率来加载缩小后的图片，这样一定程度上避免了OOM。
+如何获取采样率：
+
+将BitmapFactory.Options的inJustDecodeBounds参数设置为true并加载图片">
+<meta property="og:updated_time" content="2016-05-23T15:37:56.743Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Activity">
-<meta name="twitter:description" content="exporte=&amp;quot;true&amp;quot;表示可以被其他应用启动
-Task：相当于存放Activity的栈
-四种启动模式：1.Standard
-：每次启动Activity的时候，这种模式下每次创建新的Activity不会创建新的Task，
-只会将新的Activity添加到原有的Task中
-A-B-A-B-C 依次打开 就会创建5个Activity
-2.SingleTop  使用场景如新闻类或">
+<meta name="twitter:title" content="Bitmap的加载和Cache">
+<meta name="twitter:description" content="Bitmap的高效加载为什么采取高效加载：因为当我们需要显示的图片远远小于图片本身的大小的时候，就会很浪费内存资源，为了提高Bitmap的性能，我们需要通过BitmapFactory.Options可以按照一定的采样率来加载缩小后的图片，这样一定程度上避免了OOM。
+如何获取采样率：
+
+将BitmapFactory.Options的inJustDecodeBounds参数设置为true并加载图片">
 
 
 
@@ -129,7 +120,7 @@ A-B-A-B-C 依次打开 就会创建5个Activity
   };
 </script>
 
-  <title> Activity | 赵黎明的博客 </title>
+  <title> Bitmap的加载和Cache | 赵黎明的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +240,7 @@ A-B-A-B-C 依次打开 就会创建5个Activity
             
             
               
-                Activity
+                Bitmap的加载和Cache
               
             
           </h1>
@@ -261,8 +252,8 @@ A-B-A-B-C 依次打开 就会创建5个Activity
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-07T22:02:34+08:00" content="2016-05-07">
-              2016-05-07
+            <time itemprop="dateCreated" datetime="2016-05-23T22:44:22+08:00" content="2016-05-23">
+              2016-05-23
             </time>
           </span>
 
@@ -289,70 +280,65 @@ A-B-A-B-C 依次打开 就会创建5个Activity
       
 
       
-        <pre><code>exporte=&quot;true&quot;表示可以被其他应用启动
-Task：相当于存放Activity的栈
-</code></pre><h3 id="四种启动模式："><a href="#四种启动模式：" class="headerlink" title="四种启动模式："></a>四种启动模式：</h3><p>1.Standard</p>
-<pre><code>：每次启动Activity的时候，这种模式下每次创建新的Activity不会创建新的Task，
-只会将新的Activity添加到原有的Task中
-A-B-A-B-C 依次打开 就会创建5个Activity
-</code></pre><p>2.SingleTop  使用场景如新闻类或者阅读类App的内容页面。</p>
-<pre><code>：与第一个基本相似，但是如果要添加的Activity已经在栈顶 就不会创建新的，而是复用
-A-A-A-A-A 打开5个Activity 如果名字是一样的 并且它是在栈顶， 就只会创建一个A的实例
-A-B-A-B-B 打开5个Activity 只会创建四个Activity 因为最后一个B是在栈顶 所以就直接调用不会在创建一个新的Activity
-</code></pre><p>3.SingleTask 如浏览器的主界面</p>
-<pre><code>：同一个栈中 只能有一个Activity的实例
-⑴如果要启动的不存在，系统将创建新的 并且加到栈顶
-⑵如果要启动的Activity已经在栈顶，就不会创建新的，而是复用  和SingleTop一样
-⑶如果存在，但是没有位于栈顶，系统就把位于该Activity上面的所有Activity移除，从而使目标Activity转入栈顶
-A-B-C-A 在创建一个A的时候  如果有这个Activity，就不会创建 只会把这个Activity所在的栈上面的所有Activity给清除出去，也就是 把B-C给清楚出去 从而显示这个 A
-</code></pre><p>4.SingleInstance 如打开打电话 发短信界面</p>
-<pre><code>：无论从那个Task中启动目标Activity，只会创建一个目标实例，并使用一个全新的Task栈来装载该Activity实例  类似于单例模式 每一个栈中 只能存放一个Activity
-⑴如果不存在，就创建一个新的Task栈，创建一个新的Activity 并加入到栈顶
-⑵如果目标Activity已经存在，无论它位于哪个程序中，无论它位于哪个Task中，系统都会把该Activity所在的Task转到前台，从而使用该Activity展示出来。
-A-B-C 就会创建三个Task栈 来状态对应的Activity
-</code></pre><hr>
-<h3 id="生命周期："><a href="#生命周期：" class="headerlink" title="生命周期："></a>生命周期：</h3><pre><code>1.onCreate()
-创建Activity的时候调用 只会调用一次
-2.onStart()
-启动Activity的时候调用 
-3.onResume()
-获取焦点的时候调用，也就是与用户交互的时候
-4.onPause()
-失去焦点的时候调用
-5.onStop()
-暂停的时候调用
-6.onDestroy()
-销毁Activity的时候调用 只会调用一次
-7.onRestart()    
-重新运行的Activity的时候调用
+        <h3 id="Bitmap的高效加载"><a href="#Bitmap的高效加载" class="headerlink" title="Bitmap的高效加载"></a>Bitmap的高效加载</h3><p><strong>为什么采取高效加载</strong>：因为当我们需要显示的图片远远小于图片本身的大小的时候，就会很浪费内存资源，为了提高Bitmap的性能，我们需要通过BitmapFactory.Options可以按照一定的采样率来加载缩小后的图片，这样一定程度上避免了OOM。</p>
+<p><strong>如何获取采样率</strong>：</p>
+<ol>
+<li>将BitmapFactory.Options的inJustDecodeBounds参数设置为true并加载图片</li>
+<li>从Options中获取图片原始宽高</li>
+<li>结合目标View的所需大小计算出采样率inSampleSize</li>
+<li><p>将inJustDecodeBounds参数设置为false，重新加载图片</p>
+<pre><code>//Bitmap高效加载
+public Bitmap BitmapCache(Resources res, int resId, int reqWidth, int reqHeight) {
+    BitmapFactory.Options options = new BitmapFactory.Options();
+    options.inJustDecodeBounds = true;//为true时，代表只会解析图片的宽和高，并不会真正的加载图片
+    BitmapFactory.decodeResource(res, resId, options);//解析图片
+    //设置完缩放比例后 在解析图片
+    options.inSampleSize = calculateInSampleSize(options, reqHeight, reqWidth);
+    options.inJustDecodeBounds=false;
+    //最后返回解析后的Bitmap
+    return BitmapFactory.decodeResource(res,resId,options);
+}
+//设置缩放比例
+private int calculateInSampleSize(BitmapFactory.Options options, int reqHeight, int reqWidth) {
+    int inSampleSize = 1;
+    int width = options.outWidth;//从BitmapFactory.Options中取出图片的原始宽高
+    int height = options.outHeight;
+    //根据传过来的参数（需要展现的宽高）和图片实际的宽高进行对比
+    if (width &gt; reqWidth || height &gt; reqHeight) {
+        int halfWidth = width / 2;
+        int halfHeight = height / 2;
+        while ((halfHeight / inSampleSize) &gt;= reqHeight &amp;&amp; (halfWidth / inSampleSize) &gt;= reqWidth) {
+            inSampleSize *= 2; // 缩放比例一般都是2的倍数存在
+        }
+    }
+    return inSampleSize;
+}
+</code></pre></li>
+</ol>
+<h3 id="Bitmap的缓存策略"><a href="#Bitmap的缓存策略" class="headerlink" title="Bitmap的缓存策略"></a>Bitmap的缓存策略</h3><p>缓存减少用户流量的使用，同时大大加快了应用的流畅度。<br>一般采用2级缓存，当用户需要访问一张图片时，首先会去内存中找，如果没有就去存储设备上找，还没有就去网络上加载这张图片。<br>缓存机制内部通过LRU(最近最少)算法来完成,它分为LruCache和DiskLruCache分别对应内存缓存和储存设备缓存。</p>
+<h4 id="LruCache"><a href="#LruCache" class="headerlink" title="LruCache"></a>LruCache</h4><p>是一个泛型类，内部采用以个LinkedHashMap存储外界缓存对象。 </p>
+<pre><code>//获取当前进程的大小
+int maxMemory= (int) (Runtime.getRuntime().maxMemory()/1024);
+//当前进程的8分之一当做缓存的大小
+int cacheSize=maxMemory/8; //单位为KB
+LruCache&lt;String,Bitmap&gt; bitmapLruCache=new LruCache&lt;String,Bitmap&gt;(cacheSize){
+    @Override
+    //sizeof方法作用是 计算缓存对象的大小
+    protected int sizeOf(String key, Bitmap bitmap) {
+        return bitmap.getRowBytes()*bitmap.getHeight()/1024;
+    }
+    @Override
+    //LruCache移除旧缓存时会调用，在里面完成一些资源回收的工作
+    protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
+        super.entryRemoved(evicted, key, oldValue, newValue);
+    }
+};
 
-- onCreate和onDestroy代表Activty的创建和销毁
-- onStart和onStop代表设备屏幕的点亮和熄灭 (按下home键)
-- onResume和onPause代表Activity是否在前台（来短信）
-启动一个Activity onCreate()--&gt;onStart()--&gt;onResume()
-销毁一个Activity onPause()--&gt;onStop()--&gt;onDestroy()
-失去焦点后，又重新获取焦点    onPause（）--&gt;onStop()--&gt;onRestart()--&gt;onStart()--&gt;onResume()
-</code></pre><h3 id="四种状态："><a href="#四种状态：" class="headerlink" title="四种状态："></a>四种状态：</h3><p>1.活动状态：Activity处于界面最顶端，获取焦点</p>
-<p>2.暂停状态：失去焦点，但是用户可见，</p>
-<p>3.停止状态：被完全遮挡，但是保留所有的状态和成员信息 相当于按下home见，程序在后台运行</p>
-<p>4.销毁状态：被销毁了 ，</p>
-<h3 id="当Activity异常终止的时候"><a href="#当Activity异常终止的时候" class="headerlink" title="当Activity异常终止的时候"></a>当Activity异常终止的时候</h3><pre><code>系统会调用onSaveInstanceState来保存Activity的状态
-可以在里面存入一些需要保存的数据，当Activity被重新创建的时候，可以用onRestoreInstanceState来恢复之前保存的数据。
-</code></pre><h3 id="当Activity进行屏幕翻转的时候"><a href="#当Activity进行屏幕翻转的时候" class="headerlink" title="当Activity进行屏幕翻转的时候"></a>当Activity进行屏幕翻转的时候</h3><pre><code>如果不想重新创建Activity就把
-android:configChanges=&quot;orientation
-</code></pre><h3 id="Activity之间传值"><a href="#Activity之间传值" class="headerlink" title="Activity之间传值"></a>Activity之间传值</h3><pre><code> startActivityForResult(intent, 1); //打开第二个Activity  请求码是 1；
-setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过来的数据
-然后在第一个Activity中 
-重写onActivityResult（int requestCode, int resultCode, Intent data）方法
- if(requestCode==1&amp;&amp;resultCode==2)判断（第一次是请求码，第二个是返回码）
-如果相等 就调用 data.getStringExtra(“key”);来获取数据
-</code></pre><h3 id="Intent的属性"><a href="#Intent的属性" class="headerlink" title="Intent的属性"></a>Intent的属性</h3><p>动作(Action),数据(Data),分类(Category),类型(Type),组件(Compent)以及扩展信(Extra)。其中最常用的是Action属性和Data属性。</p>
-<ul>
-<li>原则上一个Intent不应该既是显示调用又是隐式调用，如果二者同时存在的话，以显示调用为主。 </li>
-<li>需要同时匹配过滤列表中的action，category，data信息，否则匹配失败</li>
-<li>一个列表中可以有多个action，category，data，只有一个Intent同时匹配action类别，category类别，data类别才算完全匹配，只有完全匹配，才能成功启动Activity，一个Activity可以有多个Intent-filter，一个Intent只要匹配上任何一组Intent-filter就能成功启动该Activity。</li>
-</ul>
 
+bitmapLruCache.get(key)//获取缓存对象
+bitmapLruCache.put(key,bitmap)//添加缓存对象
+bitmapLruCache.remove(key)//删除缓存对象
+</code></pre>
       
     </div>
 
@@ -373,7 +359,7 @@ setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过�
       
         <div class="post-tags">
           
-            <a href="/tags/Android/" rel="tag">#Android</a>
+            <a href="/tags/源自Android开发艺术探索总结/" rel="tag">#源自Android开发艺术探索总结</a>
           
         </div>
       
@@ -382,17 +368,13 @@ setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/07/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2016/05/20/Android的线程和线程池“/" rel="next" title="Android的线程和线程池">
+                <i class="fa fa-chevron-left"></i> Android的线程和线程池
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/05/07/Handler/" rel="prev" title="Handler">
-                Handler <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -519,7 +501,7 @@ setResult(2,intent);// 返回码 是2   intent里面存储的是一个传递过�
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#四种启动模式："><span class="nav-number">1.</span> <span class="nav-text">四种启动模式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期："><span class="nav-number">2.</span> <span class="nav-text">生命周期：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四种状态："><span class="nav-number">3.</span> <span class="nav-text">四种状态：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当Activity异常终止的时候"><span class="nav-number">4.</span> <span class="nav-text">当Activity异常终止的时候</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当Activity进行屏幕翻转的时候"><span class="nav-number">5.</span> <span class="nav-text">当Activity进行屏幕翻转的时候</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Activity之间传值"><span class="nav-number">6.</span> <span class="nav-text">Activity之间传值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Intent的属性"><span class="nav-number">7.</span> <span class="nav-text">Intent的属性</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的高效加载"><span class="nav-number">1.</span> <span class="nav-text">Bitmap的高效加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的缓存策略"><span class="nav-number">2.</span> <span class="nav-text">Bitmap的缓存策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LruCache"><span class="nav-number">2.1.</span> <span class="nav-text">LruCache</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
