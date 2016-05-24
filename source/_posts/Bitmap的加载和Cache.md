@@ -69,4 +69,46 @@ tags: 源自Android开发艺术探索总结
 		bitmapLruCache.get(key)//获取缓存对象
 		bitmapLruCache.put(key,bitmap)//添加缓存对象
 		bitmapLruCache.remove(key)//删除缓存对象
+
+### DiskLruCache
+用于存储设备缓存，它通过将缓存对象写入文件系统从而实现缓存的效果。
+#### DiskLruCache的创建
+1. 通过open方法创建自身
+
+        File cacheDir = getCacheDir();
+        if (cacheDir.exists()) {
+            cacheDir.mkdirs();
+        }
+            /**
+             * 参数：1.表示磁盘存储存放文件的路径
+             *       2.表示应用的版本号，设置为1即可，当版本号发生改变的时候，会清空之前所有的缓存
+             *       3.表示单个节点对应的数据的个数，设置为1即可
+             *       4.缓存的总大小。
+             */
+        mDiskLruCache = mDiskLruCache.open(cacheDir, 1, 1, DISK_CACHE_SIZE);
 		
+2. 通过Editor完成缓存的添加操作
+
+        DiskLruCache.Editor editor = mDiskLruCache.edit(MyUtils.hashKeyFormUrl(url));
+        if (editor != null) {
+            //由于open方法中设置了一个节点只能有一个数据，所以常量设置为0即可。
+            OutputStream outputStream = editor.newOutputStream(DISK_CACHE_INDEX);
+			//下载图片 下载成功后返回tru
+            if (MyUtils.downUrlToStream(url, outputStream)) {
+                editor.commit();//通过这个方法 才真正的存储到手机里
+            } else {
+                //如果下载过程出现异常，可以通过这个方法进行回退整个操作
+                editor.abort();
+            }
+            mDiskLruCache.flush();
+
+3. 通过Snapshot完成缓存的查找
+
+        DiskLruCache.Snapshot snapshot=mDiskLruCache.get(key);
+            if (snapshot!=null){
+                FileInputStream fileInputStream= (FileInputStream) snapshot.getInputStream(DISK_CACHE_INDEX);
+                FileDescriptor fileDescriptor=fileInputStream.getFD();
+                bitmap=mImageResizer.decodeSampledBitmapFromFileDescriptor(fileDescriptor,200,200);
+                if (bitmap!=null){
+                    imageView.setImageBitmap(bitmap);
+                }
