@@ -96,7 +96,7 @@
 如何获取采样率：
 
 将BitmapFactory.Options的inJustDecodeBounds参数设置为true并加载图片">
-<meta property="og:updated_time" content="2016-05-23T15:37:56.743Z">
+<meta property="og:updated_time" content="2016-05-24T14:06:16.722Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bitmap的加载和Cache">
 <meta name="twitter:description" content="Bitmap的高效加载为什么采取高效加载：因为当我们需要显示的图片远远小于图片本身的大小的时候，就会很浪费内存资源，为了提高Bitmap的性能，我们需要通过BitmapFactory.Options可以按照一定的采样率来加载缩小后的图片，这样一定程度上避免了OOM。
@@ -338,7 +338,47 @@ LruCache&lt;String,Bitmap&gt; bitmapLruCache=new LruCache&lt;String,Bitmap&gt;(c
 bitmapLruCache.get(key)//获取缓存对象
 bitmapLruCache.put(key,bitmap)//添加缓存对象
 bitmapLruCache.remove(key)//删除缓存对象
-</code></pre>
+</code></pre><h3 id="DiskLruCache"><a href="#DiskLruCache" class="headerlink" title="DiskLruCache"></a>DiskLruCache</h3><p>用于存储设备缓存，它通过将缓存对象写入文件系统从而实现缓存的效果。</p>
+<h4 id="DiskLruCache的创建"><a href="#DiskLruCache的创建" class="headerlink" title="DiskLruCache的创建"></a>DiskLruCache的创建</h4><ol>
+<li><p>通过open方法创建自身</p>
+<pre><code>File cacheDir = getCacheDir();
+if (cacheDir.exists()) {
+    cacheDir.mkdirs();
+}
+    /**
+     * 参数：1.表示磁盘存储存放文件的路径
+     *       2.表示应用的版本号，设置为1即可，当版本号发生改变的时候，会清空之前所有的缓存
+     *       3.表示单个节点对应的数据的个数，设置为1即可
+     *       4.缓存的总大小。
+     */
+mDiskLruCache = mDiskLruCache.open(cacheDir, 1, 1, DISK_CACHE_SIZE);
+</code></pre></li>
+<li><p>通过Editor完成缓存的添加操作</p>
+<pre><code>DiskLruCache.Editor editor = mDiskLruCache.edit(MyUtils.hashKeyFormUrl(url));
+if (editor != null) {
+    //由于open方法中设置了一个节点只能有一个数据，所以常量设置为0即可。
+    OutputStream outputStream = editor.newOutputStream(DISK_CACHE_INDEX);
+    //下载图片 下载成功后返回tru
+    if (MyUtils.downUrlToStream(url, outputStream)) {
+        editor.commit();//通过这个方法 才真正的存储到手机里
+    } else {
+        //如果下载过程出现异常，可以通过这个方法进行回退整个操作
+        editor.abort();
+    }
+    mDiskLruCache.flush();
+</code></pre></li>
+<li><p>通过Snapshot完成缓存的查找</p>
+<pre><code>DiskLruCache.Snapshot snapshot=mDiskLruCache.get(key);
+    if (snapshot!=null){
+        FileInputStream fileInputStream= (FileInputStream) snapshot.getInputStream(DISK_CACHE_INDEX);
+        FileDescriptor fileDescriptor=fileInputStream.getFD();
+        bitmap=mImageResizer.decodeSampledBitmapFromFileDescriptor(fileDescriptor,200,200);
+        if (bitmap!=null){
+            imageView.setImageBitmap(bitmap);
+        }
+</code></pre></li>
+</ol>
+
       
     </div>
 
@@ -501,7 +541,7 @@ bitmapLruCache.remove(key)//删除缓存对象
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的高效加载"><span class="nav-number">1.</span> <span class="nav-text">Bitmap的高效加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的缓存策略"><span class="nav-number">2.</span> <span class="nav-text">Bitmap的缓存策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LruCache"><span class="nav-number">2.1.</span> <span class="nav-text">LruCache</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的高效加载"><span class="nav-number">1.</span> <span class="nav-text">Bitmap的高效加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bitmap的缓存策略"><span class="nav-number">2.</span> <span class="nav-text">Bitmap的缓存策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#LruCache"><span class="nav-number">2.1.</span> <span class="nav-text">LruCache</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DiskLruCache"><span class="nav-number">3.</span> <span class="nav-text">DiskLruCache</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#DiskLruCache的创建"><span class="nav-number">3.1.</span> <span class="nav-text">DiskLruCache的创建</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
