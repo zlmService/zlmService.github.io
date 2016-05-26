@@ -160,3 +160,161 @@ Layout的作用就是ViewGroup用来确定子元素的位置，layout（）确�
 			       app:circle_color="#f00"
 			        android:background="#000"
 		        android:padding="20dp" />
+
+### 自定义View属性相关细节
+
+#### ObtainStyledAttributes四个参数的详细作用
+
+		TypedArray typedArray = context.obtainStyledAttributes(
+				AttributeSet set,
+				int[] atts，
+				int defStyleAttr,
+				int defStyleRes);
+
+defStyleRes参数 当defStyleAttr为0时，布局文件中也没有进行设置，就使用它指定的style文件
+
+	我们在Style.xml里面编写
+    <style name="test">
+        <item name="t1">false</item>
+        <item name="t2">3333</item>
+        <item name="t3">139dp</item>
+    </style>
+	//然后设置进去	
+    TypedArray typedArray = context.obtainStyledAttributes(
+	attrs, R.styleable.CircleView，0，R.style.test);
+	//当我们不在布局文件中设置任何属性的时候，它会从这个style中读取相关属性
+	
+defStyleAttr 可以在theme中修改样式，比如在系统主题中，想修改所有textView或者Button的样式
+	
+	我们先在attrs.xml里面添加一个引用格式的属性
+    <attr name="test2" format="reference"></attr>
+
+	然后在styles.xml里面找到我们所使用的theme，添加一条item
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="test2">@style/test</item>
+    </style>
+
+    <style name="test">
+        <item name="t1">true</item>
+        <item name="t2">8888</item>
+        <item name="t3">29dp</item>
+    </style>
+
+    //然后设置进去	
+    TypedArray typedArray = context.obtainStyledAttributes(
+	attrs, R.styleable.CircleView，R.attr.test2，0);
+	//他就会读取这里面的属性
+使用场景：当我们需要切换不同主题时，会发现控件的样式也会发生一些改变，就是因为不同的主题，设置了不同的style。当我们自定义View有很多属性的时候，可以提供默认的Style，然后让用户去设置到theme里面即可。
+
+总结：只有当defStyleAttr设置为0或者当前的theme中没有找到相关属性的情况下。才会从defStyleRes中获取，所以defStyleAttr的优先级更高
+
+#### AttributeSet、defStyleAttr、defStyleRes、Threm 属性的优先级
+
+	  //定义属性
+	<declare-styleable name="custom_attrs">
+	    <attr name="custom_color1" format="color"></attr>
+	    <attr name="custom_color2" format="color"></attr>
+	    <attr name="custom_color3" format="color"></attr>
+	    <attr name="custom_color4" format="color"></attr>
+	    <attr name="custom_color5" format="color"></attr>
+	</declare-styleable>
+
+这一步是设置Theme的默认值
+
+	//定义theme可配置style
+	<attr name="custom_style" format="reference"></attr>	
+	
+	 <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+      //配置style
+    <item name="custom_style">@style/custom_theme</item>
+      //直接在主题中指定
+    <item name="custom_color1">#ff444444</item>
+    <item name="custom_color2">#ff444444</item>
+    <item name="custom_color3">#ff444444</item>
+    <item name="custom_color4">#ff444444</item>
+    <item name="custom_color5">#ff444444</item>
+    </style>
+
+    //主题中配置的style
+    <style name="custom_theme">
+    <item name="custom_color1">#ff222222</item>
+    <item name="custom_color2">#ff222222</item>
+    <item name="custom_color3">#ff222222</item>
+    </style>
+
+设置第四个参数的默认值
+
+	 //定义默认style
+	<style name="default_style">
+	    <item name="custom_color1">#ff333333</item>
+	    <item name="custom_color2">#ff333333</item>
+	    <item name="custom_color3">#ff333333</item>
+	    <item name="custom_color4">#ff333333</item>
+	</style>
+
+自定义一个style 在布局中直接引用
+
+	   //直接在layout文件中引用的style，最后会被放到set中
+	  <style name="myStyle">
+	    <item name="custom_color1">#ff111111</item>
+	    <item name="custom_color2">#ff111111</item>
+	  </style>
+
+
+		//当我们在布局文件中 对自定义View进行设置
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:custom_color1="#ff000000"
+        style="@style/myStyle"
+最后结果
+
+	custom_color1=#ff000000 //布局文件中直接指定，优先级最高 （set）
+	custom_color2=#ff111111 //布局同通过style指定，也包含在set中，优先级第二
+	custom_color3=#ff222222 //布局通过主题中配置风格style（defStyleAttr）
+	custom_color4=#ff444444 //由系统Theme直接指定的
+	custom_color5=#ff444444
+
+set>defStyleAttr(主题可配置样式)>defStyleRes(默认样式)>NULL(主题中直接指定)
+
+这个优先级需要说明一点，defStyleRes只有在defStyleAttr为0或者主题中没有配置时，才会生效；所以上面例子中
+custom_color4=#ff444444 而不是333333，因为此时的defStyleAttr我们配置了。
+
+#### 自定义View构造函数的两种写法的区别
+
+//第一种写法
+
+	    public AttrButton(Context context) {
+	        this(context,null);
+	    }
+	
+	    public AttrButton(Context context, AttributeSet attrs) {
+	        this(context, attrs,0);
+	    }
+	
+	    public AttrButton(Context context, AttributeSet attrs, int defStyleAttr) {
+	        super(context, attrs, defStyleAttr);
+	        init();
+	    }
+
+//第二种写法
+
+	    public AttrButton(Context context) {
+	        super(context);
+	        init();
+	    }
+	
+	    public AttrButton(Context context, AttributeSet attrs) {
+	        super(context, attrs);
+	        init();
+	    }
+	
+	    public AttrButton(Context context, AttributeSet attrs, int defStyleAttr) {
+	        super(context, attrs, defStyleAttr);
+	        init();
+	    }
+
+
+区别1：当需要设置obtainStyledAttributes的第三个参数时，一般就使用第一种方式，会在两个参数的构造函数中，去调用三个桉树的构造函数，同时传入defStyleAttr。
+
+区别2：当你系统已有控件的话，比如继承Button，使用第一种方式会覆盖掉Button默认在theme里面设置的style，相对于第二种写法更合适

@@ -70,9 +70,9 @@ tags: 源自Android开发艺术探索总结
 		bitmapLruCache.put(key,bitmap)//添加缓存对象
 		bitmapLruCache.remove(key)//删除缓存对象
 
-### DiskLruCache
+#### DiskLruCache
 用于存储设备缓存，它通过将缓存对象写入文件系统从而实现缓存的效果。
-#### DiskLruCache的创建
+##### DiskLruCache的创建
 1. 通过open方法创建自身
 
         File cacheDir = getCacheDir();
