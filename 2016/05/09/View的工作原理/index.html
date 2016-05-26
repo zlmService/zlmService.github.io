@@ -99,7 +99,7 @@ SpecMode：测量模式
 UNSPECIFIED：父容器不做任何限制，要多大给多大，一般用于系统内部
 EX">
 <meta property="og:image" content="http://i.imgur.com/zPTyZOg.png">
-<meta property="og:updated_time" content="2016-05-10T13:58:58.139Z">
+<meta property="og:updated_time" content="2016-05-26T05:51:46.929Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="View的工作原理">
 <meta name="twitter:description" content="MeasureSpec：测量规格
@@ -437,6 +437,132 @@ xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
 </ol>
 </li>
 </ul>
+<h3 id="自定义View属性相关细节"><a href="#自定义View属性相关细节" class="headerlink" title="自定义View属性相关细节"></a>自定义View属性相关细节</h3><h4 id="ObtainStyledAttributes四个参数的详细作用"><a href="#ObtainStyledAttributes四个参数的详细作用" class="headerlink" title="ObtainStyledAttributes四个参数的详细作用"></a>ObtainStyledAttributes四个参数的详细作用</h4><pre><code>TypedArray typedArray = context.obtainStyledAttributes(
+        AttributeSet set,
+        int[] atts，
+        int defStyleAttr,
+        int defStyleRes);
+</code></pre><p>defStyleRes参数 当defStyleAttr为0时，布局文件中也没有进行设置，就使用它指定的style文件</p>
+<pre><code>我们在Style.xml里面编写
+&lt;style name=&quot;test&quot;&gt;
+    &lt;item name=&quot;t1&quot;&gt;false&lt;/item&gt;
+    &lt;item name=&quot;t2&quot;&gt;3333&lt;/item&gt;
+    &lt;item name=&quot;t3&quot;&gt;139dp&lt;/item&gt;
+&lt;/style&gt;
+//然后设置进去    
+TypedArray typedArray = context.obtainStyledAttributes(
+attrs, R.styleable.CircleView，0，R.style.test);
+//当我们不在布局文件中设置任何属性的时候，它会从这个style中读取相关属性
+</code></pre><p>defStyleAttr 可以在theme中修改样式，比如在系统主题中，想修改所有textView或者Button的样式</p>
+<pre><code>我们先在attrs.xml里面添加一个引用格式的属性
+&lt;attr name=&quot;test2&quot; format=&quot;reference&quot;&gt;&lt;/attr&gt;
+
+然后在styles.xml里面找到我们所使用的theme，添加一条item
+&lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.AppCompat.Light.DarkActionBar&quot;&gt;
+    &lt;item name=&quot;test2&quot;&gt;@style/test&lt;/item&gt;
+&lt;/style&gt;
+
+&lt;style name=&quot;test&quot;&gt;
+    &lt;item name=&quot;t1&quot;&gt;true&lt;/item&gt;
+    &lt;item name=&quot;t2&quot;&gt;8888&lt;/item&gt;
+    &lt;item name=&quot;t3&quot;&gt;29dp&lt;/item&gt;
+&lt;/style&gt;
+
+//然后设置进去    
+TypedArray typedArray = context.obtainStyledAttributes(
+attrs, R.styleable.CircleView，R.attr.test2，0);
+//他就会读取这里面的属性
+</code></pre><p>使用场景：当我们需要切换不同主题时，会发现控件的样式也会发生一些改变，就是因为不同的主题，设置了不同的style。当我们自定义View有很多属性的时候，可以提供默认的Style，然后让用户去设置到theme里面即可。</p>
+<p>总结：只有当defStyleAttr设置为0或者当前的theme中没有找到相关属性的情况下。才会从defStyleRes中获取，所以defStyleAttr的优先级更高</p>
+<h4 id="AttributeSet、defStyleAttr、defStyleRes、Threm-属性的优先级"><a href="#AttributeSet、defStyleAttr、defStyleRes、Threm-属性的优先级" class="headerlink" title="AttributeSet、defStyleAttr、defStyleRes、Threm 属性的优先级"></a>AttributeSet、defStyleAttr、defStyleRes、Threm 属性的优先级</h4><pre><code>  //定义属性
+&lt;declare-styleable name=&quot;custom_attrs&quot;&gt;
+    &lt;attr name=&quot;custom_color1&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;
+    &lt;attr name=&quot;custom_color2&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;
+    &lt;attr name=&quot;custom_color3&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;
+    &lt;attr name=&quot;custom_color4&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;
+    &lt;attr name=&quot;custom_color5&quot; format=&quot;color&quot;&gt;&lt;/attr&gt;
+&lt;/declare-styleable&gt;
+</code></pre><p>这一步是设置Theme的默认值</p>
+<pre><code>//定义theme可配置style
+&lt;attr name=&quot;custom_style&quot; format=&quot;reference&quot;&gt;&lt;/attr&gt;    
+
+ &lt;style name=&quot;AppTheme&quot; parent=&quot;Theme.AppCompat.Light.DarkActionBar&quot;&gt;
+  //配置style
+&lt;item name=&quot;custom_style&quot;&gt;@style/custom_theme&lt;/item&gt;
+  //直接在主题中指定
+&lt;item name=&quot;custom_color1&quot;&gt;#ff444444&lt;/item&gt;
+&lt;item name=&quot;custom_color2&quot;&gt;#ff444444&lt;/item&gt;
+&lt;item name=&quot;custom_color3&quot;&gt;#ff444444&lt;/item&gt;
+&lt;item name=&quot;custom_color4&quot;&gt;#ff444444&lt;/item&gt;
+&lt;item name=&quot;custom_color5&quot;&gt;#ff444444&lt;/item&gt;
+&lt;/style&gt;
+
+//主题中配置的style
+&lt;style name=&quot;custom_theme&quot;&gt;
+&lt;item name=&quot;custom_color1&quot;&gt;#ff222222&lt;/item&gt;
+&lt;item name=&quot;custom_color2&quot;&gt;#ff222222&lt;/item&gt;
+&lt;item name=&quot;custom_color3&quot;&gt;#ff222222&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><p>设置第四个参数的默认值</p>
+<pre><code> //定义默认style
+&lt;style name=&quot;default_style&quot;&gt;
+    &lt;item name=&quot;custom_color1&quot;&gt;#ff333333&lt;/item&gt;
+    &lt;item name=&quot;custom_color2&quot;&gt;#ff333333&lt;/item&gt;
+    &lt;item name=&quot;custom_color3&quot;&gt;#ff333333&lt;/item&gt;
+    &lt;item name=&quot;custom_color4&quot;&gt;#ff333333&lt;/item&gt;
+&lt;/style&gt;
+</code></pre><p>自定义一个style 在布局中直接引用</p>
+<pre><code> //直接在layout文件中引用的style，最后会被放到set中
+&lt;style name=&quot;myStyle&quot;&gt;
+  &lt;item name=&quot;custom_color1&quot;&gt;#ff111111&lt;/item&gt;
+  &lt;item name=&quot;custom_color2&quot;&gt;#ff111111&lt;/item&gt;
+&lt;/style&gt;
+
+
+  //当我们在布局文件中 对自定义View进行设置
+  android:layout_width=&quot;match_parent&quot;
+  android:layout_height=&quot;wrap_content&quot;
+  android:orientation=&quot;vertical&quot;
+  app:custom_color1=&quot;#ff000000&quot;
+  style=&quot;@style/myStyle&quot;
+</code></pre><p>最后结果</p>
+<pre><code>custom_color1=#ff000000 //布局文件中直接指定，优先级最高 （set）
+custom_color2=#ff111111 //布局同通过style指定，也包含在set中，优先级第二
+custom_color3=#ff222222 //布局通过主题中配置风格style（defStyleAttr）
+custom_color4=#ff444444 //由系统Theme直接指定的
+custom_color5=#ff444444
+</code></pre><p>set&gt;defStyleAttr(主题可配置样式)&gt;defStyleRes(默认样式)&gt;NULL(主题中直接指定)</p>
+<p>这个优先级需要说明一点，defStyleRes只有在defStyleAttr为0或者主题中没有配置时，才会生效；所以上面例子中<br>custom_color4=#ff444444 而不是333333，因为此时的defStyleAttr我们配置了。</p>
+<h4 id="自定义View构造函数的两种写法的区别"><a href="#自定义View构造函数的两种写法的区别" class="headerlink" title="自定义View构造函数的两种写法的区别"></a>自定义View构造函数的两种写法的区别</h4><p>//第一种写法</p>
+<pre><code>public AttrButton(Context context) {
+    this(context,null);
+}
+
+public AttrButton(Context context, AttributeSet attrs) {
+    this(context, attrs,0);
+}
+
+public AttrButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    init();
+}
+</code></pre><p>//第二种写法</p>
+<pre><code>public AttrButton(Context context) {
+    super(context);
+    init();
+}
+
+public AttrButton(Context context, AttributeSet attrs) {
+    super(context, attrs);
+    init();
+}
+
+public AttrButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    init();
+}
+</code></pre><p>区别1：当需要设置obtainStyledAttributes的第三个参数时，一般就使用第一种方式，会在两个参数的构造函数中，去调用三个桉树的构造函数，同时传入defStyleAttr。</p>
+<p>区别2：当你系统已有控件的话，比如继承Button，使用第一种方式会覆盖掉Button默认在theme里面设置的style，相对于第二种写法更合适</p>
 
       
     </div>
@@ -604,7 +730,7 @@ xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MeasureSpec：测量规格"><span class="nav-number">1.</span> <span class="nav-text">MeasureSpec：测量规格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Measure过程："><span class="nav-number">2.</span> <span class="nav-text">Measure过程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#layout过程："><span class="nav-number">3.</span> <span class="nav-text">layout过程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#draw过程："><span class="nav-number">4.</span> <span class="nav-text">draw过程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义View"><span class="nav-number">5.</span> <span class="nav-text">自定义View</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#MeasureSpec：测量规格"><span class="nav-number">1.</span> <span class="nav-text">MeasureSpec：测量规格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Measure过程："><span class="nav-number">2.</span> <span class="nav-text">Measure过程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#layout过程："><span class="nav-number">3.</span> <span class="nav-text">layout过程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#draw过程："><span class="nav-number">4.</span> <span class="nav-text">draw过程：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义View"><span class="nav-number">5.</span> <span class="nav-text">自定义View</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义View属性相关细节"><span class="nav-number">6.</span> <span class="nav-text">自定义View属性相关细节</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ObtainStyledAttributes四个参数的详细作用"><span class="nav-number">6.1.</span> <span class="nav-text">ObtainStyledAttributes四个参数的详细作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AttributeSet、defStyleAttr、defStyleRes、Threm-属性的优先级"><span class="nav-number">6.2.</span> <span class="nav-text">AttributeSet、defStyleAttr、defStyleRes、Threm 属性的优先级</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义View构造函数的两种写法的区别"><span class="nav-number">6.3.</span> <span class="nav-text">自定义View构造函数的两种写法的区别</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
