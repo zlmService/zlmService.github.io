@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Android," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -84,34 +84,31 @@
 
 
 
-<meta name="description" content="IPC--：进程内部通信
-AIDL：跨进程通信
-两种启动方式：startService()
-onCreate()--&amp;gt;onStartCommand()--&amp;gt;onDestroy()
-这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
-bindSerVice()
-onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
+<meta name="description" content="setFactory方法的使用可以将布局中的控件替换成另一个控件public class MainActivity extends AppCompatActivity
+{
+private static final String TAG = &amp;quot;MainActivity&amp;quot;;
+
+@Override
+protected void onCreate(Bundle savedInstanc">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Service">
-<meta property="og:url" content="http://zhaoliming.com/2016/05/07/Service/index.html">
+<meta property="og:title" content="LayoutInflater">
+<meta property="og:url" content="http://zhaoliming.com/2016/05/26/LayoutInflater/index.html">
 <meta property="og:site_name" content="赵黎明的博客">
-<meta property="og:description" content="IPC--：进程内部通信
-AIDL：跨进程通信
-两种启动方式：startService()
-onCreate()--&amp;gt;onStartCommand()--&amp;gt;onDestroy()
-这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
-bindSerVice()
-onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
-<meta property="og:updated_time" content="2016-05-10T03:27:45.623Z">
+<meta property="og:description" content="setFactory方法的使用可以将布局中的控件替换成另一个控件public class MainActivity extends AppCompatActivity
+{
+private static final String TAG = &amp;quot;MainActivity&amp;quot;;
+
+@Override
+protected void onCreate(Bundle savedInstanc">
+<meta property="og:updated_time" content="2016-05-26T07:55:35.825Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Service">
-<meta name="twitter:description" content="IPC--：进程内部通信
-AIDL：跨进程通信
-两种启动方式：startService()
-onCreate()--&amp;gt;onStartCommand()--&amp;gt;onDestroy()
-这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
-bindSerVice()
-onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
+<meta name="twitter:title" content="LayoutInflater">
+<meta name="twitter:description" content="setFactory方法的使用可以将布局中的控件替换成另一个控件public class MainActivity extends AppCompatActivity
+{
+private static final String TAG = &amp;quot;MainActivity&amp;quot;;
+
+@Override
+protected void onCreate(Bundle savedInstanc">
 
 
 
@@ -129,7 +126,7 @@ onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
   };
 </script>
 
-  <title> Service | 赵黎明的博客 </title>
+  <title> LayoutInflater | 赵黎明的博客 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +246,7 @@ onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
             
             
               
-                Service
+                LayoutInflater
               
             
           </h1>
@@ -261,8 +258,8 @@ onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-05-07T23:19:28+08:00" content="2016-05-07">
-              2016-05-07
+            <time itemprop="dateCreated" datetime="2016-05-26T15:40:46+08:00" content="2016-05-26">
+              2016-05-26
             </time>
           </span>
 
@@ -289,22 +286,79 @@ onCreate()--&amp;gt;onBind()--&amp;gt;onUnbind()--&amp;g">
       
 
       
-        <pre><code>IPC--：进程内部通信
-AIDL：跨进程通信
-</code></pre><h3 id="两种启动方式："><a href="#两种启动方式：" class="headerlink" title="两种启动方式："></a>两种启动方式：</h3><p>startService()</p>
-<pre><code>onCreate()--&gt;onStartCommand()--&gt;onDestroy()
-这种方式和调用者没有任何关系，只要是没有执行onStopService（）服务就会一直运行
-</code></pre><p>bindSerVice()</p>
-<pre><code>onCreate()--&gt;onBind()--&gt;onUnbind()--&gt;onDestroy()
-这种方式 是和调用者绑定在一块，当调用者退出，他也会调用onDestroy（）
-如果多次调用bindService（）还是只会调用一次onBind（）但是如调用多次unBindService（）就会报错
-</code></pre><p>通常会 Start–&gt;Bind–&gt;unbind–&gt;stop 这样即使Service在unbind之后还能保证服务存在    </p>
-<h4 id="防止SerVice被强制停止"><a href="#防止SerVice被强制停止" class="headerlink" title="防止SerVice被强制停止"></a>防止SerVice被强制停止</h4><p>可能会创建2个Service 然后他们互相监听，如果监听到 其中一个停止掉了，就启动另一个Service</p>
-<p>可以通过 onStartCommand 设置Frag =START_REDELIVER_INTENT 就是如果Service被杀死了，系统会重新创建Service并且调用onStartCommand（）所有被挂起的intent都会一次传递</p>
-<h3 id="IntentService"><a href="#IntentService" class="headerlink" title="IntentService"></a>IntentService</h3><pre><code>1.IntentService 内部只有一个工作线程来完成耗时操作，只需实现onhandleIntent
-2.完成后会自动停止服务
-3.如果同时执行多个任务，会以队列的方式，一次执行
-4.通常使用该类来完成本App内部中的一些耗时工作。
+        <h3 id="setFactory方法的使用"><a href="#setFactory方法的使用" class="headerlink" title="setFactory方法的使用"></a>setFactory方法的使用</h3><h4 id="可以将布局中的控件替换成另一个控件"><a href="#可以将布局中的控件替换成另一个控件" class="headerlink" title="可以将布局中的控件替换成另一个控件"></a>可以将布局中的控件替换成另一个控件</h4><pre><code>public class MainActivity extends AppCompatActivity
+{
+private static final String TAG = &quot;MainActivity&quot;;
+
+@Override
+protected void onCreate(Bundle savedInstanceState)
+{
+    LayoutInflaterCompat.setFactory(LayoutInflater.from(this), new LayoutInflaterFactory()
+    {
+        @Override
+        public View onCreateView(View parent, String name, Context context, AttributeSet attrs)
+        {
+            Log.e(TAG, &quot;name = &quot; + name);
+            int n = attrs.getAttributeCount();
+            for (int i = 0; i &lt; n; i++)
+            {
+                Log.e(TAG, attrs.getAttributeName(i) + &quot; , &quot; + attrs.getAttributeValue(i));
+            }
+
+            return null;
+        }
+    });
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+}
+</code></pre><p>更新v7包的时候，忽然我们的TextView就支持了一些属性，比如tint属性，以前是不支持的，怎么能够做到使用v7包，然后就能支持且向下兼容的呢？</p>
+<pre><code>//系统其实是利用setFactory 把TextView替换成AppCompatTextView
+switch (name) {
+    case &quot;TextView&quot;:
+        view = new AppCompatTextView(context, attrs);
+        break;
+    case &quot;ImageView&quot;:
+        view = new AppCompatImageView(context, attrs);
+        break;
+    case &quot;Button&quot;:
+        view = new AppCompatButton(context, attrs);
+        break;
+    case &quot;EditText&quot;:
+        view = new AppCompatEditText(context, attrs);
+        break;
+   //...
+}
+</code></pre><p>但由于AppCompatActivity中调用了setFactory方法，所以当我们调用的时候会有一些影响，比如无法使用替换后的AppCompatTextView，也没有办法使用新特性。</p>
+<p>解决方法：在onCreateView中 添加两行代码</p>
+<pre><code>我们可以自己设置factory中，依然可以保证appcompat中创建View的代码的执行。
+AppCompatDelegate delegate = getDelegate();
+View view = delegate.createView(parent, name, context, attrs);
+</code></pre><h4 id="高效统一设置app中所有字体"><a href="#高效统一设置app中所有字体" class="headerlink" title="高效统一设置app中所有字体"></a>高效统一设置app中所有字体</h4><pre><code>LayoutInflaterCompat.setFactory(LayoutInflater.from(this), new LayoutInflaterFactory()
+{
+    @Override
+    public View onCreateView(View parent, String name, Context context, AttributeSet attrs)
+    {
+        View view ;
+    //如果是继承TextView的自定义的View
+    1.//if(name.equals(&quot;自定义View&quot;) view = new ...
+    //或者
+    2.if (1 == name.indexOf(&apos;.&apos;)//表明是自定义View
+        {
+           inflater.createView(name,null,attrs);
+        }
+    AppCompatDelegate delegate = getDelegate();
+    if(view == null)
+      view = delegate.createView(parent, name, context, attrs);
+
+
+        //可以将布局中所有TextView控件的字体改变
+        if (view!=null &amp;&amp; (view instanceof TextView)){
+            ((TextView) view).setTypeface(Typeface.SERIF);
+        }
+
+        return view;
+    }
+});
 </code></pre>
       
     </div>
@@ -324,28 +378,18 @@ AIDL：跨进程通信
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Android/" rel="tag">#Android</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/05/07/Handler/" rel="next" title="Handler">
-                <i class="fa fa-chevron-left"></i> Handler
+              <a href="/2016/05/23/Bitmap的加载和Cache/" rel="next" title="Bitmap的加载和Cache">
+                <i class="fa fa-chevron-left"></i> Bitmap的加载和Cache
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/05/07/杂项/" rel="prev" title="杂项">
-                杂项 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -472,7 +516,7 @@ AIDL：跨进程通信
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#两种启动方式："><span class="nav-number">1.</span> <span class="nav-text">两种启动方式：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#防止SerVice被强制停止"><span class="nav-number">1.1.</span> <span class="nav-text">防止SerVice被强制停止</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IntentService"><span class="nav-number">2.</span> <span class="nav-text">IntentService</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#setFactory方法的使用"><span class="nav-number">1.</span> <span class="nav-text">setFactory方法的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#可以将布局中的控件替换成另一个控件"><span class="nav-number">1.1.</span> <span class="nav-text">可以将布局中的控件替换成另一个控件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#高效统一设置app中所有字体"><span class="nav-number">1.2.</span> <span class="nav-text">高效统一设置app中所有字体</span></a></li></ol></li></ol></div>
             
           </div>
         </section>
